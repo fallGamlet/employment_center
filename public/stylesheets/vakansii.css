@@ -1,0 +1,47 @@
+.vakansii_table {
+	width:100%;
+	border-collapse: collapse;
+}
+.vakansii_table thead{
+	background:#EEE;
+}
+.vakansii_table tr {
+	page-break-inside: avoid;
+	page-break-after: auto;
+	page-break-before: auto;
+}
+.vakansii_table th, .vakansii_table td {
+	border:solid 1px #999;
+	margin:0;
+}
+.vakansii_table>tbody td {
+	font-size:small;
+	padding:1px 5px;
+}
+.table_caption {
+	text-align:left;
+	padding:0;
+	margin-top:2em;
+	display:block;
+	font-weight:bold;
+	font-size:larger;
+	cursor:pointer;
+}
+.table_caption:hover {
+	color:#0D0D89;
+	background:#C0C0D2;
+}
+
+
+@media print {
+	#spec_vaks {
+		page-break-before: always;
+	}
+	.title_page, .go_to_main {
+		display:none;
+	}
+} 
+
+@page {
+	margin: 15px;
+}

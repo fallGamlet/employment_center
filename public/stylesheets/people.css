@@ -1,0 +1,38 @@
+input[type='text'] {
+	width:100%;
+}
+
+.form_table {
+	margin:10px auto;
+	display:inline-block;
+}
+.form_field {
+	display:inline-block;
+	vertical-align:top;
+	margin:1px;
+}
+.form_field>div {
+	margin:0;
+	padding:0;
+}
+
+.form_buttons {
+	text-align:right;
+}
+
+.fio_field {
+	min-width:15em;
+}
+
+.date_field {
+}
+.text_field {
+}
+.phone_field {
+}
+.date_field {
+}
+
+thead td {
+	background:#EEE;
+}

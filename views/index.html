@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	<script src="javascripts/jquery-2.1.0.js"></script>
+	<title>{{ title|title }}</title>
+	<script>
+		$(document).ready(function(){
+			$('a.button_link').click(function(){
+				var  clu = $(this).clone();
+				clu.css({'background-color':'#AAF','color':'#333', 'margin':'0px', "display":"block", "width":clu.width()+"px"});
+				clu.width($(this).width());
+				var load = $("<div />");
+				load.css({'position:':'absolute','width':0, 'overflow':'hidden', 'padding':'0px', 'margin':'0px', 'border':'none'});
+				load.append(clu);
+				$('body').append(load);
+				load.offset($(this).offset());
+				load.animate({width:clu.width()+20+"px"},9000, "linear");
+			});
+		});
+	</script>
+</head>
+<body>
+	<div class="title_page">
+		{{ title|title }}
+	</div>
+	<div class="main_container">
+		<p>Welcome to {{ title }}</p>
+		<div style="display:inline-block;">
+			<img src="/images/science.png" />
+		</div>
+		<div class="menu">
+			<a class="button_link" href="/view-vakansii">
+				Просмотреть вакансии
+			</a>
+			<a class="button_link" href="/search-peaple">
+				Поиск людей
+			</a>
+		</div>
+	</div>
+</body>
+</html>

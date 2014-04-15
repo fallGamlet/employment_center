@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	<!--link rel="stylesheet" href="/stylesheets/vakansii.css"-->
+	<script src="javascripts/jquery-2.1.0.js"></script>
+	<title>{{ title|title }}</title>
+	<script>
+		$(document).ready(function(){
+			
+		});
+	</script>
+	<style>
+		.horizontal_div {
+			display: inline-block;
+		}
+		.data {
+				/*background:#FAFAFA;*/	
+				color:#0C0078;
+		}
+		.private_data {
+			margin:5px;
+			padding:5px;
+			border:solid 1px #EEE;
+		}
+		.private_data>span.name_title {
+			display:inline-block;
+			min-width:10em;
+		}
+	</style>
+</head>
+<body>
+	<div class="title_page"></div>
+	<div class="main_container">
+		<div>
+			<div class="horizontal_div">
+				KOD_RM<br />
+				<span class="data">{{record.KOD_RM}}</span>
+			</div>
+			<div class="horizontal_div">
+				IND_KART<br />
+				<span class="data">{{record.IND_KART}}</span>
+			</div>
+			<div class="horizontal_div">
+				KART_N<br />
+				<span class="data">{{record.KART_N}}</span>
+			</div>
+			<div class="horizontal_div">
+				OBR_DT<br />
+				<span class="data">{{record.OBR_DT}}</span>
+			</div>
+		</div>
+		<div class="private_data">
+			<span class="name_title">ФИО</span>            <span class="data field_fio">{{record.FIO}}</span> <br />
+			<span class="name_title">Пол</span>            <span class="data field_sex">{{record.POL}}</span> <br />
+			<span class="name_title">Дата рождения</span>  <span class="data field_borndate">{{record.ROGD_DT}}</span> <br />
+			<span class="name_title">Гражданство</span>    <span class="data field_grajd">{{record.GRAGD}}</span> <br />
+			<span class="name_title">Национальность</span> <span class="data field_nacional">{{record.NAC}}</span> <br />
+			<span class="name_title">Адрес</span>          <span class="data field_address">{{record.ADRESS}}</span> <br />
+			<span class="name_title">Телефон</span>        <span class="data field_phonenum">{{record.TEL}}</span> <br />
+		</div>
+		<div class="document">
+			<span class="data">{{record.DOKVID}}</span>
+			<span class="data">{{record.DOK_SERN}}</span>
+			<span class="data">{{record.DOK_SER}}</span>
+			<span class="data">{{record.DOK_N}}</span>
+			<span class="data">{{record.DOK_S}}</span>
+			<span class="data">{{record.KEM_VID}}</span>
+			<span class="data">{{record.DOK_DT}}</span>
+		</div>
+		
+		<span class="data">{{record.OTNZAN}}</span>
+		<span class="data">{{record.VIDNEZAN}}</span>
+		<span class="data">{{record.KAT_SOCZ}}</span>
+		<span class="data">{{record.DATABZN}}</span>
+		<span class="data">{{record.DATABZK}}</span>
+		<span class="data">{{record.ZAKRK}}</span>
+		<span class="data">{{record.OBRAZ}}</span>
+		<span class="data">{{record.PROF_OBR}}</span>
+		<span class="data">{{record.KVA_OBR}}</span>
+		<span class="data">{{record.STAG_PF}}</span>
+		<span class="data">{{record.POSL_RAB}}</span>
+		<span class="data">{{record.DOLGN}}</span>
+		<span class="data">{{record.KVA_DOLGN}}</span>
+		
+		<div class="stag">
+			<span class="data">{{record.STAG_O}}</span>
+			<span class="data">{{record.STAG_O_M}}</span>
+			<span class="data">{{record.STAG_PR_G}}</span>
+			<span class="data">{{record.STAG_PR_M}}</span>
+			<span class="data">{{record.STAG_12}}</span>
+		</div>
+		
+		<span class="data">{{record.SEKT_EK}}</span>
+		<span class="data">{{record.OTR_NH}}</span>
+		<span class="data">{{record.UVOL_DT}}</span>
+		<span class="data">{{record.SREDN_ZAR}}</span>
+		<span class="data">{{record.SEM_POL}}</span>
+		<span class="data">{{record.UVOL_PR}}</span>
+		<span class="data">{{record.KOL_IGD}}</span>
+		
+		<div>
+			<span class="data">{{record.TR_FSOB}}</span>
+			<span class="data">{{record.TR_PRED}}</span>
+			<span class="data">{{record.TR_PROF}}</span>
+			<span class="data">{{record.TR_KVA}}</span>
+			<span class="data">{{record.TR_KOLDPRF}}</span>
+			<span class="data">{{record.TR_SOP}}</span>
+			<span class="data">{{record.TR_VIDR}}</span>
+			<span class="data">{{record.TR_SMEN}}</span>
+			<span class="data">{{record.TR_ZARPL}}</span>
+			<span class="data">{{record.TR_RAIG}}</span>
+			<span class="data">{{record.TR_KOLOPRF}}</span>
+		</div>
+		
+		<span class="data">{{record.DATA_KOR}}</span>
+		<span class="data">{{record.STATUS_OB}}</span>
+		<span class="data">{{record.SN_OB}}</span>
+		<span class="data">{{record.DAT_OSU}}</span>
+		
+		<div>
+			<span class="data">{{record.VID_TRKN}}</span>
+			<span class="data">{{record.SER_TRKN}}</span>
+			<span class="data">{{record.NOM_TRKN}}</span>
+			<span class="data">{{record.DAT_TRKN}}</span>
+		</div>
+		
+		<span class="data">{{record.POVTOR}}</span>
+		<span class="data">{{record.PR_POSOB}}</span>
+		<span class="data">{{record.PR_STIP}}</span>
+		
+		<div class="address">
+			<span class="data">{{record.KODNP}}</span>
+			<span class="data">{{record.RAIOG}}</span>
+			<span class="data">{{record.VID_ADR}}</span>
+			<span class="data">{{record.KOD_UL}}</span>
+			<span class="data">{{record.NDOM}}</span>
+			<span class="data">{{record.IND_DOM}}</span>
+			<span class="data">{{record.NKV}}</span>
+		</div>
+	</div>
+</body>
+</html>
