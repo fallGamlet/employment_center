@@ -8,7 +8,53 @@
 	<title>{{ title|title }}</title>
 	<script>
 		$(document).ready(function(){
-			
+			$('#search_form').submit(function(e){
+				// проверяем пару полей
+				//~ var ok = true;
+				//~ if (!ok) { // если поля не прошли проверку
+					//~ 
+					//~ // каким-то образом оповещаем об ошибках пользователя
+					//~ alert('Чето не то!');
+					//~ return false; // и этим false отменяем отправку формы
+				//~ }
+				
+				e.preventDefault();
+                var form = $(this);
+                //~ form.find("input[type=submit]").attr('disabled', true); 
+                $.ajax({
+					type: "GET",
+					url: "/search-peaple/preview",
+					data: form.serialize(),
+					timeout:9000,
+					beforeSend: function(){
+						var progressIcon = $("<img id='loadingimage' src='/images/loading.gif' />")
+						progressIcon.css({width:"200px", height:"200px", position:'absolute'});
+						progressIcon.offset({top:300, left:400});
+						$("body").append(progressIcon);
+						$(".preview_list").fadeOut(function(){
+							$(this).html("");
+							$(this).show();
+						});
+						progressIcon.show();
+					},
+					success: function(data){
+						$('#loadingimage').fadeOut(function() {
+								$(this).remove();
+						});
+						$(".preview_list").html(data);
+						//~ form.find("input[type='submit']").attr('disabled', false);
+					},
+					error:function() { 
+						alert("Произошла ошибка. Попробуйте пожалуйста еще раз.") ;
+					},
+					complete: function(){
+						$('#loadingimage').fadeOut(function() {
+								$(this).remove();
+						});
+						//~ form.find("input[type='submit']").attr('disabled', false);
+					}
+				});
+			});
 		});
 	</script>
 </head>
@@ -16,93 +62,73 @@
 	<div class="title_page">
 		{{ title|title }}
 	</div>
-	<a class="go_to_main" href="/">На главную</a>
+	<menu class="menu">
+		<a class="go_to_main" href="/">На главную</a>
+	</menu>
 	<div class="main_container">
 		<form id="search_form" name="search_peaple" action="/search-peaple">
 			<div class="form_table">
 				<div class="form_field">
-					ФИО <br />
-					<input class="fio_field" type='search' name='fio' value="{{formvals.fio}}" placeholder="Фамилия Имя Отчество" />
+					<br />
+					<input class="text_field" type='search' name='kartnum' placeholder="№ карточки" /><br />
+					<input class="text_field" type='search' name='kartyear' placeholder="год" /><br />
+					<input class="text_field" type='search' name='kartchar' placeholder="буква" />
 				</div>
 				<div class="form_field">
-					Дата рождения <br />
-					<input class="date_field" type='text' name='born_date' value="{{formvals.born_date}}" pattern="\d{2}\.\d{2}\.\d{4}" />
+					<br />
+					<input class="text_long_field" type='search' name='lname' placeholder="Фамилия" /><br />
+					<input class="text_long_field" type='search' name='fname' placeholder="Имя" /><br />
+					<input class="text_long_field" type='search' name='mname' placeholder="Отчество" /> <br />
+					<input class="text_long_field" type='search' name='born_date' placeholder="Дата рождения" pattern="\d{2}\.\d{2}\.\d{4}" />
 				</div>
 				<div class="form_field">
-					Проф. образование <br />
-					<input class="text_field" type='text' name='prof_obraz' value="{{formvals.prof_obraz}}" />
+					<br />
+					<input class="text_field" type='text' name='prof_obraz' placeholder="Проф. образование" />
 				</div>
 				<div class="form_field">
-					Последнее место работы <br />
-					<input class="text_field" type='text' name='last_org' value="{{formvals.last_org}}" />
+					<br />
+					<input class="text_field" type='text' name='last_org' placeholder="Последнее место работы" style="width:17em;"/> <br />
+					<div style="border:solid 1px #DDD; padding:2px; border-radius:10px;">
+						<input type="radio" name="st_uchet" value="2" checked /> Все<br />
+						<input type="radio" name="st_uchet" value="1" /> Снят с учета<br />
+						<input type="radio" name="st_uchet" value="0" /> На учете<br />
+					</div>
 				</div>
 				<div class="form_field">
-					Номер телефона <br />
-					<input class="phone_field" type='tel' name='phone_num' value="{{formvals.phone_num}}" />
+					 <br />
+					<input class="phone_field" type='tel' name='phone_num' placeholder="Номер телефона" /> <br />
+					<div style="border:solid 1px #DDD; padding:2px; border-radius:10px;">
+						<input type="radio" name="st_bezrab" value="2" checked /> Все<br />
+						<input type="radio" name="st_bezrab" value="1" /> Безработные<br />
+						<input type="radio" name="st_bezrab" value="0" /> Работающие<br />
+					</div>
 				</div>
+				<br />
 				<div class="form_field">
+					<input class="text_long_field" type='search' name='address' placeholder="Адрес" style="width:25.65em;"/>
+				</div>
+				<!--div class="form_field">
 					Период обработки
 					<div>
-						<input class="date_field" type='text' name='dobr_start' value="{{formvals.dobr_start}}" pattern="\d{2}\.\d{2}\.\d{4}" placeholder="начало периода" /><br />
-						<input class="date_field" type='text' name='dobr_end' value="{{formvals.dobr_end}}" pattern="\d{2}\.\d{2}\.\d{4}" placeholder="конец периода" />
+						<input class="date_field" type='text' name='dobr_start' pattern="\d{2}\.\d{2}\.\d{4}" placeholder="начало периода" /><br />
+						<input class="date_field" type='text' name='dobr_end' pattern="\d{2}\.\d{2}\.\d{4}" placeholder="конец периода" />
 					</div>
-				</div>
-				<div class="form_field">
+				</div-->
+				<!--div class="form_field">
 					Корректировка
 					<div>
-						<input class="date_field" type='text' name='dkor_start' value="{{formvals.dkor_start}}" pattern="\d{2}\.\d{2}\.\d{4}" placeholder="начало периода" /><br />
-						<input class="date_field" type='text' name='dkor_end' value="{{formvals.dkor_end}}" pattern="\d{2}\.\d{2}\.\d{4}" placeholder="конец периода" />
+						<input class="date_field" type='text' name='dkor_start' pattern="\d{2}\.\d{2}\.\d{4}" placeholder="начало периода" /><br />
+						<input class="date_field" type='text' name='dkor_end' pattern="\d{2}\.\d{2}\.\d{4}" placeholder="конец периода" />
 					</div>
-				</div>
+				</div--->
 				<div class="form_buttons">
 					<input type='reset' value="Очистить"/>
 					<input type='submit' value="Найти" />
 				</div>
 			</div>
 		</form>
-		{% if peopleList %}
-		<p>Записей найдено: {{ peopleList.length }}</p>
-		<div class="preview_list">
-			<table>
-				<thead>
-					<tr>
-						<td>Код РМ</td>
-						<td>Инд. карта</td>
-						<td>№ карты</td>
-						<td>ФИО</td>
-						<td>Пол</td>
-						<td>Дата рождения</td>
-						{% if formvals.prof_obraz %}<td>Профессия</td>{% endif %}
-						{% if formvals.last_org %}<td>Последнее место работы</td>{% endif %}
-						<td>Дата обработки</td>
-						<td>Дата корректировки</td>
-						<td></td>
-					</tr>
-				</thead>
-				<tbody>
-				{% for human in peopleList %}
-				<tr>
-					<td>{{ human['KOD_RM'] }}</td>
-					<td>{{ human['IND_KART'] }}</td>
-					<td>{{ human['KART_N'] }}</td>
-					<td>{{ human['FIO'] }}</td>
-					<td>{{ human['POL'] }}</td>
-					<td>{{ human['ROGD_DT'] }}</td>
-					{% if formvals.prof_obraz %}<td>{% if human['PROF_OBR'] %}{{ human['PROF_OBR']['NAIM'] }}{% endif %}</td>{% endif %}
-					{% if formvals.last_org %}<td>{% if human['POSL_RAB'] %}{{ human['POSL_RAB']['NAIM'] }}{% endif %}</td>{% endif %}
-					<td>{{ human['OBR_DT'] }}</td>
-					<td>{{ human['DATA_KOR']|date('d.m.Y') }}</td>
-					<td>
-						<a class="button_link" href="./{{ human['KOD_RM'] }}/{{ human['IND_KART'] }}/{{ human['KART_N'] }}/{{ human['FIO'] }}/{{ human['OBR_DT'] }}">
-							Просмотреть
-						</a>
-					</td>
-				</tr>
-				{% endfor %}
-				</tbody>
-			</table>
-		</div>
-		{% endif %}
+		
+		<div class="preview_list"></div>
 	</div>
 </body>
 </html>

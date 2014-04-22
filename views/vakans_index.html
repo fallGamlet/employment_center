@@ -6,55 +6,22 @@
 	<link rel="stylesheet" href="/stylesheets/vakansii.css">
 	<script src="javascripts/jquery-2.1.0.js"></script>
 	<title>{{ title|title }}</title>
-	<script>
-		$(document).ready(function(){
-			$('#rab_vaks').click(function(){ $('#rab_table').toggle(); });
-			$('#spec_vaks').click(function(){ $('#spec_table').toggle(); });
-		});
-	</script>
 </head>
 <body>
 	<div class="title_page">
 		{{ title|title }} 
-		<span>: Время обработки {{ timeLeft }} с.</span>
 	</div>
-	<a class="go_to_main" href="/">На главную</a>
+	<menu class="menu">
+		<a class="go_to_main" href="/">На главную</a><br>
+		<a class="button_link" href="/vakansii/view">
+			Просмотреть все вакансии на сегодня
+		</a>
+		<a class="button_link" href="/vakansii/search">
+			Поиск вакансий среди текущих
+		</a>
+	</menu>
 	<div class="main_container">
-		{% for katGroup in vakansList|groupBy('KAT')%}
 		
-		{% if loop.key == 1 %}
-		<p class='table_caption' id="rab_vaks">Рабочие вакансии</p>
-		<table id="rab_table" class="vakansii_table">
-		{% else %}
-		<p class='table_caption' id="spec_vaks">Специальные выкансии</p>
-		<table id="spec_table" class="vakansii_table">
-		{% endif%}
-			<colgroup>
-				<col style="width:25em;"/>
-				<col style="width:2em;"/>
-				<col style="width:10em;"/>
-				<col style="width:20em;"/>
-			</colgroup>
-			<thead>
-				<tr>
-					<th>Специальность</th>
-					<th>Количество</th>
-					<th>Зарплата</th>
-					<th>Наниматель</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for vak in katGroup%}
-					<tr>
-						<td>{{ vak['NSPEC'] }}</td>
-						<td style="text-align:right;">{{ vak['count'] }}</td>
-						<td style="text-align:right;">{{ vak['ZP'] }}</td>
-						<td>{% if vak['KPRED'] %}{{ vak['KPRED']['NAIM'] }}{% endif %}</td>
-					</tr>
-				{% endfor%}
-			</tbody>
-		</table>
-		{% endfor %}
 	</div>
 </body>
 </html>

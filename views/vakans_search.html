@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	<link rel="stylesheet" href="/stylesheets/vakansii.css">
+	<script src="javascripts/jquery-2.1.0.js"></script>
+	<title>{{ title|title }}</title>
+</head>
+<body>
+	<div class="title_page">
+		{{ title|title }} 
+		<span>: Время обработки {{ timeLeft }} с.</span>
+	</div>
+	<div class="menu">
+		<a class="button_link" href="javascript:history.back()">Назад</a>
+		<a class="go_to_main" href="/">На главную</a>
+	</div>
+	<div class="main_container">
+		<form id="search_form" name="search_peaple" action="">
+			<div class="form_table">
+				<div class="form_field">
+					Организация <br />
+					<input class="text_long_field" type='search' name='org' value="" placeholder="название организации" />
+				</div>
+				<div class="form_field">
+					Специальность <br />
+					<input class="text_long_field" type='search' name='spec' value="" placeholder="название специальности" />
+				</div>
+				<div class="form_buttons">
+					<input type='reset' value="Очистить"/>
+					<input type='submit' value="Найти" />
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

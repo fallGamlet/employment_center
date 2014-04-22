@@ -1,38 +1,52 @@
-input[type='text'] {
-	width:100%;
+.table_people_preview {
+	border-collapse: collapse;
 }
-
-.form_table {
-	margin:10px auto;
-	display:inline-block;
+.table_people_preview thead th {
+    background:#000;
+    color:#FFF;
+    padding:3px 5px;
 }
-.form_field {
-	display:inline-block;
-	vertical-align:top;
-	margin:1px;
+.table_people_preview tbody tr:nth-of-type(odd) {
+    background: #DADADA;
 }
-.form_field>div {
-	margin:0;
-	padding:0;
-}
-
-.form_buttons {
+td.kartnum {
 	text-align:right;
 }
-
-.fio_field {
-	min-width:15em;
+td.kartyear {
+	text-align:center;
+}
+td.kartrm {
+	text-align:center;
+    border-right:solid 1px #ccc;
+    padding-right:0.5em;
+}
+td.sex {
+    text-align:center;
+}
+td.fio {
+	padding:0px 0.5em;
+}
+td.borndate {
+	text-align:center;
+}
+td.address {
+	text-align:left;
+}
+td.status1 {
+	color:#3A8D3C;
+}
+td.status2 {
+	color:#A52A2A;
 }
 
-.date_field {
-}
-.text_field {
-}
-.phone_field {
-}
-.date_field {
-}
-
-thead td {
-	background:#EEE;
+@media print {
+	th {
+		background:#EEE;
+		color:#000;
+	}
+	td {
+		background:#FFF;
+		color:#000;
+		border-bottom:solid 1px #CCC;
+	}
 }

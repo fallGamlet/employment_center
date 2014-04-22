@@ -32,7 +32,9 @@ a {
 .menu {
 	display:inline-block;
 	background:transparent;
-	width: 20em;
+	margin:0;
+	padding:0;
+	/*width: 20em;*/
 }
 
 .button_link, .go_to_main{
@@ -45,9 +47,11 @@ a {
 	display:inline-block;
 }
 
-.form_table td {
-	vertical-align:top;
+thead td {
+	background:#EEE;
 }
+
+
 
 input {
 	width:130px;
@@ -55,4 +59,58 @@ input {
 	border:solid 1px #CCC;
 	padding: 1px 1px;
 	margin: 1px;
+}
+
+input[type='text'] {
+	width:100%;
+}
+input[type='radio'] {
+	width:5px;
+}
+.form_table {
+	margin:10px auto;
+	display:inline-block;
+}
+.form_field {
+	display:inline-block;
+	vertical-align:top;
+	margin:1px;
+}
+.form_field>div {
+	margin:0;
+	padding:0;
+}
+
+.form_buttons {
+	text-align:right;
+}
+
+.text_long_field {
+	min-width:15em;
+}
+
+.date_field {
+}
+.text_field {
+}
+.phone_field {
+}
+.date_field {
+}
+
+@media print {
+	th {
+		background:#EEE;
+		color:#000;
+	}
+	td {
+		background:#FFF;
+		color:#000;
+	}
+	.button_link, .go_to_main {
+		display:none;
+	}
+}
+@page {
+	margin: 15px;
 }
