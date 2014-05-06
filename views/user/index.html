@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	<script src="/javascripts/jquery-2.1.0.js"></script>
+	<title>{{ title|title }}</title>
+	<script>
+		$(document).ready(function(){
+			
+		});
+	</script>
+</head>
+<body>
+	<div class="title_page">
+		{{ title|title }}
+	</div>
+	<menu class="menu">
+		<a class="go_to_main" href="/">На главную</a>
+	</menu>
+	<div class="main_container">
+		<div class="menu">
+			<a class="button_link" href="/user/db/update">
+				Обновить базу данных
+			</a>
+		</div>
+		{% if err %}
+		<div style="background:#FFF3A5; padding:2em; width:300px;">{{err}}</div>
+		{% endif %}
+		{% if result %}
+		<div  style="background:#CFFFAA; padding:2em; width:300px;">
+			Времени прошло: {{timeleft}} <br /><br />
+			Результат:
+			<ul>
+			{% for item in result %}
+			<li>{{ item }}</li>
+			{% endfor %}
+			</ul>
+		</div>
+		{% endif %}
+		
+	</div>
+</body>
+</html>

@@ -3,22 +3,22 @@
 <div class="people_preview">
 	<table class="table_people_preview">
 		<thead>
-			<tr>
-				<th>№ карты</th>
-				<th>Год</th>
-				<th></th>
-				<th>ФИО</th>
-				<th>Пол</th>
-				<th>Дата рождения</th>
-				<th>Адрес</th>
-				<th></th>
-				<th></th>
-				{% if formvals.prof_obraz %}<th>Профессия</th>{% endif %}
-				{% if formvals.last_org %}<th>Последнее место работы</th>{% endif %}
-				<!--th>Дата обработки</th-->
-				<!--th>Дата корректировки</th-->
-				<th></th>
-			</tr>
+		<tr>
+			<th>№ карты</th>
+			<th>Год</th>
+			<th></th>
+			<th>ФИО</th>
+			<th>Пол</th>
+			<th>Дата рождения</th>
+			<th>Адрес</th>
+			<th></th>
+			<th></th>
+			{% if formvals.prof_obraz %}<th>Профессия</th>{% endif %}
+			{% if formvals.last_org %}<th>Последнее место работы</th>{% endif %}
+			<!--th>Дата обработки</th-->
+			<!--th>Дата корректировки</th-->
+			<th></th>
+		</tr>
 		</thead>
 		<tbody>
 		{% for human in peopleList %}
@@ -37,7 +37,7 @@
 			<!--td>{{ human['OBR_DT'] }}</td-->
 			<!--td>{{ human['DATA_KOR']|date('d.m.Y') }}</td-->
 			<td>
-				<a class="button_link" href="./{{ human['KOD_RM'] }}/{{ human['IND_KART'] }}/{{ human['KART_N'] }}/{{ human['FIO'] }}/{{ human['OBR_DT'] }}">
+				<a class="button_link" href="./people/view/{{ human['KOD_RM'] }}/{{ human['IND_KART'] }}/{{ human['KART_N'] }}/{{ human['FIO'] }}/{{ human['OBR_DT'] }}">
 					Просмотреть
 				</a>
 			</td>

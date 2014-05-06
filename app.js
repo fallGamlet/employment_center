@@ -25,6 +25,8 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(express.cookieParser());
+app.use(express.session({ secret: 'thisIsMySuperSecretKeyHaHaHa'} ));
 app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
@@ -35,12 +37,16 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/users', user.list);
+app.get('/user', user.index);
+app.get('/user/login', user.login);
+app.post('/user/login', user.login);
+app.get('/user/db/update', user.dbupdate);
 app.get('/vakansii', vakans_view.index);
 app.get('/vakansii/view', vakans_view.view);
 app.get('/vakansii/search', vakans_view.search);
 app.get('/search-peaple', peaple_view.index);
 app.get('/search-peaple/preview', peaple_view.search);
+app.get('/people/view/:char/:year/:num/:fio/:borndate', peaple_view.viewone);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

@@ -1,7 +1,8 @@
-
-var DBFQuery = require("dbfkit").DBFQuery;
-var async = require("async");
-var mySettings = require('../settings');
+var dbfkit = require("dbfkit")
+	,DBFQuery = dbfkit.DBFQuery
+	,DBFParser = dbfkit.DBFParser
+	,async = require("async")
+	,mySettings = require('../settings');
 
 exports.index = function(req, res) {
 	return res.render('peaple_index.html', { title: 'Поиск людей'});
@@ -17,8 +18,6 @@ exports.search = function(req, res) {
 		return res.render('peaple_view_inner.html', { title: 'Поиск людей', formvals: form });
 	}
 	correctingForm(form);
-	
-	console.log(form);
 	
 	async.parallel({
 			"qprof" :function(callback) {
@@ -178,13 +177,89 @@ exports.search = function(req, res) {
 			
 				qPeople.selectSimple();
 	});
+	
+	
 	setTimeout(function(){
 			if(!responsed) {
 				console.log('response timeout... ');
 				return res.render('404_inner.html', { err: 'time out'});
 			}
-	}, 9000);
+	}, 15000);
 };
+
+exports.viewone = function(req, res) {
+	var pathName = mySettings.dbfBasePath
+		,human;	
+
+	var pPeople = new DBFParser(pathName + 'FIL_OBR.DBF', "cp866");
+
+	//~ pPeople.on('head', function(head) {
+	//~ return console.log(head);
+	//~ });
+	pPeople.on('record', function(record) {
+		check = record['_deleted_'] = false ||
+				record['KOD_RM'] === req.params['char'] &&
+				record['IND_KART'] === parseInt(req.params['year']) &&
+				record['KART_N'] === parseInt(req.params['num']) &&
+				record['FIO'] == req.params['fio'];
+		if(check) {
+			human = record;
+			
+			for(i in human) {
+				if(human[i] === null) human[i] = undefined;
+			}
+			human['OBR_DT'] = uglyDateCorrect(human['OBR_DT']);
+			human['ROGD_DT'] = uglyDateCorrect(human['ROGD_DT']);
+			human['DOK_DT'] = uglyDateCorrect(human['DOK_DT']);
+			human['UVOL_DT'] = uglyDateCorrect(human['UVOL_DT']);
+			human['DATABZN'] = uglyDateCorrect(human['DATABZN']);
+			human['DATABZK'] = uglyDateCorrect(human['DATABZK']);
+			console.log("people one --- OK")
+			return res.render('people_view_one.html', { title: 'Подробная информация о человеке', record:human});
+		}
+	});
+	pPeople.on('end', function() {
+		if(!human) {
+			console.log("people one --- BAD")
+			return res.render('people_view_one.html', { title: 'Подробная информация о человеке', record:ubdefined});
+		}
+	});
+	pPeople.parse();
+	console.log(pPeople);
+	//~ var qPeople = new DBFQuery( pathName + 'FIL_OBR.DBF',
+							//~ function(record) {
+								//~ return record['KOD_RM'] === req.params['char'] &&
+										//~ record['IND_KART'] === parseInt(req.params['year']) &&
+										//~ record['KART_N'] === parseInt(req.params['num']) &&
+										//~ record['FIO'] == req.params['fio'];
+							//~ },
+							//~ ['FIO'],
+							//~ null,
+							//~ 'cp866', 
+							//~ function(records) {
+								//~ human = records[0];
+								//~ for(i in human) {
+									//~ if(human[i] === null) human[i] = undefined;
+								//~ }
+								//~ human['OBR_DT'] = uglyDateCorrect(human['OBR_DT']);
+								//~ human['ROGD_DT'] = uglyDateCorrect(human['ROGD_DT']);
+								//~ human['DOK_DT'] = uglyDateCorrect(human['DOK_DT']);
+								//~ human['UVOL_DT'] = uglyDateCorrect(human['UVOL_DT']);
+								//~ human['DATABZN'] = uglyDateCorrect(human['DATABZN']);
+								//~ human['DATABZK'] = uglyDateCorrect(human['DATABZK']);
+								//~ 
+								//~ return res.render('people_view_one.html', { title: 'Подробная информация о человеке', record:human});
+							//~ });
+			//~ 
+	//~ qPeople.selectSimple();
+	
+	setTimeout(function(){
+			if(!human) {
+				console.log('response timeout... ');
+				return res.render('404.html', { err: 'time out'});
+			}
+	}, 9000);
+}
 
 var formValidate = function(form) {
 	return (form['fname'] && form['fname'].length > 0) ||

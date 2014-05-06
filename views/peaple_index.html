@@ -4,7 +4,7 @@
 	<meta charset="utf-8"/>
 	<link rel="stylesheet" href="/stylesheets/style.css">
 	<link rel="stylesheet" href="/stylesheets/people.css">
-	<script src="javascripts/jquery-2.1.0.js"></script>
+	<script src="/javascripts/jquery-2.1.0.js"></script>
 	<title>{{ title|title }}</title>
 	<script>
 		$(document).ready(function(){
@@ -25,7 +25,7 @@
 					type: "GET",
 					url: "/search-peaple/preview",
 					data: form.serialize(),
-					timeout:9000,
+					timeout:15000,
 					beforeSend: function(){
 						var progressIcon = $("<img id='loadingimage' src='/images/loading.gif' />")
 						progressIcon.css({width:"200px", height:"200px", position:'absolute'});

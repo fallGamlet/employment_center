@@ -3,14 +3,13 @@
 <head>
 	<meta charset="utf-8"/>
 	<link rel="stylesheet" href="/stylesheets/style.css">
-	<!--link rel="stylesheet" href="/stylesheets/vakansii.css"-->
-	<script src="javascripts/jquery-2.1.0.js"></script>
+	<script src="/javascripts/jquery-2.1.0.js"></script>
 	<title>{{ title|title }}</title>
-	<script>
+	<!--script>
 		$(document).ready(function(){
 			
 		});
-	</script>
+	</script-->
 	<style>
 		.horizontal_div {
 			display: inline-block;
@@ -19,39 +18,51 @@
 				/*background:#FAFAFA;*/	
 				color:#0C0078;
 		}
+		.container {
+			margin:5px;
+			padding:5px;
+			border:solid 1px #EEE;
+			display:inline-block;
+			vertical-align:top;
+		}
+		.title {
+			font-weight:bold;
+			color:brown;
+		}
 		.private_data {
 			margin:5px;
 			padding:5px;
 			border:solid 1px #EEE;
 		}
-		.private_data>span.name_title {
+		.private_data>span.name_title, .container>span.name_title {
 			display:inline-block;
-			min-width:10em;
+			min-width:8em;
 		}
 	</style>
 </head>
 <body>
 	<div class="title_page"></div>
 	<div class="main_container">
+		{% if record %}
 		<div>
 			<div class="horizontal_div">
-				KOD_RM<br />
-				<span class="data">{{record.KOD_RM}}</span>
-			</div>
-			<div class="horizontal_div">
-				IND_KART<br />
-				<span class="data">{{record.IND_KART}}</span>
-			</div>
-			<div class="horizontal_div">
-				KART_N<br />
+				Номер<br />
 				<span class="data">{{record.KART_N}}</span>
 			</div>
 			<div class="horizontal_div">
-				OBR_DT<br />
+				Год<br />
+				<span class="data">{{record.IND_KART}}</span>
+			</div>
+			<div class="horizontal_div">
+				Стол<br />
+				<span class="data">{{record.KOD_RM}}</span>
+			</div>
+			<div class="horizontal_div">
+				Дата обращения<br />
 				<span class="data">{{record.OBR_DT}}</span>
 			</div>
 		</div>
-		<div class="private_data">
+		<div class="private_data container">
 			<span class="name_title">ФИО</span>            <span class="data field_fio">{{record.FIO}}</span> <br />
 			<span class="name_title">Пол</span>            <span class="data field_sex">{{record.POL}}</span> <br />
 			<span class="name_title">Дата рождения</span>  <span class="data field_borndate">{{record.ROGD_DT}}</span> <br />
@@ -60,85 +71,91 @@
 			<span class="name_title">Адрес</span>          <span class="data field_address">{{record.ADRESS}}</span> <br />
 			<span class="name_title">Телефон</span>        <span class="data field_phonenum">{{record.TEL}}</span> <br />
 		</div>
-		<div class="document">
-			<span class="data">{{record.DOKVID}}</span>
-			<span class="data">{{record.DOK_SERN}}</span>
-			<span class="data">{{record.DOK_SER}}</span>
-			<span class="data">{{record.DOK_N}}</span>
-			<span class="data">{{record.DOK_S}}</span>
-			<span class="data">{{record.KEM_VID}}</span>
-			<span class="data">{{record.DOK_DT}}</span>
+		<div class="document container">
+			<div class="title">Документ</div>
+			<span class="name_title">Вид</span>       <span class="data">{{record.DOKVID}}</span> <br />
+			<span class="name_title">Серия</span>     <span class="data">{{record.DOK_SERN}}</span> <span class="data">{{record.DOK_SER}}</span> <br />
+			<span class="name_title">Номер</span>     <!--span class="data">{{record.DOK_N}}</span--> <span class="data">{{record.DOK_S}}</span> <br />
+			<span class="name_title">Кем выдан</span> <span class="data">{{record.KEM_VID}}</span> <br />
+			<span class="name_title">Дата</span>      <span class="data">{{record.DOK_DT}}</span> <br />
 		</div>
-		
-		<span class="data">{{record.OTNZAN}}</span>
-		<span class="data">{{record.VIDNEZAN}}</span>
-		<span class="data">{{record.KAT_SOCZ}}</span>
-		<span class="data">{{record.DATABZN}}</span>
-		<span class="data">{{record.DATABZK}}</span>
-		<span class="data">{{record.ZAKRK}}</span>
-		<span class="data">{{record.OBRAZ}}</span>
-		<span class="data">{{record.PROF_OBR}}</span>
-		<span class="data">{{record.KVA_OBR}}</span>
-		<span class="data">{{record.STAG_PF}}</span>
-		<span class="data">{{record.POSL_RAB}}</span>
-		<span class="data">{{record.DOLGN}}</span>
-		<span class="data">{{record.KVA_DOLGN}}</span>
-		
-		<div class="stag">
-			<span class="data">{{record.STAG_O}}</span>
-			<span class="data">{{record.STAG_O_M}}</span>
-			<span class="data">{{record.STAG_PR_G}}</span>
-			<span class="data">{{record.STAG_PR_M}}</span>
-			<span class="data">{{record.STAG_12}}</span>
+		<div class="container">
+			<span class="name_title">Отношение к занятости</span> <span class="data">{{record.OTNZAN}}</span> <br/>
+			<span class="name_title">Вид не занятости</span> <span class="data">{{record.VIDNEZAN}}</span> <br/>
+			<span class="name_title">Категория соц. защиты</span> <span class="data">{{record.KAT_SOCZ}}</span> <br/>
+			<span class="name_title">Дата (начало)</span> <span class="data">{{record.DATABZN}}</span> <br/>
+			<span class="name_title">Дата (конец)</span> <span class="data">{{record.DATABZK}}</span> <br/>
+			<span class="name_title">Причина закрытия</span> <span class="data">{{record.ZAKRK}}</span> <br/>
+			<span class="name_title">Образование</span> <span class="data">{{record.OBRAZ}}</span> <br/>
+			<span class="name_title">Профессия</span> <span class="data">{{record.PROF_OBR}}</span> <br/>
+			<span class="name_title">Квалификация</span> <span class="data">{{record.KVA_OBR}}</span> <br/>
+			<span class="name_title">Стаж ПФ</span> <span class="data">{{record.STAG_PF}}</span> <br/>
+			<span class="name_title">Последняя работа</span> <span class="data">{{record.POSL_RAB}}</span> <br/>
+			<span class="name_title">Должность</span> <span class="data">{{record.DOLGN}}</span> <br/>
+			<span class="name_title">Квалификация на должности</span> <span class="data">{{record.KVA_DOLGN}}</span> <br/>
 		</div>
-		
-		<span class="data">{{record.SEKT_EK}}</span>
-		<span class="data">{{record.OTR_NH}}</span>
-		<span class="data">{{record.UVOL_DT}}</span>
-		<span class="data">{{record.SREDN_ZAR}}</span>
-		<span class="data">{{record.SEM_POL}}</span>
-		<span class="data">{{record.UVOL_PR}}</span>
-		<span class="data">{{record.KOL_IGD}}</span>
-		
-		<div>
-			<span class="data">{{record.TR_FSOB}}</span>
-			<span class="data">{{record.TR_PRED}}</span>
-			<span class="data">{{record.TR_PROF}}</span>
-			<span class="data">{{record.TR_KVA}}</span>
-			<span class="data">{{record.TR_KOLDPRF}}</span>
-			<span class="data">{{record.TR_SOP}}</span>
-			<span class="data">{{record.TR_VIDR}}</span>
-			<span class="data">{{record.TR_SMEN}}</span>
-			<span class="data">{{record.TR_ZARPL}}</span>
-			<span class="data">{{record.TR_RAIG}}</span>
-			<span class="data">{{record.TR_KOLOPRF}}</span>
+		<div class="stag container">
+			<div class="title">Стаж</div>
+			<span class="name_title">Общий стаж</span>       <span class="data">{{record.STAG_O}}</span> <br/>
+			<span class="name_title">Общий стаж (мес)</span> <span class="data">{{record.STAG_O_M}}</span> <br/>
+			<span class="name_title">Общий стаж (дн)</span>  <span class="data">{{record.STAG_PR_G}}</span> <br/>
+			<span class="name_title">Общий стаж на последней работе (мес)</span> <span class="data">{{record.STAG_PR_M}}</span> <br/>
+			<span class="name_title">Общий стаж за последние 12 месяцев</span> <span class="data">{{record.STAG_12}}</span> <br/>
 		</div>
-		
-		<span class="data">{{record.DATA_KOR}}</span>
-		<span class="data">{{record.STATUS_OB}}</span>
-		<span class="data">{{record.SN_OB}}</span>
-		<span class="data">{{record.DAT_OSU}}</span>
-		
-		<div>
-			<span class="data">{{record.VID_TRKN}}</span>
-			<span class="data">{{record.SER_TRKN}}</span>
-			<span class="data">{{record.NOM_TRKN}}</span>
-			<span class="data">{{record.DAT_TRKN}}</span>
+		<div class="container">
+			<span class="name_title">Сектор экономики</span>   <span class="data">{{record.SEKT_EK}}</span> <br/>
+			<span class="name_title">Отрасль н/х</span>        <span class="data">{{record.OTR_NH}}</span> <br/>
+			<span class="name_title">Дата увольнения</span>    <span class="data">{{record.UVOL_DT}}</span> <br/>
+			<span class="name_title">Средний заработок</span>  <span class="data">{{record.SREDN_ZAR}}</span> <br/>
+			<span class="name_title">Семейное положение</span> <span class="data">{{record.SEM_POL}}</span> <br/>
+			<span class="name_title">Причина увольнения</span> <span class="data">{{record.UVOL_PR}}</span> <br/>
+			<span class="name_title">Кол-во иждевенцев</span>  <span class="data">{{record.KOL_IGD}}</span> <br/>
 		</div>
-		
-		<span class="data">{{record.POVTOR}}</span>
-		<span class="data">{{record.PR_POSOB}}</span>
-		<span class="data">{{record.PR_STIP}}</span>
-		
-		<div class="address">
-			<span class="data">{{record.KODNP}}</span>
-			<span class="data">{{record.RAIOG}}</span>
-			<span class="data">{{record.VID_ADR}}</span>
-			<span class="data">{{record.KOD_UL}}</span>
-			<span class="data">{{record.NDOM}}</span>
-			<span class="data">{{record.IND_DOM}}</span>
-			<span class="data">{{record.NKV}}</span>
+		<div class="container">
+			<div class="title">Требования к будущей работе</div>
+			<span class="name_title">...</span> <span class="data">{{record.TR_FSOB}}</span> <br/>
+			<span class="name_title">...</span> 			<span class="data">{{record.TR_PRED}}</span> <br/>
+			<span class="name_title">Профессия (должность)</span> <span class="data">{{record.TR_PROF}}</span> <br/>
+			<span class="name_title">Квалификация</span> <span class="data">{{record.TR_KVA}}</span> <br/>
+			<span class="name_title">Кол-во доп. профессий</span> <span class="data">{{record.TR_KOLDPRF}}</span> <br/>
+			<span class="name_title">Система оплаты</span> <span class="data">{{record.TR_SOP}}</span> <br/>
+			<span class="name_title">Вид работы</span> <span class="data">{{record.TR_VIDR}}</span> <br/>
+			<span class="name_title">Сменность</span> <span class="data">{{record.TR_SMEN}}</span> <br/>
+			<span class="name_title">Зарплата</span> <span class="data">{{record.TR_ZARPL}}</span> <br/>
+			<span class="name_title">Район города</span> <span class="data">{{record.TR_RAIG}}</span> <br/>
+			<span class="name_title">Кол-во профессий,<br/> по которым есть желание<br/> пройти обучение</span> <span class="data">{{record.TR_KOLOPRF}}</span> <br/>
 		</div>
+		<div class="container">
+			<span class="name_title">Дата корректировки</span> <span class="data">{{record['DATA_KOR']|date('d.m.Y')}}</span> <br/>
+			<span class="name_title">Безработный</span>  <span class="data">{% if record.STATUS_OB %} ДА {%else%} НЕТ {%endif%}</span> <br/>
+			<span class="name_title">Снят с учета</span> <span class="data">{% if record.SN_OB %} ДА {%else%} НЕТ {%endif%}</span> <br/>
+			<span class="name_title">Дата ...</span>     <span class="data">{{record.DAT_OSU|date('d.m.Y')}}</span> <br/>
+		</div>
+		<div class="container">
+			<div class="title">Трудовая книжка</div>
+			<span class="name_title">Вид</span>   <span class="data">{{record.VID_TRKN}}</span> <br/>
+			<span class="name_title">Серия</span> <span class="data">{{record.SER_TRKN}}</span> <br/>
+			<span class="name_title">Номер</span> <span class="data">{{record.NOM_TRKN}}</span> <br/>
+			<span class="name_title">Дата</span>  <span class="data">{{record.DAT_TRKN|date('d.m.Y')}}</span> <br/>
+		</div>
+		<div class="container">
+			<span class="name_title">Повтор</span> <span class="data">{{record.POVTOR}}</span> <br/>
+			<span class="name_title">ПР ...</span> <span class="data">{{record.PR_POSOB}}</span> <br/>
+			<span class="name_title">ПР стип.</span> <span class="data">{{record.PR_STIP}}</span> <br/>
+		</div>
+		<div class="address container">
+			<div class="title">Адрес</div>
+			<span class="name_title">Нас. пункт</span> <span class="data">{{record.KODNP}}</span> <br/>
+			<span class="name_title">Район города</span> <span class="data">{{record.RAIOG}}</span> <br/>
+			<span class="name_title">Вид адреса</span> <span class="data">{{record.VID_ADR}}</span> <br/>
+			<span class="name_title">Улица (код)</span> <span class="data">{{record.KOD_UL}}</span> <br/>
+			<span class="name_title">Дом</span> <span class="data">{{record.NDOM}}</span> <br/>
+			<span class="name_title">Инд дом</span> <span class="data">{{record.IND_DOM}}</span> <br/>
+			<span class="name_title">Квартира</span> <span class="data">{{record.NKV}}</span> <br/>
+		</div>
+		{% else %}
+		<div>Ничего не найдено</div>
+		{% endif %}
 	</div>
 </body>
 </html>
