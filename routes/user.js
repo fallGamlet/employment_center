@@ -26,12 +26,7 @@ exports.dbupdate = function(req, res) {
 		var pathName = mySettings.dbfBasePath;
 		dbftomysql({
 				dbfpath: pathName,
-				dbconoptions: {
-					host: 'localhost', 
-					port: 3311, 
-					user: 'root', 
-					password: 'root'
-				},
+				dbconoptions: mySettings.dbConnOptions,
 				callback: function(err, result, timeleft) {
 					res.render('user/index.html', { 'title': 'Центр занятости насяления', 'err':err, 'result':result, 'timeleft':timeleft });
 				}
