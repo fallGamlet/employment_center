@@ -46,7 +46,7 @@ app.get('/vakansii/view', vakans_view.view);
 app.get('/vakansii/search', vakans_view.search);
 app.get('/search-peaple', peaple_view.index);
 app.get('/search-peaple/preview', peaple_view.search);
-app.get('/people/view/:char/:year/:num/:fio/:borndate', peaple_view.viewone);
+app.get('/people/view/:pk/:fio', peaple_view.viewone);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

@@ -1,0 +1,49 @@
+{% if peopleList %}
+<p>Записей найдено: {{ peopleList.length }}</p>
+<div class="people_preview">
+	<table class="table_people_preview">
+		<thead>
+		<tr>
+			<th>№ карты</th>
+			<th>Год</th>
+			<th></th>
+			<th>ФИО</th>
+			<th>Пол</th>
+			<th>Дата рождения</th>
+			<th>Адрес</th>
+			<th colspan=2>Статус</th>
+			<!--th></th-->
+			<th>Профессия</th>
+			<th>Последнее место работы</th>
+			<!--th>Дата обработки</th-->
+			<!--th>Дата корректировки</th-->
+			<th></th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for human in peopleList %}
+		<tr>
+			<td class="kartnum">{{ human['card_n'] }}</td>
+			<td class="kartyear">{{ human['ind_card'] }}</td>
+			<td class="kartrm">{{ human['code_rm'] }}</td>
+			<td class="fio">{{ human['fio'] }}</td>
+			<td class="sex">{{ human['sex'] }}</td>
+			<td class="borndate">{{ human['born_date']|date('d.m.Y') }}</td>
+			<td class="address">{{ human['address'] }}</td>
+			<td class="status1">{% if human['STATUS_OB'] %} Безр. {% endif %}</td>
+			<td class="status2">{% if human['SN_OB'] %} Сн./Уч. {% endif %} </td>
+			<td class="prof">{% if human['prof_name'] != null and human['prof_name'] != 'null' %} {{ human['prof_name'] }} {% endif %}</td>
+			<td class="lastorg">{% if human['last_org_name'] != null and human['last_org_name'] != 'null' %} {{ human['last_org_name'] }} {% endif %}</td>
+			<!--td>{{ human['OBR_DT'] }}</td-->
+			<!--td>{{ human['DATA_KOR']|date('d.m.Y') }}</td-->
+			<td>
+				<a class="button_link" href="./people/view/{{ human['id'] }}/{{ human['fio'] }}">
+					Просмотреть
+				</a>
+			</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endif %}

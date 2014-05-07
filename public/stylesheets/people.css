@@ -5,9 +5,15 @@
     background:#000;
     color:#FFF;
     padding:3px 5px;
+    border-left:solid 1px #555;
+	border-right:solid 1px #555;
 }
 .table_people_preview tbody tr:nth-of-type(odd) {
     background: #DADADA;
+}
+.table_people_preview tbody td {
+	border-left:solid 1px #ccc;
+	border-right:solid 1px #ccc;
 }
 td.kartnum {
 	text-align:right;
@@ -17,7 +23,6 @@ td.kartyear {
 }
 td.kartrm {
 	text-align:center;
-    border-right:solid 1px #ccc;
     padding-right:0.5em;
 }
 td.sex {
@@ -37,6 +42,12 @@ td.status1 {
 }
 td.status2 {
 	color:#A52A2A;
+}
+td.prof {
+	min-width:50px;
+}
+td.lastorg {
+	min-width:50px;
 }
 
 @media print {

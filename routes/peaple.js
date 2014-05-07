@@ -1,8 +1,9 @@
-var dbfkit = require("dbfkit")
-	,DBFQuery = dbfkit.DBFQuery
-	,DBFParser = dbfkit.DBFParser
+var mysql     = require('mysql')
 	,async = require("async")
-	,mySettings = require('../settings');
+	,mySettings = require('../settings')
+	,dbfkit = require("dbfkit")
+	,DBFQuery = dbfkit.DBFQuery
+	,DBFParser = dbfkit.DBFParser;
 
 exports.index = function(req, res) {
 	return res.render('peaple_index.html', { title: 'Поиск людей'});
@@ -12,249 +13,107 @@ exports.search = function(req, res) {
 	var pathName = mySettings.dbfBasePath,
 		form = req.query,
 		responsed = false,
+		records = null,
 		validate = formValidate(form);
 	
 	if(!validate) {
-		return res.render('peaple_view_inner.html', { title: 'Поиск людей', formvals: form });
+		return res.render('people_view_inner.html', { title: 'Поиск людей', formvals: form });
 	}
 	correctingForm(form);
 	
-	async.parallel({
-			"qprof" :function(callback) {
-				if(form['prof_obraz']) {
-					var qProf = new DBFQuery( pathName + 'KL_PROF.DBF',
-							function(record) {
-								if(!record['NAIM'])
-									return false;
-								var check = record['NAIM'].toLowerCase().indexOf(form['prof_obraz']) > -1
-								return check;
-							},
-							null,['PROF1','NAIM'], 'cp866',
-							function() {
-								console.log("prof ended...");
-								callback(null, qProf);
-							});
-					qProf.selectSimple();
-				} else {
-					callback(null, null);
-				}
-			},
-			"qorg": function(callback) {
-				if(form['last_org']) {
-					var qOrg = new DBFQuery( pathName + 'KL_PRED.DBF',
-							function(record) {
-								if(!record['NAIM'])
-									return false;
-								return record['NAIM'].toLowerCase().indexOf(form['last_org']) > -1;
-							},
-							null,['KOD','NAIM'], 'cp866',
-							function() {
-								console.log("last org ended...");
-								callback(null, qOrg);
-							});
-					qOrg.selectSimple();
-				} else {
-					callback(null, null);
-				}
-			}},
-			function(err, results) {
-				if(err) {
-					console.log("People... err");
-					console.log(err);
-					return res.render('404.html', { err: err});
-				}
-				console.log("People... serching");
-				
-				var qOrg = results["qorg"],
-					qProf = results["qprof"];
-				
-				var wherePeople = function(record) {
-					if(!record['FIO']) {
-						return false;
-					}
-					var fioVal = record['FIO'].toLowerCase().trim().replace('  ', ' ').split(' '),
-						borndateVal = record['ROGD_DT'],
-						check = true, 
-						bTmp;
-						
-					if(fioVal.length > 3) {
-						var str = "";
-						for(var i=3; i<fioVal.length; i++) {
-							str += fioVal[i];
-							delete fioVal[i];
-						}
-						fioVal[2] += str;
-					}
-					
-					if(form['kartnum']) {
-						check &= form['kartnum'] == record['KART_N'];
-					}
-					if(form['kartyear']) {
-						check &= form['kartyear'] == record['IND_KART'];
-					}
-					if(form['kartchar']) {
-						check &= form['kartchar'] == record['KOD_RM'].toLowerCase().trim();
-					}
-					if(form['lname'] && fioVal.length >= 1) {
-						check &= form['lname'].length == 0 || fioVal[0].indexOf(form['lname']) > -1;
-					}
-					if(form['fname'] && fioVal.length >= 2) {
-						check &= form['fname'].length == 0 || fioVal[1].indexOf(form['fname']) > -1;
-					}
-					if(form['mname'] && fioVal.length >=3) {
-						check &= form['mname'].length == 0 || fioVal[2].indexOf(form['mname']) > -1;
-					}
-					if(form['born_date'].length == 3) {
-						check &= borndateVal == (form['born_date'][2]+form['born_date'][1]+form['born_date'][0]);
-					}
-					if(form['address']) {
-						if(!record['ADRESS'])
-							check &= false;
-						else
-							check &= form['address'].length == 0 || record['ADRESS'].toString().toLowerCase().indexOf(form['address']) > -1;
-					}
-					
-					if(form['phone_num']) {
-						check &= form['phone_num'].length == 0 || record['TEL'].toString().indexOf(form['phone_num']) > -1;
-					}
-					
-					if(form['st_bezrab'] != 2 ) {
-						check &= form['st_bezrab'] === record["STATUS_OB"];
-					}
-					if(form['st_uchet'] != 2 ) {
-						check &= form['st_uchet'] === record["SN_OB"];
-					}
-					
-					if(check && qProf) {
-						bTmp = false;
-						for(i in qProf.records) {
-							bTmp |= qProf.records[i]['PROF1'] == record['PROF_OBR'];
-							if(bTmp)
-								break;
-						}
-						check &= bTmp;
-					}
-					if(check && qOrg) {
-						bTmp = false;
-						for(i in qOrg.records) {
-							bTmp |= qOrg.records[i]['KOD'] == record['POSL_RAB'];
-							if(bTmp)
-								break;
-						}
-						check &= bTmp;
-					}
-					if(check) {
-						record['ROGD_DT'] = uglyDateCorrect(record['ROGD_DT']);
-						record['OBR_DT'] = uglyDateCorrect(record['OBR_DT']);
-						
-						//var dataKor = record['DATA_KOR']? record['DATA_KOR'].split('.');
-					}
-					//
-					return check;								
-				}
-				
-				
-				var finish = function() {
-					console.log("People... Readed all...");
-					if(qOrg) {
-						console.log("People... joining qOrg");
-						DBFQuery.leftJoin(qPeople.records, 'POSL_RAB', qOrg.records, 'KOD');
-					}
-					if(qProf) {
-						console.log("People... joining qProf");
-						DBFQuery.leftJoin(qPeople.records, 'PROF_OBR', qProf.records, 'PROF1');
-					}
-					responsed = true;
-					return res.render('peaple_view_inner.html', { title: 'Поиск людей', peopleList: qPeople.records});
-				};
-			
-			
-				var qPeople = new DBFQuery( pathName + 'FIL_OBR.DBF',
-							wherePeople,
-							['FIO'],
-							['KOD_RM','IND_KART','KART_N','OBR_DT','FIO','POL','ROGD_DT','ADRESS','STATUS_OB','SN_OB','DATA_KOR','PROF_OBR','POSL_RAB'],
-							'cp866', finish);
-			
-				qPeople.selectSimple();
+	var dbConOptions = mySettings.dbConnOptions;
+	var connection = mysql.createConnection(dbConOptions);
+	connection.connect();
+	
+	var qstr = "SELECT pers.id, pers.card_n, pers.ind_card, pers.code_rm, pers.obr_date, pers.fio, pers.sex, pers.born_date, pers.address, pers.phone_num, pers.prof_id, prof.name as prof_name, pers.last_org_id, org.name as last_org_name, pers.STATUS_OB, pers.SN_OB "
+		qstr+= "FROM czn.person_card pers ";
+		qstr+= "LEFT JOIN czn.org org ON org.id = pers.last_org_id ";
+		qstr+= "LEFT JOIN czn.prof prof ON prof.id = pers.prof_id WHERE 1=1 ";
+	console.log(form);
+	if(form['fname']) {
+		qstr += " AND LOWER(fio) like '%"+form['fname']+"%'";
+	}
+	if(form['mname']) {
+		qstr += " AND LOWER(fio) like '%"+form['mname']+"%'";
+	}
+	if(form['lname']) {
+		qstr += " AND LOWER(fio) like '%"+form['lname']+"%'";
+	}
+	if(form['born_date'] && form['born_date'].length == 3) {
+		qstr += " AND born_date = '"+ form['born_date'][2] +"-"+ form['born_date'][1] +"-"+ form['born_date'][0] +"'";
+	}
+	if(form['phone_num']) {
+		qstr += " AND LOWER(phone_num) like '%"+ form['phone_num'] +"%'";
+	}
+	if(form['address']) {
+		qstr += " AND LOWER(pers.address) like '%"+ form['address'] +"%'";
+	}
+	if(form['kartnum']) {
+		qstr += " AND card_n = "+ form['kartnum'];
+	}
+	if(form['kartyear']) {
+		qstr += " AND ind_card = "+ form['kartyear'];
+	}
+	if(form['kartchar']) {
+		qstr += " AND code_rm = '"+ form['kartchar'] +"'";
+	}
+	if(form['prof_obraz']) {
+		qstr += " AND LOWER(prof.name) like '%"+ form['prof_obraz'] +"%'";
+	}
+	if(form['last_org']) {
+		qstr += " AND LOWER(org.name) like '%"+ form['last_org'] +"%'";
+	}
+	if(form['st_bezrab'] !== 2) {
+		qstr += " AND STATUS_OB = "+ form['st_bezrab'];
+	}
+	if(form['st_uchet'] !== 2) {
+		qstr += " AND SN_OB = "+ form['st_uchet'];
+	}
+	qstr += ";"
+	console.log(qstr);
+	connection.query(qstr, function(err, rows) {
+		if (err) throw err;
+		records = rows;
 	});
 	
+	connection.end(function() {
+		//~ console.log("Row founded: "+records.length)
+		responsed = true;
+		return res.render('people_view_inner.html', { title: 'Поиск людей', peopleList: records});
+	});
 	
 	setTimeout(function(){
 			if(!responsed) {
 				console.log('response timeout... ');
 				return res.render('404_inner.html', { err: 'time out'});
 			}
-	}, 15000);
+	}, 35000);
 };
 
 exports.viewone = function(req, res) {
-	var pathName = mySettings.dbfBasePath
-		,human;	
-
-	var pPeople = new DBFParser(pathName + 'FIL_OBR.DBF', "cp866");
-
-	//~ pPeople.on('head', function(head) {
-	//~ return console.log(head);
-	//~ });
-	pPeople.on('record', function(record) {
-		check = record['_deleted_'] = false ||
-				record['KOD_RM'] === req.params['char'] &&
-				record['IND_KART'] === parseInt(req.params['year']) &&
-				record['KART_N'] === parseInt(req.params['num']) &&
-				record['FIO'] == req.params['fio'];
-		if(check) {
-			human = record;
-			
-			for(i in human) {
-				if(human[i] === null) human[i] = undefined;
-			}
-			human['OBR_DT'] = uglyDateCorrect(human['OBR_DT']);
-			human['ROGD_DT'] = uglyDateCorrect(human['ROGD_DT']);
-			human['DOK_DT'] = uglyDateCorrect(human['DOK_DT']);
-			human['UVOL_DT'] = uglyDateCorrect(human['UVOL_DT']);
-			human['DATABZN'] = uglyDateCorrect(human['DATABZN']);
-			human['DATABZK'] = uglyDateCorrect(human['DATABZK']);
-			console.log("people one --- OK")
-			return res.render('people_view_one.html', { title: 'Подробная информация о человеке', record:human});
-		}
+	var records,
+		responsed = false,
+		qstr,
+		pk = req.params['pk'],
+		connection = mysql.createConnection(mySettings.dbConnOptions);
+	
+	connection.connect();
+	
+	qstr = "SELECT * FROM czn.person_card_view WHERE id=" + pk;
+	console.log(qstr);
+	connection.query(qstr, function(err, rows) {
+		if (err) throw err;
+		records = rows;
 	});
-	pPeople.on('end', function() {
-		if(!human) {
-			console.log("people one --- BAD")
-			return res.render('people_view_one.html', { title: 'Подробная информация о человеке', record:ubdefined});
-		}
+	
+	connection.end(function() {
+		console.log("Row founded: "+records.length)
+		responsed = true;
+		return res.render('people_view_one.html', { title: 'Поиск людей', peopleList: records, record:records[0] });
 	});
-	pPeople.parse();
-	console.log(pPeople);
-	//~ var qPeople = new DBFQuery( pathName + 'FIL_OBR.DBF',
-							//~ function(record) {
-								//~ return record['KOD_RM'] === req.params['char'] &&
-										//~ record['IND_KART'] === parseInt(req.params['year']) &&
-										//~ record['KART_N'] === parseInt(req.params['num']) &&
-										//~ record['FIO'] == req.params['fio'];
-							//~ },
-							//~ ['FIO'],
-							//~ null,
-							//~ 'cp866', 
-							//~ function(records) {
-								//~ human = records[0];
-								//~ for(i in human) {
-									//~ if(human[i] === null) human[i] = undefined;
-								//~ }
-								//~ human['OBR_DT'] = uglyDateCorrect(human['OBR_DT']);
-								//~ human['ROGD_DT'] = uglyDateCorrect(human['ROGD_DT']);
-								//~ human['DOK_DT'] = uglyDateCorrect(human['DOK_DT']);
-								//~ human['UVOL_DT'] = uglyDateCorrect(human['UVOL_DT']);
-								//~ human['DATABZN'] = uglyDateCorrect(human['DATABZN']);
-								//~ human['DATABZK'] = uglyDateCorrect(human['DATABZK']);
-								//~ 
-								//~ return res.render('people_view_one.html', { title: 'Подробная информация о человеке', record:human});
-							//~ });
-			//~ 
-	//~ qPeople.selectSimple();
 	
 	setTimeout(function(){
-			if(!human) {
+			if(!responsed) {
 				console.log('response timeout... ');
 				return res.render('404.html', { err: 'time out'});
 			}

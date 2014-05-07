@@ -9,23 +9,13 @@
 	<script>
 		$(document).ready(function(){
 			$('#search_form').submit(function(e){
-				// проверяем пару полей
-				//~ var ok = true;
-				//~ if (!ok) { // если поля не прошли проверку
-					//~ 
-					//~ // каким-то образом оповещаем об ошибках пользователя
-					//~ alert('Чето не то!');
-					//~ return false; // и этим false отменяем отправку формы
-				//~ }
-				
 				e.preventDefault();
                 var form = $(this);
-                //~ form.find("input[type=submit]").attr('disabled', true); 
                 $.ajax({
 					type: "GET",
 					url: "/search-peaple/preview",
 					data: form.serialize(),
-					timeout:15000,
+					timeout:35000,
 					beforeSend: function(){
 						var progressIcon = $("<img id='loadingimage' src='/images/loading.gif' />")
 						progressIcon.css({width:"200px", height:"200px", position:'absolute'});
@@ -41,7 +31,11 @@
 						$('#loadingimage').fadeOut(function() {
 								$(this).remove();
 						});
-						$(".preview_list").html(data);
+						var prevlist = $(".preview_list");
+						prevlist.stop();
+						prevlist.html(data);
+						prevlist.fadeIn();
+						$(".preview_list").fadeIn();
 						//~ form.find("input[type='submit']").attr('disabled', false);
 					},
 					error:function() { 

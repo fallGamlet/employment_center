@@ -52,71 +52,104 @@
 				connection.connect();
 
 				var qarr = [];
-				qarr.push("drop database if exists czn; ");
-				qarr.push("create database czn default character set utf8 default collate utf8_general_ci;");
+				//~ qarr.push("drop database if exists czn; ");
+				qarr.push("create database if not exists czn default character set utf8 default collate utf8_general_ci;");
 				// Таблица "Организации"
 				// KL_PRED.DBF									KOD,N,9,0	NAIM,C,50	NP,N,2,0	RAION,N,2,0	ADRES,C,60	TEL,N,7,0	OTR,N,3,0	SEKTOR,N,2,0	SOBSTV,N,2,0	DOP,N,2,0	FIO_Z,C,30
 				qarr.push("create table if not exists czn.org (id integer, name varchar(500), city_id integer, district_id integer, address varchar(60), phone varchar(60), otrnarhoz_id integer, secteconom_id integer, ownership_id integer, dop_id integer, fiocustomer varchar(50));");
+				qarr.push("delete from czn.org");
 				// Таблица "Профессии"
 				// KL_PROF.DBF									PROF1,C,6	NAIM,C,60	KAT,N,2,0
 				qarr.push("create table if not exists czn.prof (id integer, name varchar(60), proftype_id integer);");
+				qarr.push("delete from czn.prof");
 				// Таблица "Виды серий документов"
 				// KL_SER.DBF 									SERV,N,2,0	SERVT,C,8
 				qarr.push("create table if not exists czn.doc_series (id integer, name varchar(10));");
+				qarr.push("delete from czn.doc_series");
 				// Таблица "Тип образования"
 				// KL_OBRAZ.DBF									OBRAZ,C,1	NAIM,C,19	KOD,N,9,0
 				qarr.push("create table if not exists czn.education_type (id integer, name varchar(50));");
+				qarr.push("delete from czn.education_type");
 				// Таблица "Гражданство"
 				// KL_GRAGD.DBF 								KOD,N,4,0	NAIM,C,15
 				qarr.push("create table if not exists czn.citizen (id integer, name varchar(50));");
+				qarr.push("delete from czn.citizen");
 				// KL_DOK.DBF 									KOD,C,2	NAIM,C,12
 				qarr.push("create table if not exists czn.doc_type (id integer, name varchar(50));");
+				qarr.push("delete from czn.doc_type");
 				// KL_OTN.DBF									OTNZAN,C,1	NAIM,C,31	KOD,N,9,0
 				qarr.push("create table if not exists czn.empl_status (id integer, name varchar(50));");
+				qarr.push("delete from czn.empl_status");
 				// KL_NEZVI.DBF 								VID,C,1	NAIM,C,45	KOD,N,9,0
 				qarr.push("create table if not exists czn.unempl_type (id integer, name varchar(50));");
+				qarr.push("delete from czn.unempl_type");
 				// KL_NEZAN.DBF 								NEZAN,C,2	NAIN,C,45
 				qarr.push("create table if not exists czn.soc_protection_type (id integer, name varchar(50));");
+				qarr.push("delete from czn.soc_protection_type");
 				// KL_KVA.DBF									KVAL,C,2	NAKVA,C,12	KVA,C,2
 				qarr.push("create table if not exists czn.qualification (id integer, name varchar(50), altcode varchar(2));");
+				qarr.push("delete from czn.qualification");
 				// KL_SEKT.DBF 									KODS,C,1	NAIMS,C,20	KOD,N,9,0
 				qarr.push("create table if not exists czn.secteconom (id integer, name varchar(50));");
+				qarr.push("delete from czn.secteconom");
 				// KL_OTR.DBF 									KOD,C,2	NAIM,C,35	KODN,N,9,0	KOD_1T,N,2,0
 				qarr.push("create table if not exists czn.otrnarhoz (id integer, name varchar(50), code_1t integer);");
+				qarr.push("delete from czn.otrnarhoz");
 				// KL_UVOL.DBF 									UVOL_PR,C,2	NAIM,C,28	PRU,N,2,0	KOD,N,2,0
 				qarr.push("create table if not exists czn.dismiss_type (id integer, name varchar(50));");
+				qarr.push("delete from czn.dismiss_type");
 				// KL_OKL.DBF 									KOD,C,2	NAIM,C,23
 				qarr.push("create table if not exists czn.salary_type (id integer, name varchar(50));");
+				qarr.push("delete from czn.salary_type");
 				// KL_VIDRA.DBF 								KOD,C,2	NAIM,C,38
 				qarr.push("create table if not exists czn.work_type (id integer, name varchar(50));");
+				qarr.push("delete from czn.work_type");
 				// KL_SMEN.DBF 									KOD,N,2,0	NAIM,C,21
 				qarr.push("create table if not exists czn.work_shift (id integer, name varchar(50));");
+				qarr.push("delete from czn.work_shift");
 				// KL_TR_OB.DBF 								KOD,C,2	NAIM,C,17
 				qarr.push("create table if not exists czn.education_required (id integer, name varchar(50));");
+				qarr.push("delete from czn.education_required");
 				// KL_NAC.DBF 									NAC,C,2	NAIM,C,12
 				qarr.push("create table if not exists czn.nationality (id integer, name varchar(50));");
+				qarr.push("delete from czn.nationality");
 				// KL_ROTN.DBF 									ROD_OTN,N,2,0	NAME,C,10	VIDR,N,2,0
 				qarr.push("create table if not exists czn.kinship (id integer, name varchar(50));");
+				qarr.push("delete from czn.kinship");
 				// KL_RAIOG.DBF 								KODR,N,2,0	NAIMR,C,40
 				qarr.push("create table if not exists czn.district (id integer, name varchar(50));");
+				qarr.push("delete from czn.district");
 				// KL_ZAKR.DBF 									ZAKR_PR,C,2	NAIM,C,30
 				qarr.push("create table if not exists czn.card_close_reason (id integer, name varchar(50));");
+				qarr.push("delete from czn.card_close_reason");
 				// KL_OTKAZ.DBF 								KOD,N,2,0	NAIM,C,30
 				qarr.push("create table if not exists czn.work_rejection_reason (id integer, name varchar(50));");
+				qarr.push("delete from czn.work_rejection_reason");
 				// KL_FSOB.DBF									KODS,C,1	NAIMS,C,20	KOD,N,9,0	KOD_1T,N,2,0	NAME,C,30
 				qarr.push("create table if not exists czn.ownership (id integer, name varchar(50), codes integer, code_1t integer, names varchar(50));");
+				qarr.push("delete from czn.ownership");
 				// KL_NP.DBF 									KOD,N,2,0	NAME,C,30
 				qarr.push("create table if not exists czn.city (id integer, name varchar(50));");
+				qarr.push("delete from czn.city");
 				// KL_VIDTR.DBF 								KOD,N,9,0	NAME,C,30
 				qarr.push("create table if not exists czn.work_book_type (id integer, name varchar(50));");
+				qarr.push("delete from czn.work_book_type");
 				// KL_VIDIW.DBF 								KOD,N,9,0	NAME,C,50	PR,N,2,0	GR,N,2,0
 				qarr.push("create table if not exists czn.payment_change_type (id integer, name varchar(50), pr integer, gr integer);");
+				qarr.push("delete from czn.payment_change_type");
 				// KL_PRIW.DBF 									KODV,N,4,0	KODP,N,4,0	NAME,C,50	NAMEP,C,70	PR,N,2,0
 				qarr.push("create table if not exists czn.payment_change_reason (id integer, code_v integer, name varchar(100), code_p integer, name_p varchar(100), pr integer);");
+				qarr.push("delete from czn.payment_change_reason");
 				// PRIKAZ.DBF 									KART_N,N,6,0	IND_KART,N,2,0	DATA_OB,D	NOMPRIK,N,6,0	NOMVYP,N,4,0	DATPRIK,D	VIDI,N,4,0	PRIZ,N,4,0	PR_OBV,N,1,0	INF,C,130	OTM,N,2,0
-				qarr.push("create table if not exists czn.order (id integer, card_n integer, ind_card integer, ob_date datetime, order_num integer, nomvyp integer, order_date datetime, vidi integer, priz integer, pr_obv integer, inf varchar(200), otm integer);");
+				qarr.push("create table if not exists czn.order (id integer NOT NULL AUTO_INCREMENT PRIMARY KEY, card_n integer, ind_card integer, ob_date datetime, order_num integer, nomvyp integer, order_date datetime, vidi integer, priz integer, pr_obv integer, inf varchar(200), otm integer);");
+				qarr.push("delete from czn.order");
 				// FIL_OBR.DBF 									KART_N,N,6,0	IND_KART,N,2,0	KOD_RM,C,1	OBR_DT,N,8,0	FIO,C,50	POL,C,1	DOKVID,N,2,0	DOK_SERN,C,8	DOK_SER,C,3	DOK_N,N,10,0	DOK_S,C,10	KEM_VID,C,30	DOK_DT,N,8,0	ROGD_DT,N,8,0	GRAGD,N,2,0	NAC,N,2,0	ADRESS,C,54	TEL,N,7,0	OTNZAN,N,2,0	VIDNEZAN,N,2,0	KAT_SOCZ,N,2,0	DATABZN,N,8,0	DATABZK,N,8,0	ZAKRK,N,2,0	OBRAZ,N,2,0	PROF_OBR,N,6,0	KVA_OBR,N,2,0	STAG_PF,N,3,0	POSL_RAB,N,6,0	DOLGN,N,6,0	KVA_DOLGN,N,2,0	STAG_O,N,3,0	STAG_O_M,N,3,0	STAG_PR_G,N,3,0	STAG_PR_M,N,3,0	STAG_12,N,2,0	SEKT_EK,N,2,0	OTR_NH,N,2,0	UVOL_DT,N,8,0	SREDN_ZAR,N,10,0	SEM_POL,N,2,0	UVOL_PR,N,2,0	KOL_IGD,N,3,0	TR_FSOB,N,2,0	TR_PRED,N,9,0	TR_PROF,N,6,0	TR_KVA,N,2,0	TR_KOLDPRF,N,3,0	TR_SOP,N,2,0	TR_VIDR,N,2,0	TR_SMEN,N,2,0	TR_ZARPL,N,10,0	TR_RAIG,N,2,0	TR_KOLOPRF,N,3,0	DATA_KOR,D	STATUS_OB,N,2,0	SN_OB,N,2,0	DAT_OSU,D	VID_TRKN,N,2,0	SER_TRKN,C,8	NOM_TRKN,C,12	DAT_TRKN,D	POVTOR,N,1,0	PR_POSOB,N,2,0	PR_STIP,N,2,0	KODNP,N,2,0	RAIOG,N,2,0	VID_ADR,N,1,0	KOD_UL,N,4,0	NDOM,N,3,0	IND_DOM,C,1	NKV,N,3,0
-				qarr.push("create table if not exists czn.person_card (id integer, card_n integer, ind_card integer, code_rm varchar(5), obr_date datetime, fio varchar(200), sex varchar(20), doc_type_id integer, doc_sern varchar(10), doc_series varchar(10), doc_num integer, doc_s integer, doc_bywho varchar(100), doc_date datetime, born_date datetime, citizen_id integer, nationality_id integer, address varchar(200), phone_num varchar(25), empl_status_id integer, unempl_type_id integer, soc_protection_type_id integer, bzn_date datetime, bzk_date datetime, ZAKRK integer, education_type_id integer, prof_id integer, qualific_id integer, stag_pf integer, last_org_id integer, post_id integer, post_qualific_id integer, stag_o integer, stag_o_m integer, stag_pr_g integer, stag_pr_m integer, stag_12 integer, secteconom_id integer, otrnarhoz_id integer, dismiss_date datetime, avg_salary integer, femaly_status_id integer, dismiss_type_id integer, dependent_num integer, TR_FSOB integer, TR_PRED integer, TR_PROF integer, TR_KVA integer, TR_KOLDPRF integer, TR_SOP integer, TR_VIDR integer, TR_SMEN integer, TR_ZARPL integer, TR_RAIG integer, TR_KOLOPRF integer, DATA_KOR datetime, STATUS_OB integer, SN_OB integer, DAT_OSU datetime, VID_TRKN integer, SER_TRKN varchar(25), NOM_TRKN integer, DAT_TRKN datetime, POVTOR integer, PR_POSOB integer, PR_STIP integer, city_id integer, district_id integer);");
+				qarr.push("create table if not exists czn.person_card (id integer NOT NULL AUTO_INCREMENT PRIMARY KEY, card_n integer, ind_card integer, code_rm varchar(5), obr_date datetime, fio varchar(200), sex varchar(20), doc_type_id integer, doc_sern varchar(10), doc_series varchar(10), doc_num integer, doc_s integer, doc_bywho varchar(100), doc_date datetime, born_date datetime, citizen_id integer, nationality_id integer, address varchar(200), phone_num varchar(25), empl_status_id integer, unempl_type_id integer, soc_protection_type_id integer, bzn_date datetime, bzk_date datetime, ZAKRK integer, education_type_id integer, prof_id integer, qualific_id integer, stag_pf integer, last_org_id integer, post_id integer, post_qualific_id integer, stag_o integer, stag_o_m integer, stag_pr_g integer, stag_pr_m integer, stag_12 integer, secteconom_id integer, otrnarhoz_id integer, dismiss_date datetime, avg_salary integer, femaly_status_id integer, dismiss_type_id integer, dependent_num integer, TR_FSOB integer, TR_PRED integer, TR_PROF integer, TR_KVA integer, TR_KOLDPRF integer, TR_SOP integer, TR_VIDR integer, TR_SMEN integer, TR_ZARPL integer, TR_RAIG integer, TR_KOLOPRF integer, DATA_KOR datetime, STATUS_OB integer, SN_OB integer, DAT_OSU datetime, VID_TRKN integer, SER_TRKN varchar(25), NOM_TRKN integer, DAT_TRKN datetime, POVTOR integer, PR_POSOB integer, PR_STIP integer, city_id integer, district_id integer);");
+				qarr.push("delete from czn.person_card");
+				// создание представления для person_card
+				qarr.push("DROP VIEW IF EXISTS czn.person_card_view;");
+				qarr.push("CREATE VIEW czn.person_card_view AS SELECT pers.id, pers.card_n, pers.ind_card, pers.code_rm, pers.obr_date, pers.fio, pers.sex, pers.doc_type_id, doc_type.name as doc_type_name, pers.doc_sern, doc_series.name as doc_sern_name, pers.doc_series, pers.doc_num, pers.doc_s, pers.doc_bywho, pers.doc_date, pers.born_date, pers.citizen_id, citizen.name as citizen_name, pers.nationality_id, nationality.name as nationality_name, pers.address, pers.phone_num, pers.empl_status_id, empl_status.name as empl_status_name, pers.unempl_type_id, unempl_type.name as unempl_type_name, pers.soc_protection_type_id, soc_protection_type.name as soc_protection_type_name, pers.bzn_date, pers.bzk_date, pers.ZAKRK, pers.education_type_id, education_type.name as education_type_name, pers.prof_id, prof.name as prof_name, pers.qualific_id, qualification.name as qualific_name, pers.stag_pf, pers.last_org_id, org.name as last_org_name, pers.post_id, post.name as post_name, pers.post_qualific_id, post_qualific.name as post_qualific_name, pers.stag_o, pers.stag_o_m, pers.stag_pr_g, pers.stag_pr_m, pers.stag_12, pers.secteconom_id, secteconom.name as secteconom_name, pers.otrnarhoz_id, otrnarhoz.name as otrnarhoz_name, pers.dismiss_date, pers.avg_salary, pers.femaly_status_id, pers.dismiss_type_id, dismiss_type.name as dismiss_type_name, pers.dependent_num, pers.TR_FSOB, pers.TR_PRED, pers.TR_PROF, pers.TR_KVA, pers.TR_KOLDPRF, pers.TR_SOP, pers.TR_VIDR, pers.TR_SMEN, pers.TR_ZARPL, pers.TR_RAIG, pers.TR_KOLOPRF, pers.DATA_KOR, pers.STATUS_OB, pers.SN_OB, pers.DAT_OSU, pers.VID_TRKN, pers.SER_TRKN, pers.NOM_TRKN, pers.DAT_TRKN, pers.POVTOR, pers.PR_POSOB, pers.PR_STIP, pers.city_id, city.name as city_name, pers.district_id, district.name as district_name FROM czn.person_card pers LEFT JOIN czn.city city ON city.id = pers.city_id LEFT JOIN czn.district district ON district.id = pers.district_id LEFT JOIN czn.doc_type doc_type ON doc_type.id = pers.doc_type_id LEFT JOIN czn.doc_series doc_series ON doc_series.id = pers.doc_sern LEFT JOIN czn.citizen citizen ON citizen.id = pers.citizen_id LEFT JOIN czn.nationality nationality ON nationality.id = pers.nationality_id LEFT JOIN czn.empl_status empl_status ON empl_status.id = pers.empl_status_id LEFT JOIN czn.unempl_type unempl_type ON unempl_type.id = pers.unempl_type_id LEFT JOIN czn.soc_protection_type soc_protection_type ON soc_protection_type.id = pers.soc_protection_type_id LEFT JOIN czn.dismiss_type dismiss_type ON dismiss_type.id = pers.dismiss_type_id LEFT JOIN czn.secteconom secteconom ON secteconom.id = pers.secteconom_id LEFT JOIN czn.otrnarhoz otrnarhoz ON otrnarhoz.id = pers.otrnarhoz_id LEFT JOIN czn.education_type education_type ON education_type.id = pers.education_type_id LEFT JOIN czn.prof prof ON prof.id = pers.prof_id LEFT JOIN czn.qualification qualification ON qualification.id = pers.qualific_id LEFT JOIN czn.org org ON org.id = pers.last_org_id LEFT JOIN czn.qualification post_qualific ON post_qualific.id = pers.post_qualific_id LEFT JOIN czn.prof post ON post.id = pers.post_id");
+				
 				for(i in qarr) {
 					connection.query(qarr[i], function(err) {
 					  if (err) throw err;
@@ -521,7 +554,8 @@
 				connection.connect();
 				var orgs = new DBFQuery(path + "KL_PRED.DBF",
 							function(record) {
-								return (record['KOD'] !== null && record['KOD'] !== undefined);
+								return (record['KOD'] !== null && record['KOD'] !== undefined) &&
+									   (record['NAIM'] !== null && record['NAIM'] !== undefined);
 							},
 							null,
 							null,
@@ -564,6 +598,14 @@
 										//~ console.log("orgs - "+i);
 									});
 								});
+								var qstr = "ALTER IGNORE TABLE czn.org ADD PRIMARY KEY (id);";
+								connection.query(qstr, function(err, res) {
+									if (err) {
+											console.log(qstr);
+											console.log(err);
+											throw err;
+										}
+								});
 								connection.end(function() {
 									callback(null, "orgs... OK")
 								});
@@ -576,7 +618,8 @@
 				connection.connect();
 				var  profs = new DBFQuery(path + "KL_PROF.DBF",
 							function(record) {
-								return (record['PROF1'] !== undefined && record['PROF1'] !== null); 
+								return (record['PROF1'] !== undefined && record['PROF1'] !== null) &&
+										(record['NAIM'] !== undefined && record['NAIM'] !== null); 
 							},
 							null,
 							null,
@@ -597,6 +640,14 @@
 										} 
 										//~ console.log("profs - "+i);
 									});
+								});
+								var qstr = "ALTER IGNORE TABLE czn.prof ADD PRIMARY KEY (id);";
+								connection.query(qstr, function(err, res) {
+									if (err) {
+											console.log(qstr);
+											console.log(err);
+											throw err;
+										}
 								});
 								connection.end(function() {
 									callback(null, "professions... OK");
