@@ -24,7 +24,7 @@ exports.login = function(req, res) {
 exports.dbupdate = function(req, res) {
 	if (req.session.authorized && req.session.username ==='admin') {
 		var pathName = mySettings.dbfBasePath;
-		dbftomysql({
+		dbftomysql.updateAll({
 				dbfpath: pathName,
 				dbconoptions: mySettings.dbConnOptions,
 				callback: function(err, result, timeleft) {

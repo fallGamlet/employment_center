@@ -1,0 +1,33 @@
+body {
+	background:#AAA;
+	margin:0;
+	padding:10px;
+}
+.horizontal_div {
+	display: inline-block;
+}
+.data {
+	/*background:#FAFAFA;*/	
+	color:#0C0078;
+}
+.container {
+	margin:5px;
+	padding:5px;
+	border:solid 1px #EEE;
+	display:inline-block;
+	vertical-align:top;
+	background:#FFF;
+}
+.title {
+	font-weight:bold;
+	color:brown;
+}
+.private_data {
+	margin:5px;
+	padding:5px;
+	border:solid 1px #EEE;
+}
+.private_data>span.name_title, .container>span.name_title {
+	display:inline-block;
+	min-width:8em;
+}

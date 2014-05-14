@@ -29,7 +29,7 @@ exports.search = function(req, res) {
 		qstr+= "FROM czn.person_card pers ";
 		qstr+= "LEFT JOIN czn.org org ON org.id = pers.last_org_id ";
 		qstr+= "LEFT JOIN czn.prof prof ON prof.id = pers.prof_id WHERE 1=1 ";
-	console.log(form);
+	//~ console.log(form);
 	if(form['fname']) {
 		qstr += " AND LOWER(fio) like '%"+form['fname']+"%'";
 	}
@@ -79,7 +79,8 @@ exports.search = function(req, res) {
 	connection.end(function() {
 		//~ console.log("Row founded: "+records.length)
 		responsed = true;
-		return res.render('people_view_inner.html', { title: 'Поиск людей', peopleList: records});
+		offsetDate = new Date().getTimezoneOffset();
+		return res.render('people_view_inner.html', { title: 'Поиск людей', peopleList: records, offsetDate: offsetDate});
 	});
 	
 	setTimeout(function(){
@@ -107,9 +108,11 @@ exports.viewone = function(req, res) {
 	});
 	
 	connection.end(function() {
-		console.log("Row founded: "+records.length)
+		console.log("Row founded: "+records.length);
+		//~ console.log(records[0]);
+		offsetDate = new Date().getTimezoneOffset();
 		responsed = true;
-		return res.render('people_view_one.html', { title: 'Поиск людей', peopleList: records, record:records[0] });
+		return res.render('people_view_one.html', { title: 'Поиск людей', peopleList: records, record:records[0], offsetDate:offsetDate });
 	});
 	
 	setTimeout(function(){

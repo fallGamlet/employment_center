@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8"/>
 	<link rel="stylesheet" href="/stylesheets/style.css">
+	<link rel="stylesheet" href="/stylesheets/people_one.css">
 	<script src="/javascripts/jquery-2.1.0.js"></script>
 	<title>{{ record.fio }}</title>
 	<!--script>
@@ -10,41 +11,12 @@
 			
 		});
 	</script-->
-	<style>
-		.horizontal_div {
-			display: inline-block;
-		}
-		.data {
-				/*background:#FAFAFA;*/	
-				color:#0C0078;
-		}
-		.container {
-			margin:5px;
-			padding:5px;
-			border:solid 1px #EEE;
-			display:inline-block;
-			vertical-align:top;
-		}
-		.title {
-			font-weight:bold;
-			color:brown;
-		}
-		.private_data {
-			margin:5px;
-			padding:5px;
-			border:solid 1px #EEE;
-		}
-		.private_data>span.name_title, .container>span.name_title {
-			display:inline-block;
-			min-width:8em;
-		}
-	</style>
 </head>
 <body>
-	<div class="title_page"></div>
+	<!--div class="title_page"></div-->
 	<div class="main_container">
 		{% if record %}
-		<div>
+		<div class="container">
 			<div class="horizontal_div">
 				Номер<br />
 				<span class="data">{{record.card_n}}</span>
@@ -59,40 +31,41 @@
 			</div>
 			<div class="horizontal_div">
 				Дата обращения<br />
-				<span class="data">{{record.obr_date|date('d.m.Y')}}</span>
+				<span class="data">{{record.obr_date|date('d.m.Y', offsetDate)}}</span>
 			</div>
 		</div>
+		<br />
 		<div class="private_data container">
-			<span class="name_title">ФИО:</span>            <span class="data field_fio">{{record.fio}}</span> <br />
-			<span class="name_title">Пол:</span>            <span class="data field_sex">{{record.sex}}</span> <br />
-			<span class="name_title">Дата рождения:</span>  <span class="data field_borndate">{{record.born_date|date('d.m.Y')}}</span> <br />
-			<span class="name_title">Гражданство:</span>    <span class="data field_grajd">{{record.citizen_name}}</span> <br />
-			<span class="name_title">Национальность:</span> <span class="data field_nacional">{{record.nationality_name}}</span> <br />
-			<span class="name_title">Адрес:</span>          <span class="data field_address">{{record.city_name}} {{record.address}}</span> <br />
-			<span class="name_title">Телефон:</span>        <span class="data field_phonenum">{{record.phone_num}}</span> <br />
+			<span class="name_title">ФИО:</span>            <span class="data field_fio">{% if record.fio %}{{record.fio}}{%endif%}</span> <br />
+			<span class="name_title">Пол:</span>            <span class="data field_sex">{% if record.sex %}{{record.sex}}{%endif%}</span> <br />
+			<span class="name_title">Дата рождения:</span>  <span class="data field_borndate">{% if record.born_date %}{{record.born_date|date('d.m.Y', offsetDate)}}{%endif%}</span> <br />
+			<span class="name_title">Гражданство:</span>    <span class="data field_grajd">{% if record.citizen_name %}{{record.citizen_name}}{%endif%}</span> <br />
+			<span class="name_title">Национальность:</span> <span class="data field_nacional">{% if record.nationality_name %}{{record.nationality_name}}{%endif%}</span> <br />
+			<span class="name_title">Адрес:</span>          <span class="data field_address">{% if record.city_name %}{{record.city_name}}{%endif%} {% if record.address %}{{record.address}}{%endif%}</span> <br />
+			<span class="name_title">Телефон:</span>        <span class="data field_phonenum">{% if record.phone_num %}{{record.phone_num}}{%endif%}</span> <br />
 		</div>
 		<div class="document container">
 			<div class="title">Документ</div>
-			<span class="name_title">Вид:</span>       <span class="data">{{record.doc_type_name}}</span> <br />
+			<span class="name_title">Вид:</span>       <span class="data">{% if record.doc_type_name %}{{record.doc_type_name}}{%endif%}</span> <br />
 			<span class="name_title">Серия:</span>     <span class="data">{{record.doc_sern}}</span> <span class="data">{{record.doc_series}}</span> <br />
 			<span class="name_title">Номер:</span>     <!--span class="data">{{record.DOK_N}}</span--> <span class="data">{{record.doc_s}}</span> <br />
 			<span class="name_title">Кем выдан:</span> <span class="data">{{record.doc_bywho}}</span> <br />
-			<span class="name_title">Дата:</span>      <span class="data">{{record.doc_date|date('d.m.Y')}}</span> <br />
+			<span class="name_title">Дата:</span>      <span class="data">{{record.doc_date|date('d.m.Y', offsetDate)}}</span> <br />
 		</div>
 		<div class="container">
-			<span class="name_title">Отношение к занятости:</span> <span class="data">{{record.empl_status_name}}</span> <br/>
-			<span class="name_title">Вид не занятости:</span> <span class="data">{{record.unempl_type_name}}</span> <br/>
-			<span class="name_title">Категория соц. защиты:</span> <span class="data">{{record.soc_protection_type_name}}</span> <br/>
-			<span class="name_title">Дата (начало):</span> <span class="data">{{record.bzn_date|date('d.m.Y')}}</span> <br/>
-			<span class="name_title">Дата (конец):</span> <span class="data">{{record.bzk_date|date('d.m.Y')}}</span> <br/>
-			<span class="name_title">Причина закрытия:</span> <span class="data">{{record.ZAKRK}}</span> <br/>
-			<span class="name_title">Образование:</span> <span class="data">{{record.education_type_name}}</span> <br/>
-			<span class="name_title">Профессия:</span> <span class="data">{{record.prof_name}}</span> <br/>
-			<span class="name_title">Квалификация:</span> <span class="data">{{record.qualific_name}}</span> <br/>
+			<span class="name_title">Отношение к занятости:</span> <span class="data">{% if record.empl_status_name %}{{record.empl_status_name}}{%endif%}</span> <br/>
+			<span class="name_title">Вид не занятости:</span> <span class="data">{% if record.unempl_type_name %}{{record.unempl_type_name}}{%endif%}</span> <br/>
+			<span class="name_title">Категория соц. защиты:</span> <span class="data">{% if record.soc_protection_type_name %}{{record.soc_protection_type_name}}{%endif%}</span> <br/>
+			<span class="name_title">Дата (начало):</span> <span class="data">{% if record.bzn_date %}{{record.bzn_date|date('d.m.Y', offsetDate)}}{%endif%}</span> <br/>
+			<span class="name_title">Дата (конец):</span> <span class="data">{% if record.bzk_date %}{{record.bzk_date|date('d.m.Y', offsetDate)}}{%endif%}</span> <br/>
+			<span class="name_title">Причина закрытия:</span> <span class="data">{% if record.card_close_reason_name %}{{record.card_close_reason_name}}{%endif%}</span> <br/>
+			<span class="name_title">Образование:</span> <span class="data">{% if record.education_type_name %}{{record.education_type_name}}{%endif%}</span> <br/>
+			<span class="name_title">Профессия:</span> <span class="data">{% if record.prof_name %}{{record.prof_name}}{%endif%}</span> <br/>
+			<span class="name_title">Квалификация:</span> <span class="data">{% if record.qualific_name %}{{record.qualific_name}}{%endif%}</span> <br/>
 			<span class="name_title">Стаж ПФ:</span> <span class="data">{{record.stag_pf}}</span> <br/>
 			<span class="name_title">Последняя работа:</span> <span class="data">{{record.last_org_name}}</span> <br/>
-			<span class="name_title">Должность:</span> <span class="data">{{record.post_name}}</span> <br/>
-			<span class="name_title">Квалификация на должности:</span> <span class="data">{{record.post_qualific_name}}</span> <br/>
+			<span class="name_title">Должность:</span> <span class="data">{% if record.post_name %}{{record.post_name}}{%endif%}</span> <br/>
+			<span class="name_title">Квалификация на должности:</span> <span class="data">{% if record.post_qualific_name %}{{record.post_qualific_name}}{%endif%}</span> <br/>
 		</div>
 		<div class="stag container">
 			<div class="title">Стаж</div>
@@ -105,9 +78,9 @@
 		<div class="container">
 			<span class="name_title">Сектор экономики:</span>   <span class="data">{{record.secteconom_name}}</span> <br/>
 			<span class="name_title">Отрасль н/х:</span>        <span class="data">{{record.otrnarhoz_name}}</span> <br/>
-			<span class="name_title">Дата увольнения:</span>    <span class="data">{{record.dismiss_date|date('d.m.Y')}}</span> <br/>
+			<span class="name_title">Дата увольнения:</span>    <span class="data">{{record.dismiss_date|date('d.m.Y', offsetDate)}}</span> <br/>
 			<span class="name_title">Средний заработок:</span>  <span class="data">{{record.avg_salary}}</span> <br/>
-			<span class="name_title">Семейное положение:</span> <span class="data">{{record.femaly_status_id}}</span> <br/>
+			<span class="name_title">Семейное положение:</span> <span class="data">{{record.marital_status_name}}</span> <br/>
 			<span class="name_title">Причина увольнения:</span> <span class="data">{{record.dismiss_type_name}}</span> <br/>
 			<span class="name_title">Кол-во иждевенцев:</span>  <span class="data">{{record.dependent_num}}</span> <br/>
 		</div>
@@ -126,17 +99,17 @@
 			<span class="name_title">Кол-во профессий,<br/> по которым есть желание<br/> пройти обучение:</span> <span class="data">{{record.TR_KOLOPRF}}</span> <br/>
 		</div>
 		<div class="container">
-			<span class="name_title">Дата корректировки:</span> <span class="data">{{record['DATA_KOR']|date('d.m.Y')}}</span> <br/>
+			<span class="name_title">Дата корректировки:</span> <span class="data">{{record['DATA_KOR']|date('d.m.Y', offsetDate)}}</span> <br/>
 			<span class="name_title">Безработный:</span>  <span class="data">{% if record.STATUS_OB %} ДА {%else%} НЕТ {%endif%}</span> <br/>
 			<span class="name_title">Снят с учета:</span> <span class="data">{% if record.SN_OB %} ДА {%else%} НЕТ {%endif%}</span> <br/>
-			<span class="name_title">Дата ...:</span>     <span class="data">{{record.DAT_OSU|date('d.m.Y')}}</span> <br/>
+			<span class="name_title">Дата ...:</span>     <span class="data">{{record.DAT_OSU|date('d.m.Y', offsetDate)}}</span> <br/>
 		</div>
 		<div class="container">
 			<div class="title">Трудовая книжка</div>
-			<span class="name_title">Вид:</span>   <span class="data">{{record.VID_TRKN}}</span> <br/>
+			<span class="name_title">Вид:</span>   <span class="data">{{record.work_book_type_name}}</span> <br/>
 			<span class="name_title">Серия:</span> <span class="data">{{record.SER_TRKN}}</span> <br/>
 			<span class="name_title">Номер:</span> <span class="data">{{record.NOM_TRKN}}</span> <br/>
-			<span class="name_title">Дата:</span>  <span class="data">{{record.DAT_TRKN|date('d.m.Y')}}</span> <br/>
+			<span class="name_title">Дата:</span>  <span class="data">{{record.DAT_TRKN|date('d.m.Y', offsetDate)}}</span> <br/>
 		</div>
 		<div class="container">
 			<span class="name_title">Повтор:</span> <span class="data">{{record.POVTOR}}</span> <br/>

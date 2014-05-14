@@ -28,7 +28,7 @@
 			<td class="kartrm">{{ human['code_rm'] }}</td>
 			<td class="fio">{{ human['fio'] }}</td>
 			<td class="sex">{{ human['sex'] }}</td>
-			<td class="borndate">{{ human['born_date']|date('d.m.Y') }}</td>
+			<td class="borndate">{{ human['born_date']|date('d.m.Y', offsetDate) }}</td>
 			<td class="address">{{ human['address'] }}</td>
 			<td class="status1">{% if human['STATUS_OB'] %} Безр. {% endif %}</td>
 			<td class="status2">{% if human['SN_OB'] %} Сн./Уч. {% endif %} </td>
