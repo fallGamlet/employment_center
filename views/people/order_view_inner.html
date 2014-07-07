@@ -1,0 +1,56 @@
+{% if orderList %}
+<link rel="stylesheet" href="/stylesheets/order.css">
+<div class="order_preview">
+	<table class="order_table">
+	<caption>Приказы</caption>
+	<thead>
+		<tr>
+<!--
+			<th>Номер карточки</th>
+			<th>Год</th>
+			<th>Дата обращения</th>
+-->
+			<th style="width:4.5em;">Номер приказа</th>
+			<th style="width:4.5em;">Номер выписки</th>
+			<th>Дата приказа</th>
+			<th>Вид изменения</th>
+			<th>Причина изменения</th>
+<!--
+			<th>?</th>
+-->
+<!--
+			<th>Информация</th>
+-->
+<!--
+			<th>?</th>
+-->
+		</tr>
+	</thead>
+	<tbody>
+		{% for orderItem in orderList %}
+		<tr>
+<!--
+			<td>{{orderItem.card_n}}</td>
+			<td>{{orderItem.ind_card}}</td>
+			<td>{{orderItem.ob_date|date('d.m.Y', offsetDate)}}</td>
+-->
+			<td class="number_col">{{orderItem.order_num}}</td>
+			<td class="number_col">{{orderItem.nomvyp}}</td>
+			<td class="date_col">{{orderItem.order_date|date('d.m.Y', offsetDate)}}</td>
+			<td class="text_col">{{orderItem.vidi_name}}</td>
+			<td class="text_col">{{orderItem.priz_name}}</td>
+<!--
+			<td class="number_col">{% if orderItem.pr_obv %}{{orderItem.pr_obv}}{%endif%}</td>
+-->
+<!--
+			<td class="text_col">{{orderItem.inf}}</td>
+-->
+<!--
+			<td class="number_col">{% if orderItem.otm %}{{orderItem.otm}}{%endif%}</td>
+-->
+		</tr>
+		{% endfor %}
+	</tbody>
+	</table>
+</div>
+{% endif %}

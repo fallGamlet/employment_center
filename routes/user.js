@@ -1,5 +1,6 @@
 var mySettings = require('../settings');
-	dbftomysql = require('../my_libs/dbf_to_mysql');
+	dbftomysql = require('../my_libs/dbf_to_mysql'),
+	adminUserName = "admin";
 
 exports.index = function(req, res) {
 	if (req.session.authorized && req.session.username ==='admin') {
@@ -11,7 +12,7 @@ exports.index = function(req, res) {
 };
 
 exports.login = function(req, res) {
-	if ((req.body.login==='admin')&&(req.body.password==='admin')) {
+	if ((req.body.login===adminUserName)&&(req.body.password==='admin')) {
 		req.session.authorized = true;
 		req.session.username = req.body.login;
 		console.log('admin is here!');
@@ -22,17 +23,39 @@ exports.login = function(req, res) {
 };
 
 exports.dbupdate = function(req, res) {
-	if (req.session.authorized && req.session.username ==='admin') {
-		var pathName = mySettings.dbfBasePath;
+	var responsed = false;
+	if (req.session.authorized && req.session.username === adminUserName) {
 		dbftomysql.updateAll({
-				dbfpath: pathName,
+				dbfpath: mySettings.dbfBasePath,
 				dbconoptions: mySettings.dbConnOptions,
 				callback: function(err, result, timeleft) {
+					responsed = true;
 					res.render('user/index.html', { 'title': 'Центр занятости насяления', 'err':err, 'result':result, 'timeleft':timeleft });
 				}
 			});
 		setTimeout(function() {
-				res.render('user/index.html', { 'title': 'Центр занятости насяления', 'err':"time out"});
+				if(!responsed)
+					res.render('user/index.html', { 'title': 'Центр занятости насяления', 'err':"time out"});
+			}, 50000);
+	} else {
+		res.redirect("/user/login");
+	}
+};
+
+exports.dbPersonCardUpdate = function(req, res) {
+	var responsed = false;
+	if (req.session.authorized && req.session.username === adminUserName) {
+		dbftomysql.updatePeopleCards({
+				dbfpath: mySettings.dbfBasePath,
+				dbconoptions: mySettings.dbConnOptions,
+				callback: function(err, result, timeleft) {
+					responsed = true;
+					res.render('user/index.html', { 'title': 'Центр занятости насяления', 'err':err, 'result':result, 'timeleft':timeleft });
+				}
+			});
+		setTimeout(function() {
+				if(!responsed)
+					res.render('user/index.html', { 'title': 'Центр занятости насяления', 'err':"time out"});
 			}, 50000);
 	} else {
 		res.redirect("/user/login");

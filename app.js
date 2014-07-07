@@ -6,7 +6,8 @@ var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
 var vakans_view = require('./routes/vakans');
-var peaple_view = require('./routes/peaple');
+var people_view = require('./routes/people');
+var order_view = require('./routes/order');
 var http = require('http');
 var path = require('path');
 var swig = require('swig');
@@ -37,16 +38,23 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
+
 app.get('/user', user.index);
 app.get('/user/login', user.login);
 app.post('/user/login', user.login);
 app.get('/user/db/update', user.dbupdate);
+app.get('/user/db/update/person-cards', user.dbPersonCardUpdate);
+
 app.get('/vakansii', vakans_view.index);
 app.get('/vakansii/view', vakans_view.view);
 app.get('/vakansii/search', vakans_view.search);
-app.get('/search-peaple', peaple_view.index);
-app.get('/search-peaple/preview', peaple_view.search);
-app.get('/people/view/:pk/:fio', peaple_view.viewone);
+
+app.get('/search-peaple', people_view.index);
+app.get('/search-peaple/preview', people_view.search);
+app.get('/people/view/:pk/:fio', people_view.viewone);
+
+app.get('/order/view/:card_n/:ind_card', order_view.view);
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	<link rel="stylesheet" href="/stylesheets/people.css">
+	<script src="/javascripts/jquery-2.1.0.js"></script>
+	<title>{{ title|title }}</title>
+	<script>
+		$(document).ready(function(){
+			$('#search_form').submit(function(e){
+				e.preventDefault();
+                var form = $(this);
+                $.ajax({
+					type: "GET",
+					url: "/search-peaple/preview",
+					data: form.serialize(),
+					timeout:35000,
+					beforeSend: function(){
+						var progressIcon = $("<img id='loadingimage' src='/images/loading.gif' />")
+						progressIcon.css({width:"200px", height:"200px", position:'absolute'});
+						progressIcon.offset({top:300, left:400});
+						$("body").append(progressIcon);
+						$(".preview_list").fadeOut(function(){
+							$(this).html("");
+							$(this).show();
+						});
+						progressIcon.show();
+					},
+					success: function(data){
+						$('#loadingimage').fadeOut(function() {
+								$(this).remove();
+						});
+						var prevlist = $(".preview_list");
+						prevlist.stop();
+						prevlist.html(data);
+						prevlist.fadeIn();
+						$(".preview_list").fadeIn();
+						//~ form.find("input[type='submit']").attr('disabled', false);
+					},
+					error:function() { 
+						alert("Произошла ошибка. Попробуйте пожалуйста еще раз.") ;
+					},
+					complete: function(){
+						$('#loadingimage').fadeOut(function() {
+								$(this).remove();
+						});
+						//~ form.find("input[type='submit']").attr('disabled', false);
+					}
+				});
+			});
+		});
+	</script>
+</head>
+<body>
+	<div class="title_page">
+		{{ title|title }}
+	</div>
+	<menu class="menu">
+		<a class="go_to_main" href="/">На главную</a>
+	</menu>
+	<div class="main_container">
+		<form id="search_form" name="search_peaple" action="/search-peaple">
+			<div class="form_table">
+				<div class="form_field">
+					<br />
+					<input class="text_field" type='search' name='kartnum' placeholder="№ карточки" /><br />
+					<input class="text_field" type='search' name='kartyear' placeholder="год" /><br />
+					<input class="text_field" type='search' name='kartchar' placeholder="буква" />
+				</div>
+				<div class="form_field">
+					<br />
+					<input class="text_long_field" type='search' name='lname' placeholder="Фамилия" /><br />
+					<input class="text_long_field" type='search' name='fname' placeholder="Имя" /><br />
+					<input class="text_long_field" type='search' name='mname' placeholder="Отчество" /> <br />
+					<input class="text_long_field" type='search' name='born_date' placeholder="Дата рождения" pattern="\d{2}\.\d{2}\.\d{4}" />
+				</div>
+				<div class="form_field">
+					<br />
+					<input class="text_field" type='text' name='prof_obraz' placeholder="Проф. образование" />
+				</div>
+				<div class="form_field">
+					<br />
+					<input class="text_field" type='text' name='last_org' placeholder="Последнее место работы" style="width:17em;"/> <br />
+					<div style="border:solid 1px #DDD; padding:2px; border-radius:10px;">
+						<input type="radio" name="st_uchet" value="2" checked /> Все<br />
+						<input type="radio" name="st_uchet" value="1" /> Снят с учета<br />
+						<input type="radio" name="st_uchet" value="0" /> На учете<br />
+					</div>
+				</div>
+				<div class="form_field">
+					 <br />
+					<input class="phone_field" type='tel' name='phone_num' placeholder="Номер телефона" /> <br />
+					<div style="border:solid 1px #DDD; padding:2px; border-radius:10px;">
+						<input type="radio" name="st_bezrab" value="2" checked /> Все<br />
+						<input type="radio" name="st_bezrab" value="1" /> Безработные<br />
+						<input type="radio" name="st_bezrab" value="0" /> Работающие<br />
+					</div>
+				</div>
+				<br />
+				<div class="form_field">
+					<input class="text_long_field" type='search' name='address' placeholder="Адрес" style="width:25.65em;"/>
+				</div>
+				<!--div class="form_field">
+					Период обработки
+					<div>
+						<input class="date_field" type='text' name='dobr_start' pattern="\d{2}\.\d{2}\.\d{4}" placeholder="начало периода" /><br />
+						<input class="date_field" type='text' name='dobr_end' pattern="\d{2}\.\d{2}\.\d{4}" placeholder="конец периода" />
+					</div>
+				</div-->
+				<!--div class="form_field">
+					Корректировка
+					<div>
+						<input class="date_field" type='text' name='dkor_start' pattern="\d{2}\.\d{2}\.\d{4}" placeholder="начало периода" /><br />
+						<input class="date_field" type='text' name='dkor_end' pattern="\d{2}\.\d{2}\.\d{4}" placeholder="конец периода" />
+					</div>
+				</div--->
+				<div class="form_buttons">
+					<input type='reset' value="Очистить"/>
+					<input type='submit' value="Найти" />
+				</div>
+			</div>
+		</form>
+		
+		<div class="preview_list"></div>
+	</div>
+</body>
+</html>

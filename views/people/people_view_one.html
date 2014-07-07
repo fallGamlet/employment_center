@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	<link rel="stylesheet" href="/stylesheets/people_one.css">
+	<script src="/javascripts/jquery-2.1.0.js"></script>
+	<title>{{ record.fio }}</title>
+	{% if record %}
+	<script>
+		$(document).ready(function(){
+			console.log('ajax... start');
+			var card_n = "{{record.card_n}}",
+				ind_card = "{{record.ind_card}}";
+				
+			$.ajax({
+				type: "GET",
+				url: "/order/view/"+card_n+"/"+ind_card,
+				timeout:9000,
+				beforeSend: function(){
+					
+				},
+				success: function(data){
+					console.log('ajax... success');
+					console.log(data);
+					
+					$('.order_wraper').html(data);
+				},
+				error:function() { 
+					alert("Произошла ошибка. Попробуйте пожалуйста еще раз.") ;
+				},
+				complete: function(){
+					console.log('ajax... end');
+				}
+			});
+		});
+	</script>
+	{%endif%}
+</head>
+<body>
+	<!--div class="title_page"></div-->
+	<div class="main_container">
+		{% if record %}
+		<div class="container">
+			<div class="horizontal_div">
+				Номер<br />
+				<span class="data">{{record.card_n}}</span>
+			</div>
+			<div class="horizontal_div">
+				Год<br />
+				<span class="data">{{record.ind_card}}</span>
+			</div>
+			<div class="horizontal_div">
+				Стол<br />
+				<span class="data">{{record.code_rm}}</span>
+			</div>
+			<div class="horizontal_div">
+				Дата обращения<br />
+				<span class="data">{{record.obr_date|date('d.m.Y', offsetDate)}}</span>
+			</div>
+		</div>
+		<br />
+		<div class="private_data container">
+			<span class="name_title">ФИО:</span>            <span class="data field_fio">{% if record.fio %}{{record.fio}}{%endif%}</span> <br />
+			<span class="name_title">Пол:</span>            <span class="data field_sex">{% if record.sex %}{{record.sex}}{%endif%}</span> <br />
+			<span class="name_title">Дата рождения:</span>  <span class="data field_borndate">{% if record.born_date %}{{record.born_date|date('d.m.Y', offsetDate)}}{%endif%}</span> <br />
+			<span class="name_title">Гражданство:</span>    <span class="data field_grajd">{% if record.citizen_name %}{{record.citizen_name}}{%endif%}</span> <br />
+			<span class="name_title">Национальность:</span> <span class="data field_nacional">{% if record.nationality_name %}{{record.nationality_name}}{%endif%}</span> <br />
+			<span class="name_title">Адрес:</span>          <span class="data field_address">{% if record.city_name %}{{record.city_name}}{%endif%} {% if record.address %}{{record.address}}{%endif%}</span> <br />
+			<span class="name_title">Телефон:</span>        <span class="data field_phonenum">{% if record.phone_num %}{{record.phone_num}}{%endif%}</span> <br />
+		</div>
+		<div class="document container">
+			<div class="title">Документ</div>
+			<span class="name_title">Вид:</span>       <span class="data">{% if record.doc_type_name %}{{record.doc_type_name}}{%endif%}</span> <br />
+			<span class="name_title">Серия:</span>     <span class="data">{{record.doc_sern}}</span> <span class="data">{{record.doc_series}}</span> <br />
+			<span class="name_title">Номер:</span>     <!--span class="data">{{record.DOK_N}}</span--> <span class="data">{{record.doc_s}}</span> <br />
+			<span class="name_title">Кем выдан:</span> <span class="data">{{record.doc_bywho}}</span> <br />
+			<span class="name_title">Дата:</span>      <span class="data">{{record.doc_date|date('d.m.Y', offsetDate)}}</span> <br />
+		</div>
+		<div class="container">
+			<span class="name_title">Отношение к занятости:</span> <span class="data">{% if record.empl_status_name %}{{record.empl_status_name}}{%endif%}</span> <br/>
+			<span class="name_title">Вид не занятости:</span> <span class="data">{% if record.unempl_type_name %}{{record.unempl_type_name}}{%endif%}</span> <br/>
+			<span class="name_title">Категория соц. защиты:</span> <span class="data">{% if record.soc_protection_type_name %}{{record.soc_protection_type_name}}{%endif%}</span> <br/>
+			<span class="name_title">Дата (начало):</span> <span class="data">{% if record.bzn_date %}{{record.bzn_date|date('d.m.Y', offsetDate)}}{%endif%}</span> <br/>
+			<span class="name_title">Дата (конец):</span> <span class="data">{% if record.bzk_date %}{{record.bzk_date|date('d.m.Y', offsetDate)}}{%endif%}</span> <br/>
+			<span class="name_title">Причина закрытия:</span> <span class="data">{% if record.card_close_reason_name %}{{record.card_close_reason_name}}{%endif%}</span> <br/>
+			<span class="name_title">Образование:</span> <span class="data">{% if record.education_type_name %}{{record.education_type_name}}{%endif%}</span> <br/>
+			<span class="name_title">Профессия:</span> <span class="data">{% if record.prof_name %}{{record.prof_name}}{%endif%}</span> <br/>
+			<span class="name_title">Квалификация:</span> <span class="data">{% if record.qualific_name %}{{record.qualific_name}}{%endif%}</span> <br/>
+			<span class="name_title">Стаж ПФ:</span> <span class="data">{{record.stag_pf}}</span> <br/>
+			<span class="name_title">Последняя работа:</span> <span class="data">{{record.last_org_name}}</span> <br/>
+			<span class="name_title">Должность:</span> <span class="data">{% if record.post_name %}{{record.post_name}}{%endif%}</span> <br/>
+			<span class="name_title">Квалификация на должности:</span> <span class="data">{% if record.post_qualific_name %}{{record.post_qualific_name}}{%endif%}</span> <br/>
+		</div>
+		<div class="stag container">
+			<div class="title">Стаж</div>
+			<span class="name_title">Общий стаж (г):</span>       <span class="data">{{record.stag_o}}</span> <br/>
+			<span class="name_title">Общий стаж (мес):</span> <span class="data">{{record.stag_o_m}}</span> <br/>
+			<span class="name_title">Стаж на последней работе (г):</span>  <span class="data">{{record.stag_pr_g}}</span> <br/>
+			<span class="name_title">Стаж на последней работе (мес):</span> <span class="data">{{record.stag_pr_m}}</span> <br/>
+			<span class="name_title">Общий стаж за последние 12 месяцев:</span> <span class="data">{{record.stag_12}}</span> <br/>
+		</div>
+		<div class="container">
+			<span class="name_title">Сектор экономики:</span>   <span class="data">{{record.secteconom_name}}</span> <br/>
+			<span class="name_title">Отрасль н/х:</span>        <span class="data">{{record.otrnarhoz_name}}</span> <br/>
+			<span class="name_title">Дата увольнения:</span>    <span class="data">{{record.dismiss_date|date('d.m.Y', offsetDate)}}</span> <br/>
+			<span class="name_title">Средний заработок:</span>  <span class="data">{{record.avg_salary}}</span> <br/>
+			<span class="name_title">Семейное положение:</span> <span class="data">{{record.marital_status_name}}</span> <br/>
+			<span class="name_title">Причина увольнения:</span> <span class="data">{{record.dismiss_type_name}}</span> <br/>
+			<span class="name_title">Кол-во иждевенцев:</span>  <span class="data">{{record.dependent_num}}</span> <br/>
+		</div>
+		<div class="container">
+			<span class="name_title">Дата корректировки:</span> <span class="data">{{record['DATA_KOR']|date('d.m.Y', offsetDate)}}</span> <br/>
+			<span class="name_title">Безработный:</span>  <span class="data">{% if record.STATUS_OB %} ДА {%else%} НЕТ {%endif%}</span> <br/>
+			<span class="name_title">Снят с учета:</span> <span class="data">{% if record.SN_OB %} ДА {%else%} НЕТ {%endif%}</span> <br/>
+			<span class="name_title">Дата ...:</span>     <span class="data">{{record.DAT_OSU|date('d.m.Y', offsetDate)}}</span> <br/>
+		</div>
+		<div class="container">
+			<div class="title">Трудовая книжка</div>
+			<span class="name_title">Вид:</span>   <span class="data">{%if record.work_book_type_name %}{{record.work_book_type_name}}{%endif%}</span> <br/>
+			<span class="name_title">Серия:</span> <span class="data">{%if record.SER_TRKN%}{{record.SER_TRKN}}{%endif%}</span> <br/>
+			<span class="name_title">Номер:</span> <span class="data">{%if record.NOM_TRKN%}{{record.NOM_TRKN}}{%endif%}</span> <br/>
+			<span class="name_title">Дата:</span>  <span class="data">{%if record.DAT_TRKN%}{{record.DAT_TRKN|date('d.m.Y', offsetDate)}}{%endif%}</span> <br/>
+		</div>
+		<div class="container">
+			<span class="name_title">Повтор:</span> <span class="data">{% if record.POVTOR %}ДА{%else%}НЕТ{%endif%}</span> <br/>
+			<span class="name_title">ПР ...:</span> <span class="data">{{record.PR_POSOB}}</span> <br/>
+			<span class="name_title">ПР стип.:</span> <span class="data">{{record.PR_STIP}}</span> <br/>
+		</div>
+		<!--div class="address container">
+			<div class="title">Адрес</div>
+			<span class="name_title">Нас. пункт</span> <span class="data">{{record.city_name}}</span> <br/>
+			<span class="name_title">Район города</span> <span class="data">{{record.RAIOG}}</span> <br/>
+		</div-->
+		<div class="container">
+			<div class="title">Требования к будущей работе</div>
+			<span class="name_title">...</span> <span class="data">{{record.TR_FSOB}}</span> <br/>
+			<span class="name_title">...</span> 			<span class="data">{{record.TR_PRED}}</span> <br/>
+			<span class="name_title">Профессия (должность):</span> <span class="data">{{record.TR_PROF}}</span> <br/>
+			<span class="name_title">Квалификация:</span> <span class="data">{{record.TR_KVA}}</span> <br/>
+			<span class="name_title">Кол-во доп. профессий:</span> <span class="data">{{record.TR_KOLDPRF}}</span> <br/>
+			<span class="name_title">Система оплаты:</span> <span class="data">{{record.TR_SOP}}</span> <br/>
+			<span class="name_title">Вид работы:</span> <span class="data">{{record.TR_VIDR}}</span> <br/>
+			<span class="name_title">Сменность:</span> <span class="data">{{record.TR_SMEN}}</span> <br/>
+			<span class="name_title">Зарплата:</span> <span class="data">{{record.TR_ZARPL}}</span> <br/>
+			<span class="name_title">Район города:</span> <span class="data">{{record.TR_RAIG}}</span> <br/>
+			<span class="name_title">Кол-во профессий,<br/> по которым есть желание<br/> пройти обучение:</span> <span class="data">{{record.TR_KOLOPRF}}</span> <br/>
+		</div>
+		<div class="order_wraper"></div>
+		{% else %}
+		<div>Ничего не найдено</div>
+		{% endif %}
+	</div>
+</body>
+</html>

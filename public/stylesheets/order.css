@@ -1,0 +1,34 @@
+.order_table {
+	border-collapse: collapse;
+	background:#FFF;
+}
+.order_table>caption {
+	font-size:16pt;
+	font-weight:bold;
+	background:#FFF;
+	color:#A52A2A;
+	padding:5px;
+}
+.order_table>thead>tr>th {
+    background:#000;
+    color:#FFF;
+    padding:3px 5px;
+    border-left:solid 1px #555;
+	border-right:solid 1px #555;
+}
+.order_table>tbody>tr:nth-of-type(odd) {
+    background: #DADADA;
+}
+.order_table>tbody>tr>td {
+	border:solid 1px #ccc;
+	padding:5px;
+}
+td.number_col {
+	text-align:center;
+}
+td.date_col {
+	text-align:center;
+}
+td.text_col {
+	text-align:left;
+}

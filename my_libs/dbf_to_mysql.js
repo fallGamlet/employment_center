@@ -136,10 +136,10 @@
 				qarr.push("create table if not exists czn.work_book_type (id integer, name varchar(50));");
 				qarr.push("delete from czn.work_book_type");
 				// KL_VIDIW.DBF 								KOD,N,9,0	NAME,C,50	PR,N,2,0	GR,N,2,0
-				qarr.push("create table if not exists czn.payment_change_type (id integer, name varchar(50), pr integer, gr integer);");
+				qarr.push("create table if not exists czn.payment_change_type (id integer NOT NULL AUTO_INCREMENT PRIMARY KEY, name varchar(50), pr integer, gr integer);");
 				qarr.push("delete from czn.payment_change_type");
 				// KL_PRIW.DBF 									KODV,N,4,0	KODP,N,4,0	NAME,C,50	NAMEP,C,70	PR,N,2,0
-				qarr.push("create table if not exists czn.payment_change_reason (id integer, code_v integer, name varchar(100), code_p integer, name_p varchar(100), pr integer);");
+				qarr.push("create table if not exists czn.payment_change_reason (id integer  NOT NULL AUTO_INCREMENT PRIMARY KEY, code_v integer, name varchar(100), code_p integer, name_p varchar(100), pr integer);");
 				qarr.push("delete from czn.payment_change_reason");
 				// PRIKAZ.DBF 									KART_N,N,6,0	IND_KART,N,2,0	DATA_OB,D	NOMPRIK,N,6,0	NOMVYP,N,4,0	DATPRIK,D	VIDI,N,4,0	PRIZ,N,4,0	PR_OBV,N,1,0	INF,C,130	OTM,N,2,0
 				qarr.push("create table if not exists czn.order (id integer NOT NULL AUTO_INCREMENT PRIMARY KEY, card_n integer, ind_card integer, ob_date datetime, order_num integer, nomvyp integer, order_date datetime, vidi integer, priz integer, pr_obv integer, inf varchar(200), otm integer);");
@@ -150,9 +150,12 @@
 				// Таблица - Семейное положение
 				qarr.push("drop table if exists czn.marital_status;");
 				qarr.push("create table if not exists czn.marital_status (id integer NOT NULL PRIMARY KEY, name varchar(30));");
-				// создание представления для person_card
+				// создание представления для person_card - карточек персон (людей)
 				qarr.push("DROP VIEW IF EXISTS czn.person_card_view;");
-				qarr.push("CREATE VIEW czn.person_card_view AS  select pers.id AS id, 	pers.card_n AS card_n, 	pers.ind_card AS ind_card, 	pers.code_rm AS code_rm, 	pers.obr_date AS obr_date, 	pers.fio AS fio, 	pers.sex AS sex, 	pers.doc_type_id AS doc_type_id, 	doc_type.name AS doc_type_name, 	pers.doc_sern AS doc_sern, 	doc_series.name AS doc_sern_name, 	pers.doc_series AS doc_series, 	pers.doc_num AS doc_num, 	pers.doc_s AS doc_s, 	pers.doc_bywho AS doc_bywho, 	pers.doc_date AS doc_date, 	pers.born_date AS born_date, 	pers.citizen_id AS citizen_id, 	citizen.name AS citizen_name, 	pers.nationality_id AS nationality_id, 	nationality.name AS nationality_name, 	pers.address AS address, 	pers.phone_num AS phone_num, 	pers.empl_status_id AS empl_status_id, 	empl_status.name AS empl_status_name, 	pers.unempl_type_id AS unempl_type_id, 	unempl_type.name AS unempl_type_name, 	pers.soc_protection_type_id AS soc_protection_type_id, 	soc_protection_type.name AS soc_protection_type_name, 	pers.bzn_date AS bzn_date, 	pers.bzk_date AS bzk_date, 	pers.ZAKRK AS ZAKRK, 	card_close_reason.name AS card_close_reason_name, 	pers.education_type_id AS education_type_id, 	education_type.name AS education_type_name, 	pers.prof_id AS prof_id, 	prof.name AS prof_name, 	pers.qualific_id AS qualific_id, 	qualification.name AS qualific_name, 	pers.stag_pf AS stag_pf, 	pers.last_org_id AS last_org_id, 	org.name AS last_org_name, 	pers.post_id AS post_id, 	post.name AS post_name, 	pers.post_qualific_id AS post_qualific_id, 	post_qualific.name AS post_qualific_name, 	pers.stag_o AS stag_o, 	pers.stag_o_m AS stag_o_m, 	pers.stag_pr_g AS stag_pr_g, 	pers.stag_pr_m AS stag_pr_m, 	pers.stag_12 AS stag_12, 	pers.secteconom_id AS secteconom_id, 	secteconom.name AS secteconom_name, 	pers.otrnarhoz_id AS otrnarhoz_id, 	otrnarhoz.name AS otrnarhoz_name, 	pers.dismiss_date AS dismiss_date, 	pers.avg_salary AS avg_salary, 	pers.marital_status_id AS marital_status_id, 	marital_status.name as marital_status_name, 	pers.dismiss_type_id AS dismiss_type_id, 	dismiss_type.name AS dismiss_type_name, 	pers.dependent_num AS dependent_num, 	pers.TR_FSOB AS TR_FSOB, 	pers.TR_PRED AS TR_PRED, 	pers.TR_PROF AS TR_PROF, 	pers.TR_KVA AS TR_KVA, 	pers.TR_KOLDPRF AS TR_KOLDPRF, 	pers.TR_SOP AS TR_SOP, 	pers.TR_VIDR AS TR_VIDR, 	pers.TR_SMEN AS TR_SMEN, 	pers.TR_ZARPL AS TR_ZARPL, 	pers.TR_RAIG AS TR_RAIG, 	pers.TR_KOLOPRF AS TR_KOLOPRF, 	pers.DATA_KOR AS DATA_KOR, 	pers.STATUS_OB AS STATUS_OB, 	pers.SN_OB AS SN_OB, 	pers.DAT_OSU AS DAT_OSU, 	pers.VID_TRKN AS VID_TRKN, 	work_book_type.name as work_book_type_name, 	pers.SER_TRKN AS SER_TRKN, 	pers.NOM_TRKN AS NOM_TRKN, 	pers.DAT_TRKN AS DAT_TRKN, 	pers.POVTOR AS POVTOR, 	pers.PR_POSOB AS PR_POSOB, 	pers.PR_STIP AS PR_STIP, 	pers.city_id AS city_id, 	city.name AS city_name, 	pers.district_id AS district_id, 	district.name AS district_name  from ((((((((((((((((((((( czn.person_card pers  left join czn.city on((city.id = pers.city_id)))  left join czn.district on((district.id = pers.district_id)))  left join czn.doc_type on((doc_type.id = pers.doc_type_id)))  left join czn.doc_series on((doc_series.id = pers.doc_sern)))  left join czn.citizen on((citizen.id = pers.citizen_id)))  left join czn.nationality on((nationality.id = pers.nationality_id)))  left join czn.empl_status on((empl_status.id = pers.empl_status_id)))  left join czn.unempl_type on((unempl_type.id = pers.unempl_type_id)))  left join czn.soc_protection_type on((soc_protection_type.id = pers.soc_protection_type_id)))  left join czn.dismiss_type on((dismiss_type.id = pers.dismiss_type_id)))  left join czn.secteconom on((secteconom.id = pers.secteconom_id)))  left join czn.otrnarhoz on((otrnarhoz.id = pers.otrnarhoz_id)))  left join czn.education_type on((education_type.id = pers.education_type_id)))  left join czn.prof on((prof.id = pers.prof_id)))  left join czn.qualification on((qualification.id = pers.qualific_id)))  left join czn.org on((org.id = pers.last_org_id)))  left join czn.qualification post_qualific on((post_qualific.id = pers.post_qualific_id)))  left join czn.prof post on((post.id = pers.post_id))) left join czn.work_book_type work_book_type ON (work_book_type.id = pers.VID_TRKN)) left join czn.card_close_reason ON (card_close_reason.id = pers.ZAKRK)) left join CZN.marital_status ON (marital_status.id = pers.marital_status_id))");
+				qarr.push("CREATE VIEW czn.person_card_view AS  select pers.id AS id, 	pers.card_n AS card_n, 	pers.ind_card AS ind_card, 	pers.code_rm AS code_rm, 	pers.obr_date AS obr_date, 	pers.fio AS fio, 	pers.sex AS sex, 	pers.doc_type_id AS doc_type_id, 	doc_type.name AS doc_type_name, 	pers.doc_sern AS doc_sern, 	doc_series.name AS doc_sern_name, 	pers.doc_series AS doc_series, 	pers.doc_num AS doc_num, 	pers.doc_s AS doc_s, 	pers.doc_bywho AS doc_bywho, 	pers.doc_date AS doc_date, 	pers.born_date AS born_date, 	pers.citizen_id AS citizen_id, 	citizen.name AS citizen_name, 	pers.nationality_id AS nationality_id, 	nationality.name AS nationality_name, 	pers.address AS address, 	pers.phone_num AS phone_num, 	pers.empl_status_id AS empl_status_id, 	empl_status.name AS empl_status_name, 	pers.unempl_type_id AS unempl_type_id, 	unempl_type.name AS unempl_type_name, 	pers.soc_protection_type_id AS soc_protection_type_id, 	soc_protection_type.name AS soc_protection_type_name, 	pers.bzn_date AS bzn_date, 	pers.bzk_date AS bzk_date, 	pers.ZAKRK AS ZAKRK, 	card_close_reason.name AS card_close_reason_name, 	pers.education_type_id AS education_type_id, 	education_type.name AS education_type_name, 	pers.prof_id AS prof_id, 	prof.name AS prof_name, 	pers.qualific_id AS qualific_id, 	qualification.name AS qualific_name, 	pers.stag_pf AS stag_pf, 	pers.last_org_id AS last_org_id, 	org.name AS last_org_name, 	pers.post_id AS post_id, 	post.name AS post_name, 	pers.post_qualific_id AS post_qualific_id, 	post_qualific.name AS post_qualific_name, 	pers.stag_o AS stag_o, 	pers.stag_o_m AS stag_o_m, 	pers.stag_pr_g AS stag_pr_g, 	pers.stag_pr_m AS stag_pr_m, 	pers.stag_12 AS stag_12, 	pers.secteconom_id AS secteconom_id, 	secteconom.name AS secteconom_name, 	pers.otrnarhoz_id AS otrnarhoz_id, 	otrnarhoz.name AS otrnarhoz_name, 	pers.dismiss_date AS dismiss_date, 	pers.avg_salary AS avg_salary, 	pers.marital_status_id AS marital_status_id, 	marital_status.name as marital_status_name, 	pers.dismiss_type_id AS dismiss_type_id, 	dismiss_type.name AS dismiss_type_name, 	pers.dependent_num AS dependent_num, 	pers.TR_FSOB AS TR_FSOB, 	pers.TR_PRED AS TR_PRED, 	pers.TR_PROF AS TR_PROF, 	pers.TR_KVA AS TR_KVA, 	pers.TR_KOLDPRF AS TR_KOLDPRF, 	pers.TR_SOP AS TR_SOP, 	pers.TR_VIDR AS TR_VIDR, 	pers.TR_SMEN AS TR_SMEN, 	pers.TR_ZARPL AS TR_ZARPL, 	pers.TR_RAIG AS TR_RAIG, 	pers.TR_KOLOPRF AS TR_KOLOPRF, 	pers.DATA_KOR AS DATA_KOR, 	pers.STATUS_OB AS STATUS_OB, 	pers.SN_OB AS SN_OB, 	pers.DAT_OSU AS DAT_OSU, 	pers.VID_TRKN AS VID_TRKN, 	work_book_type.name as work_book_type_name, 	pers.SER_TRKN AS SER_TRKN, 	pers.NOM_TRKN AS NOM_TRKN, 	pers.DAT_TRKN AS DAT_TRKN, 	pers.POVTOR AS POVTOR, 	pers.PR_POSOB AS PR_POSOB, 	pers.PR_STIP AS PR_STIP, 	pers.city_id AS city_id, 	city.name AS city_name, 	pers.district_id AS district_id, 	district.name AS district_name  from ((((((((((((((((((((( czn.person_card pers  left join czn.city on((city.id = pers.city_id)))  left join czn.district on((district.id = pers.district_id)))  left join czn.doc_type on((doc_type.id = pers.doc_type_id)))  left join czn.doc_series on((doc_series.id = pers.doc_sern)))  left join czn.citizen on((citizen.id = pers.citizen_id)))  left join czn.nationality on((nationality.id = pers.nationality_id)))  left join czn.empl_status on((empl_status.id = pers.empl_status_id)))  left join czn.unempl_type on((unempl_type.id = pers.unempl_type_id)))  left join czn.soc_protection_type on((soc_protection_type.id = pers.soc_protection_type_id)))  left join czn.dismiss_type on((dismiss_type.id = pers.dismiss_type_id)))  left join czn.secteconom on((secteconom.id = pers.secteconom_id)))  left join czn.otrnarhoz on((otrnarhoz.id = pers.otrnarhoz_id)))  left join czn.education_type on((education_type.id = pers.education_type_id)))  left join czn.prof on((prof.id = pers.prof_id)))  left join czn.qualification on((qualification.id = pers.qualific_id)))  left join czn.org on((org.id = pers.last_org_id)))  left join czn.qualification post_qualific on((post_qualific.id = pers.post_qualific_id)))  left join czn.prof post on((post.id = pers.post_id))) left join czn.work_book_type work_book_type ON (work_book_type.id = pers.VID_TRKN)) left join czn.card_close_reason ON (card_close_reason.id = pers.ZAKRK)) left join czn.marital_status ON (marital_status.id = pers.marital_status_id))");
+				// создание представления для order - приказов
+				qarr.push("DROP VIEW IF EXISTS czn.order_view;");
+				qarr.push("CREATE VIEW czn.order_view AS SELECT o.id ,o.card_n ,o.ind_card ,o.ob_date ,o.order_num ,o.nomvyp ,o.order_date ,o.vidi ,pct.name as vidi_name ,o.priz ,pcr.name as priz_name ,o.pr_obv ,o.inf ,o.otm FROM czn.order o LEFT JOIN czn.payment_change_type pct ON pct.id = o.vidi LEFT JOIN czn.payment_change_reason pcr ON pcr.code_v = pct.id and pcr.code_p = o.priz");
 				
 				for(i in qarr) {
 					connection.query(qarr[i], function(err) {
@@ -191,7 +194,7 @@
 			function(callback) {
 				var connection = mysql.createConnection(dbConOptions);
 				connection.connect();
-				var orgs = new DBFQuery(path + "FIL_OBR.DBF",
+				var dbf = new DBFQuery(path + "FIL_OBR.DBF",
 							function(record) {
 								return (record['KART_N'] !== null && record['KART_N'] !== undefined);
 							},
@@ -284,7 +287,7 @@
 									callback(null, "person_card... OK");
 								});
 							});
-				orgs.selectSimple();
+				dbf.selectSimple();
 			},
 			// PRIKAZ.DBF
 			function(callback) {
@@ -1301,11 +1304,224 @@
 			}
 		);
 	},
-	updatePeopleCards: function(options) {
+	updatePeopleCards: function(options, callback) {
+		var path, 
+			dbf,
+			dbConOptions,
+			start_time = Date.now(),
+			end_time,
+			dbfCount=0,
+			insCount=0;
 		
+		if(options.dbfpath) { path = options.dbfpath; } 
+		else { path = "R:/CZNF/"; }
+		
+		if(options.dbconoptions) { dbConOptions = options.dbconoptions; } 
+		else { dbConOptions = { host: 'localhost', port: 3311, user: 'root', password: 'root' }; }
+		
+		// FIL_OBR.DBF 										KART_N,N,6,0	IND_KART,N,2,0	KOD_RM,C,1	OBR_DT,N,8,0	FIO,C,50	POL,C,1	DOKVID,N,2,0	DOK_SERN,C,8	DOK_SER,C,3	DOK_N,N,10,0	DOK_S,C,10	KEM_VID,C,30	DOK_DT,N,8,0	ROGD_DT,N,8,0	GRAGD,N,2,0	NAC,N,2,0	ADRESS,C,54	TEL,N,7,0	OTNZAN,N,2,0	VIDNEZAN,N,2,0	KAT_SOCZ,N,2,0	DATABZN,N,8,0	DATABZK,N,8,0	ZAKRK,N,2,0	OBRAZ,N,2,0	PROF_OBR,N,6,0	KVA_OBR,N,2,0	STAG_PF,N,3,0	POSL_RAB,N,6,0	DOLGN,N,6,0	KVA_DOLGN,N,2,0	STAG_O,N,3,0	STAG_O_M,N,3,0	STAG_PR_G,N,3,0	STAG_PR_M,N,3,0	STAG_12,N,2,0	SEKT_EK,N,2,0	OTR_NH,N,2,0	UVOL_DT,N,8,0	SREDN_ZAR,N,10,0	SEM_POL,N,2,0	UVOL_PR,N,2,0	KOL_IGD,N,3,0	TR_FSOB,N,2,0	TR_PRED,N,9,0	TR_PROF,N,6,0	TR_KVA,N,2,0	TR_KOLDPRF,N,3,0	TR_SOP,N,2,0	TR_VIDR,N,2,0	TR_SMEN,N,2,0	TR_ZARPL,N,10,0	TR_RAIG,N,2,0	TR_KOLOPRF,N,3,0	DATA_KOR,D	STATUS_OB,N,2,0	SN_OB,N,2,0	DAT_OSU,D	VID_TRKN,N,2,0	SER_TRKN,C,8	NOM_TRKN,C,12	DAT_TRKN,D	POVTOR,N,1,0	PR_POSOB,N,2,0	PR_STIP,N,2,0	KODNP,N,2,0	RAIOG,N,2,0	VID_ADR,N,1,0	KOD_UL,N,4,0	NDOM,N,3,0	IND_DOM,C,1	NKV,N,3,0
+		qarr = [];
+		qarr.push("drop table if exists czn.person_card;");
+		qarr.push("create table if not exists czn.person_card (id integer NOT NULL AUTO_INCREMENT PRIMARY KEY, card_n integer, ind_card integer, code_rm varchar(5), obr_date datetime, fio varchar(200), sex varchar(20), doc_type_id integer, doc_sern varchar(10), doc_series varchar(10), doc_num integer, doc_s varchar(25), doc_bywho varchar(100), doc_date datetime, born_date datetime, citizen_id integer, nationality_id integer, address varchar(200), phone_num varchar(25), empl_status_id integer, unempl_type_id integer, soc_protection_type_id integer, bzn_date datetime, bzk_date datetime, ZAKRK integer, education_type_id integer, prof_id integer, qualific_id integer, stag_pf integer, last_org_id integer, post_id integer, post_qualific_id integer, stag_o integer, stag_o_m integer, stag_pr_g integer, stag_pr_m integer, stag_12 integer, secteconom_id integer, otrnarhoz_id integer, dismiss_date datetime, avg_salary integer, marital_status_id integer, dismiss_type_id integer, dependent_num integer, TR_FSOB integer, TR_PRED integer, TR_PROF integer, TR_KVA integer, TR_KOLDPRF integer, TR_SOP integer, TR_VIDR integer, TR_SMEN integer, TR_ZARPL integer, TR_RAIG integer, TR_KOLOPRF integer, DATA_KOR datetime, STATUS_OB integer, SN_OB integer, DAT_OSU datetime, VID_TRKN integer, SER_TRKN varchar(25), NOM_TRKN integer, DAT_TRKN datetime, POVTOR integer, PR_POSOB integer, PR_STIP integer, city_id integer, district_id integer);");
+		//~ qarr.push("delete from czn.person_card");
+		dbConOptions = { host: 'localhost', port: 3311, user: 'root', password: 'root' }; 
+		var connection = mysql.createConnection(dbConOptions);
+		//~ connection.connect();
+		try {
+			qarr.forEach(function(qstr) {
+				connection.query(qstr, function(err, res) {
+					if (err) {
+						err['query'] = qstr;
+						throw err;
+					}
+				});
+			});
+		} catch(err) {
+			console.log(err);
+			callback(null, {error: err, result: null});
+			return;
+		}
+		
+		var dbf = new DBFParser(path + "FIL_OBR.DBF", 'cp866');
+		dbf.on('record', function(record) {
+			if(record['KART_N'] == null || record['KART_N'] == undefined) {
+				return false;
+			}
+			dbfCount++;
+			var qstr = "insert into czn.person_card (card_n, ind_card, code_rm , obr_date, fio , sex , doc_type_id, doc_sern, doc_series, doc_num, doc_s, doc_bywho, doc_date, born_date, citizen_id, nationality_id, address , phone_num, empl_status_id, unempl_type_id, soc_protection_type_id, bzn_date, bzk_date, ZAKRK, education_type_id, prof_id, qualific_id, stag_pf, last_org_id, post_id, post_qualific_id, stag_o, stag_o_m, stag_pr_g, stag_pr_m, stag_12, secteconom_id, otrnarhoz_id, dismiss_date, avg_salary, marital_status_id, dismiss_type_id, dependent_num, TR_FSOB, TR_PRED, TR_PROF, TR_KVA, TR_KOLDPRF, TR_SOP, TR_VIDR, TR_SMEN, TR_ZARPL, TR_RAIG, TR_KOLOPRF, DATA_KOR, STATUS_OB, SN_OB, DAT_OSU, VID_TRKN, SER_TRKN, NOM_TRKN, DAT_TRKN, POVTOR, PR_POSOB, PR_STIP, city_id, district_id) values (";
+			//qstr += (i+1) + ", ";
+			qstr += fieldToString(record["KART_N"]) +", ";
+			qstr += fieldToString(record["IND_KART"]) +", ";
+			qstr += fieldToString(record["KOD_RM"]) +", ";
+			qstr += uglyDateToString(record["OBR_DT"]) + ", ";
+			qstr += fieldToString(record["FIO"]) +", ";
+			qstr += fieldToString(record["POL"]) +", ";
+			qstr += fieldToString(record["DOKVID"]) +", ";
+			qstr += fieldToString(record["DOK_SERN"]) +", ";
+			qstr += fieldToString(record["DOK_SER"]) +", ";
+			qstr += fieldToString(record["DOK_N"]) +", ";
+			qstr += fieldToString(record["DOK_S"]) +", ";
+			qstr += fieldToString(record["KEM_VID"]) +", ";
+			qstr += uglyDateToString(record["DOK_DT"]) + ", ";
+			qstr += uglyDateToString(record["ROGD_DT"]) + ", ";
+			qstr += fieldToString(record["GRAGD"]) +", ";
+			qstr += fieldToString(record["NAC"]) +", ";
+			qstr += fieldToString(record["ADRESS"]) +", ";
+			qstr += fieldToString(record["TEL"]) +", ";
+			qstr += fieldToString(record["OTNZAN"]) +", ";
+			qstr += fieldToString(record["VIDNEZAN"]) +", ";
+			qstr += fieldToString(record["KAT_SOCZ"]) +", ";
+			qstr += uglyDateToString(record["DATABZN"]) +", ";
+			qstr += uglyDateToString(record["DATABZK"]) +", ";
+			qstr += fieldToString(record["ZAKRK"]) +", ";
+			qstr += fieldToString(record["OBRAZ"]) +", ";
+			qstr += fieldToString(record["PROF_OBR"]) +", ";
+			qstr += fieldToString(record["KVA_OBR"]) +", ";
+			qstr += fieldToString(record["STAG_PF"]) +", ";
+			qstr += fieldToString(record["POSL_RAB"]) +", ";
+			qstr += fieldToString(record["DOLGN"]) +", ";
+			qstr += fieldToString(record["KVA_DOLGN"]) +", ";
+			qstr += fieldToString(record["STAG_O"]) +", ";
+			qstr += fieldToString(record["STAG_O_M"]) +", ";
+			qstr += fieldToString(record["STAG_PR_G"]) +", ";
+			qstr += fieldToString(record["STAG_PR_M"]) +", ";
+			qstr += fieldToString(record["STAG_12"]) +", ";
+			qstr += fieldToString(record["SEKT_EK"]) +", ";
+			qstr += fieldToString(record["OTR_NH"]) +", ";
+			qstr += uglyDateToString(record["UVOL_DT"]) +", ";
+			qstr += fieldToString(record["SREDN_ZAR"]) +", ";
+			qstr += fieldToString(record["SEM_POL"]) +", ";
+			qstr += fieldToString(record["UVOL_PR"]) +", ";
+			qstr += fieldToString(record["KOL_IGD"]) +", ";
+			qstr += fieldToString(record["TR_FSOB"]) +", ";
+			qstr += fieldToString(record["TR_PRED"]) +", ";
+			qstr += fieldToString(record["TR_PROF"]) +", ";
+			qstr += fieldToString(record["TR_KVA"]) +", ";
+			qstr += fieldToString(record["TR_KOLDPRF"]) +", ";
+			qstr += fieldToString(record["TR_SOP"]) +", ";
+			qstr += fieldToString(record["TR_VIDR"]) +", ";
+			qstr += fieldToString(record["TR_SMEN"]) +", ";
+			qstr += fieldToString(record["TR_ZARPL"]) +", ";
+			qstr += fieldToString(record["TR_RAIG"]) +", ";
+			qstr += fieldToString(record["TR_KOLOPRF"]) +", ";
+			qstr += fieldToString(record["DATA_KOR"]) +", "; /*datetime*/
+			qstr += fieldToString(record["STATUS_OB"]) +", ";
+			qstr += fieldToString(record["SN_OB"]) +", ";
+			qstr += fieldToString(record["DAT_OSU"]) +", "; /*datetime*/
+			qstr += fieldToString(record["VID_TRKN"]) +", ";
+			qstr += fieldToString(record["SER_TRKN"]) +", ";
+			qstr += fieldToString(record["NOM_TRKN"]) +", ";
+			qstr += fieldToString(record["DAT_TRKN"]) +", "; /*datetime*/
+			qstr += fieldToString(record["POVTOR"]) +", ";
+			qstr += fieldToString(record["PR_POSOB"]) +", ";
+			qstr += fieldToString(record["PR_STIP"]) +", ";
+			qstr += fieldToString(record["KODNP"]) +", ";
+			qstr += fieldToString(record["RAIOG"]) +")";
+			//~ console.log(qstr);
+			connection.query(qstr, function(err, res) {
+				if (err) {
+					console.log(qstr);
+					console.log(err);
+					throw err;
+				} else {
+					insCount++;
+				}
+			});
+		});
+		dbf.on('end', function() {
+			connection.end(function() {
+				if(typeof(options.callback) == 'function') {
+					var error = null,
+						result = ["person_card... OK. DBF count:"+dbfCount +", inserted count: "+insCount], 
+						timeleft = (end_time - start_time)/1000;
+					options.callback(error, result, timeleft);
+				 }
+			});
+		});
+		dbf.parse();
 	},
 	updateOrders: function(options) {
+		var path, 
+			dbf,
+			dbConOptions,
+			start_time = Date.now(),
+			end_time,
+			dbfCount=0,
+			insCount=0;
 		
+		if(options.dbfpath) { path = options.dbfpath; } 
+		else { path = "R:/CZNF/"; }
+		
+		if(options.dbconoptions) { dbConOptions = options.dbconoptions; } 
+		else { dbConOptions = { host: 'localhost', port: 3311, user: 'root', password: 'root' }; }
+		
+		// PRIKAZ.DBF 										KART_N,N,6,0	IND_KART,N,2,0	KOD_RM,C,1	OBR_DT,N,8,0	FIO,C,50	POL,C,1	DOKVID,N,2,0	DOK_SERN,C,8	DOK_SER,C,3	DOK_N,N,10,0	DOK_S,C,10	KEM_VID,C,30	DOK_DT,N,8,0	ROGD_DT,N,8,0	GRAGD,N,2,0	NAC,N,2,0	ADRESS,C,54	TEL,N,7,0	OTNZAN,N,2,0	VIDNEZAN,N,2,0	KAT_SOCZ,N,2,0	DATABZN,N,8,0	DATABZK,N,8,0	ZAKRK,N,2,0	OBRAZ,N,2,0	PROF_OBR,N,6,0	KVA_OBR,N,2,0	STAG_PF,N,3,0	POSL_RAB,N,6,0	DOLGN,N,6,0	KVA_DOLGN,N,2,0	STAG_O,N,3,0	STAG_O_M,N,3,0	STAG_PR_G,N,3,0	STAG_PR_M,N,3,0	STAG_12,N,2,0	SEKT_EK,N,2,0	OTR_NH,N,2,0	UVOL_DT,N,8,0	SREDN_ZAR,N,10,0	SEM_POL,N,2,0	UVOL_PR,N,2,0	KOL_IGD,N,3,0	TR_FSOB,N,2,0	TR_PRED,N,9,0	TR_PROF,N,6,0	TR_KVA,N,2,0	TR_KOLDPRF,N,3,0	TR_SOP,N,2,0	TR_VIDR,N,2,0	TR_SMEN,N,2,0	TR_ZARPL,N,10,0	TR_RAIG,N,2,0	TR_KOLOPRF,N,3,0	DATA_KOR,D	STATUS_OB,N,2,0	SN_OB,N,2,0	DAT_OSU,D	VID_TRKN,N,2,0	SER_TRKN,C,8	NOM_TRKN,C,12	DAT_TRKN,D	POVTOR,N,1,0	PR_POSOB,N,2,0	PR_STIP,N,2,0	KODNP,N,2,0	RAIOG,N,2,0	VID_ADR,N,1,0	KOD_UL,N,4,0	NDOM,N,3,0	IND_DOM,C,1	NKV,N,3,0
+		qarr = [];
+		qarr.push("drop table if exists czn.person_card;");
+		qarr.push("create table if not exists czn.person_card (id integer NOT NULL AUTO_INCREMENT PRIMARY KEY, card_n integer, ind_card integer, code_rm varchar(5), obr_date datetime, fio varchar(200), sex varchar(20), doc_type_id integer, doc_sern varchar(10), doc_series varchar(10), doc_num integer, doc_s varchar(25), doc_bywho varchar(100), doc_date datetime, born_date datetime, citizen_id integer, nationality_id integer, address varchar(200), phone_num varchar(25), empl_status_id integer, unempl_type_id integer, soc_protection_type_id integer, bzn_date datetime, bzk_date datetime, ZAKRK integer, education_type_id integer, prof_id integer, qualific_id integer, stag_pf integer, last_org_id integer, post_id integer, post_qualific_id integer, stag_o integer, stag_o_m integer, stag_pr_g integer, stag_pr_m integer, stag_12 integer, secteconom_id integer, otrnarhoz_id integer, dismiss_date datetime, avg_salary integer, marital_status_id integer, dismiss_type_id integer, dependent_num integer, TR_FSOB integer, TR_PRED integer, TR_PROF integer, TR_KVA integer, TR_KOLDPRF integer, TR_SOP integer, TR_VIDR integer, TR_SMEN integer, TR_ZARPL integer, TR_RAIG integer, TR_KOLOPRF integer, DATA_KOR datetime, STATUS_OB integer, SN_OB integer, DAT_OSU datetime, VID_TRKN integer, SER_TRKN varchar(25), NOM_TRKN integer, DAT_TRKN datetime, POVTOR integer, PR_POSOB integer, PR_STIP integer, city_id integer, district_id integer);");
+		//~ qarr.push("delete from czn.person_card");
+		dbConOptions = { host: 'localhost', port: 3311, user: 'root', password: 'root' }; 
+		var connection = mysql.createConnection(dbConOptions);
+		//~ connection.connect();
+		try {
+			qarr.forEach(function(qstr) {
+				connection.query(qstr, function(err, res) {
+					if (err) {
+						err['query'] = qstr;
+						throw err;
+					}
+				});
+			});
+		} catch(err) {
+			console.log(err);
+			callback(null, {error: err, result: null});
+			return;
+		}
+		
+		var dbf = new DBFParser(path + "PRIKAZ.DBF", 'cp866');
+		dbf.on('record', function(record) {
+			if(record['KART_N'] == null || record['KART_N'] == undefined) {
+				return false;
+			}
+			dbfCount++;
+			
+			if(record["NAME"]) record["NAME"] = record["NAME"].replace(/\\/gi, "/");
+			if(record["NAMEP"]) record["NAMEP"] = record["NAMEP"].replace(/\\/gi, "/");
+			if(record["DATA_OB"]) record["DATA_OB"] = "'"+ record["DATA_OB"].toISOString().slice(0,10) +"'";
+			if(record["DATPRIK"]) record["DATPRIK"] = "'"+ record["DATPRIK"].toISOString().slice(0,10) +"'";
+			
+			var qstr = "insert into czn.order (id, card_n, ind_card, ob_date, order_num, nomvyp, order_date, vidi, priz, pr_obv, inf, otm) values (";
+			qstr += (i+1) + ", ";
+			qstr += record["KART_N"] + ", ";
+			qstr += record["IND_KART"] + ", ";
+			qstr += record["DATA_OB"] + ", ";
+			qstr += record["NOMPRIK"] + ", ";
+			qstr += record["NOMVYP"] + ", ";
+			qstr += record["DATPRIK"] + ", ";
+			qstr += record["VIDI"] + ", ";
+			qstr += record["PRIZ"] + ", ";
+			qstr += record["PR_OBV"] + ", ";
+			qstr += "'"+record["INF"] + "', ";
+			qstr += record["OTM"] + ")";
+			//~ console.log(qstr);
+			connection.query(qstr, function(err, res) {
+				if (err) {
+					console.log(qstr);
+					console.log(err);
+					throw err;
+				} else {
+					insCount++;
+				}
+			});
+		});
+		dbf.on('end', function() {
+			connection.end(function() {
+				callback(null, { error: null, 
+								 result: "order... OK. DBF count:"+dbfCount +", inserted count: "+insCount, 
+								 timeleft: (end_time - start_time)/1000});
+			});
+		});
+		dbf.parse();
 	}
 	}
 	

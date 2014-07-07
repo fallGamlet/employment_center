@@ -1,12 +1,12 @@
 var mysql     = require('mysql')
 	,async = require("async")
-	,mySettings = require('../settings')
-	,dbfkit = require("dbfkit")
-	,DBFQuery = dbfkit.DBFQuery
-	,DBFParser = dbfkit.DBFParser;
+	,mySettings = require('../settings');
+	//~ ,dbfkit = require("dbfkit")
+	//~ ,DBFQuery = dbfkit.DBFQuery
+	//~ ,DBFParser = dbfkit.DBFParser;
 
 exports.index = function(req, res) {
-	return res.render('peaple_index.html', { title: 'Поиск людей'});
+	return res.render('people/people_index.html', { title: 'Поиск людей'});
 }
 
 exports.search = function(req, res) {
@@ -17,7 +17,7 @@ exports.search = function(req, res) {
 		validate = formValidate(form);
 	
 	if(!validate) {
-		return res.render('people_view_inner.html', { title: 'Поиск людей', formvals: form });
+		return res.render('people/people_view_inner.html', { title: 'Поиск людей', formvals: form });
 	}
 	correctingForm(form);
 	
@@ -70,7 +70,7 @@ exports.search = function(req, res) {
 		qstr += " AND SN_OB = "+ form['st_uchet'];
 	}
 	qstr += ";"
-	console.log(qstr);
+	//~ console.log(qstr);
 	connection.query(qstr, function(err, rows) {
 		if (err) throw err;
 		records = rows;
@@ -80,7 +80,7 @@ exports.search = function(req, res) {
 		//~ console.log("Row founded: "+records.length)
 		responsed = true;
 		offsetDate = new Date().getTimezoneOffset();
-		return res.render('people_view_inner.html', { title: 'Поиск людей', peopleList: records, offsetDate: offsetDate});
+		return res.render('people/people_view_inner.html', { title: 'Поиск людей', peopleList: records, offsetDate: offsetDate});
 	});
 	
 	setTimeout(function(){
@@ -101,7 +101,7 @@ exports.viewone = function(req, res) {
 	connection.connect();
 	
 	qstr = "SELECT * FROM czn.person_card_view WHERE id=" + pk;
-	console.log(qstr);
+	//~ console.log(qstr);
 	connection.query(qstr, function(err, rows) {
 		if (err) throw err;
 		records = rows;
@@ -112,7 +112,7 @@ exports.viewone = function(req, res) {
 		//~ console.log(records[0]);
 		offsetDate = new Date().getTimezoneOffset();
 		responsed = true;
-		return res.render('people_view_one.html', { title: 'Поиск людей', peopleList: records, record:records[0], offsetDate:offsetDate });
+		return res.render('people/people_view_one.html', { title: 'Поиск людей', peopleList: records, record:records[0], offsetDate:offsetDate });
 	});
 	
 	setTimeout(function(){
