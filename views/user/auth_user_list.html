@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	<script src="/javascripts/jquery.js"></script>
+	<title>{{ title|title }}</title>
+	<script>
+		$(document).ready(function(){
+			
+		});
+	</script>
+</head>
+<body>
+	<div class="title_page">
+		{{ title|title }}
+	</div>
+	<div class="main_container">
+        <a class="button_link" href="./new/"></a>
+        <br>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Edit</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in records %}
+                <tr>
+                    <td>{{ row.username }}</td>
+                    <td>edit</td>
+                    <td>remove</td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+	</div>
+</body>
+</html>

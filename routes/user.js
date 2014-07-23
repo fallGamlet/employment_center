@@ -61,3 +61,35 @@ exports.dbPersonCardUpdate = function(req, res) {
 		res.redirect("/user/login");
 	}
 };
+
+exports.auth_index = function(req, res) {
+	if (req.session.authorized && req.session.username ==='admin') {
+		res.render('user/auth_index.html', { title: 'Центр занятости насяления' });
+	} else {
+		res.redirect("/user/login");
+	}
+};
+
+exports.auth_user_list = function(req, res) {
+	if (req.session.authorized && req.session.username ==='admin') {
+		res.render('user/auth_index.html', { title: 'Центр занятости насяления' });
+	} else {
+		res.redirect("/user/login");
+	}
+};
+
+exports.auth_group_list = function(req, res) {
+	if (req.session.authorized && req.session.username ==='admin') {
+		res.render('user/auth_index.html', { title: 'Центр занятости насяления' });
+	} else {
+		res.redirect("/user/login");
+	}
+};
+
+exports.auth_permission_list = function(req, res) {
+	if (req.session.authorized && req.session.username ==='admin') {
+		res.render('user/auth_index.html', { title: 'Центр занятости насяления' });
+	} else {
+		res.redirect("/user/login");
+	}
+};

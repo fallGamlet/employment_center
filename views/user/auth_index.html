@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	<script src="/javascripts/jquery.js"></script>
+	<title>{{ title|title }}</title>
+	<script>
+		$(document).ready(function(){
+			
+		});
+	</script>
+</head>
+<body>
+	<div class="title_page">
+		{{ title|title }}
+	</div>
+	<div class="main_container">
+        <a class="button_link" href="/user/auth/user/view_list/">Пользователи</a>
+        <a class="button_link" href="/user/auth/group/view_list/">Группы</a>
+        <a class="button_link" href="/user/auth/permissions/view_list/">Привилегии</a>
+	</div>
+</body>
+</html>

@@ -1,7 +1,6 @@
 /**
  * Module dependencies.
  */
-
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
@@ -11,8 +10,10 @@ var order_view = require('./routes/order');
 var http = require('http');
 var path = require('path');
 var swig = require('swig');
+var orm = require("orm");
+util = require("util");
 
-var mySettings = require('./settings');
+appSettings = require('./settings');
 
 var app = express();
 
@@ -22,6 +23,23 @@ app.engine('html', swig.renderFile);
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+app.use(orm.express(appSettings.getConnectionStr(), {
+    define: function (db, models, next) {
+    	db.load("./models", function(err) {
+    		console.log(err);
+    	});
+    	models.User = db.models["auth_user"];
+        models.Group = db.models["auth_group"];
+        models.ContentTable = db.models["content_table"];
+        models.Permissions = db.models["auth_permission"];
+        
+//        db.sync();
+        
+        next();
+    }
+}));
+
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());
@@ -33,7 +51,7 @@ app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
-if ('development' == app.get('env')) {
+if ('development' === app.get('env')) {
   app.use(express.errorHandler());
 }
 
@@ -44,6 +62,11 @@ app.get('/user/login', user.login);
 app.post('/user/login', user.login);
 app.get('/user/db/update', user.dbupdate);
 app.get('/user/db/update/person-cards', user.dbPersonCardUpdate);
+
+app.get('/user/auth', user.auth_index);
+app.get('/user/auth/user/view_list', user.auth_user_list);
+app.get('/user/auth/group/view_list', user.auth_group_list);
+app.get('/user/auth/permission/view_list', user.auth_permission_list);
 
 app.get('/vakansii', vakans_view.index);
 app.get('/vakansii/view', vakans_view.view);
