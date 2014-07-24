@@ -12,13 +12,15 @@ exports.index = function(req, res) {
 };
 
 exports.login = function(req, res) {
+//    console.log(req);
+    console.log(res);
 	if ((req.body.login===adminUserName)&&(req.body.password==='admin')) {
 		req.session.authorized = true;
 		req.session.username = req.body.login;
 		console.log('admin is here!');
-		res.redirect("/user");
+		res.redirect("/user/");
 	} else {
-		res.render('user/login.html', { title: 'Центр занятости насяления' });
+		res.render('user/login.html', {login:req.body.login});
 	}
 };
 
@@ -64,7 +66,7 @@ exports.dbPersonCardUpdate = function(req, res) {
 
 exports.auth_index = function(req, res) {
 	if (req.session.authorized && req.session.username ==='admin') {
-		res.render('user/auth_index.html', { title: 'Центр занятости насяления' });
+		res.render('user/auth_index.html');
 	} else {
 		res.redirect("/user/login");
 	}

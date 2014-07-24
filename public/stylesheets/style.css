@@ -1,18 +1,38 @@
 html {
 	padding:0px	;
 	margin:0px;
+    display: block;
+    position: relative;
+    height: 100%;
 }
 body {
   padding: 0px;
   margin:0px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  display: block;
+  position: relative;
+  height: 100%;
 }
 
 a {
-  color: #00B7FF;
+    color: #00B7FF;
 }
 
-.title_page {
+.background {
+    min-height: 100%;
+    display: block;
+    position: relative;
+    background: #FAFAFA;
+}
+.middle {
+    background: #FEFEFE;
+}
+.footer {
+    min-height: 100px;
+    background: #222;
+}
+
+.title_page, .top {
 	background:#EEE;
 	color:#393;
 	font-size:18pt;
@@ -45,6 +65,9 @@ a {
 	text-decoration:none;
 	font-weight:bold;
 	display:inline-block;
+}
+.button_link:hover, .go_to_main:hover {
+    background: #08349f
 }
 
 thead td {

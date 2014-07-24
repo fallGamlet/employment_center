@@ -1,0 +1,22 @@
+.side_panel {
+    float:left;
+    display: block;
+    position:relative;
+    width: 300px;
+    background: #EEE;
+    /*margin:5px;*/
+    vertical-align:top;
+}
+.side_panel .go_to_main, .side_panel .button_link {
+    display: block;
+    position: relative;
+}
+.content {
+    background: #EFEFEF;
+    margin-top: 10px;
+    margin-left: 310px;
+    padding: 5px;
+    /*display: inline-block;*/
+    position:relative;
+    vertical-align:top;
+}

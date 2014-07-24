@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8"/>
-	<link rel="stylesheet" href="/stylesheets/style.css">
-	<script src="/javascripts/jquery-2.1.0.js"></script>
-	<title>{{ title|title }}</title>
+{% extends 'base.html' %}
+
+{%block head_script%}
+    {% parent %}
 	<script>
 		$(document).ready(function(){
 			$('a.button_link').click(function(){
@@ -20,27 +17,24 @@
 			});
 		});
 	</script>
-</head>
-<body>
-	<div class="title_page">
-		{{ title|title }}
-	</div>
-	<div class="main_container">
-		<p>Welcome to {{ title }}</p>
-		<div style="display:inline-block;">
-			<img src="/images/science.png" />
-		</div>
-		<div class="menu">
-			<a class="button_link" href="/vakansii">
-				Вакансии
-			</a>
-			<a class="button_link" href="/search-peaple">
-				Люди
-			</a>
-			<a class="button_link" href="/user">
-				Администрирование
-			</a>
-		</div>
-	</div>
-</body>
-</html>
+{%endblock%}
+
+{%block body_middle%}
+    <div class="main_container">
+        <p>Welcome to {{ title }}</p>
+        <div style="display:inline-block;">
+            <img src="/images/science.png" />
+        </div>
+        <div class="menu">
+            <a class="button_link" href="/vakansii">
+                Вакансии
+            </a>
+            <a class="button_link" href="/search-peaple">
+                Люди
+            </a>
+            <a class="button_link" href="/user">
+                Администрирование
+            </a>
+        </div>
+    </div>
+{%endblock%}

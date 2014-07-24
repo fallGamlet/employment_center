@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+{% block head %}
+    {%block head_meta%}
+	<meta charset="utf-8"/>
+    {%endblock%}
+    {%block head_style%}
+	<link rel="stylesheet" href="/stylesheets/style.css">
+    {%endblock%}
+	<title>
+        {%block head_title%}
+        {%if title %}
+        {{ title|title }}
+        {%else%}
+        Центр занятости населения
+        {%endif%}
+        {%endblock%}
+    </title>
+    {%block head_script%}
+    <script src="/javascripts/jquery.js"></script>
+    {%endblock%}
+{% endblock %}
+</head>
+<body>
+{%block body%}
+<div class="background">
+	<div class="top">
+    {%block body_top%}
+		{%if title %}
+        {{ title|title }}
+        {%else%}
+        Центр занятости населения
+        {%endif%}
+    {%endblock%}
+	</div>
+    <div class="middle">
+    {%block body_middle%}
+    {%endblock%}
+    </div>
+</div>
+<div class="footer">
+{%block body_footer%}
+{%endblock%}
+</div>
+{%endblock%}
+</body>
+</html>
