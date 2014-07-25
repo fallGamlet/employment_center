@@ -1,0 +1,40 @@
+<table class="list_item_row">
+<thead>
+    <tr>
+        <th>Логин</th>
+        <th>Пароль</th>
+        <th>Почта</th>
+        <th>Телефон</th>
+        <th>Создан</th>
+        <th>Последний вход</th>
+        <th>Активен</th>
+        <th>Is Root</th>
+        <th></th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+{% for userItem in users %}
+    <tr>
+        <td>{{userItem.username}}</td>
+        <td>{{userItem.password}}</td>
+        <td>{{userItem.email}}</td>
+        <td>{{userItem.phone}}</td>
+        <td>{{userItem.created|date('d.m.Y', offsetDate)}}</td>
+        <td>
+            {%if userItem.last_ligin and userItem.last_ligin != null%}
+            {{userItem.last_ligin|date('d.m.Y', offsetDate)}}
+            {%endif%}
+        </td>
+        <td>{% if userItem.is_active %}да{%else%}нет{%endif%}</td>
+        <td>{% if userItem.is_superuser %}да{%else%}нет{%endif%}</td>
+        <td class="col_button_edit">
+            <a class="button_edit" href="/user/auth/user/edit/{{userItem.id}}">Edit</a>
+        </td>
+        <td class="col_button_delete">
+            <a class="button_delete" href="/user/auth/user/delete/{{userItem.id}}">Delete</a>
+        </td>
+    </tr>
+{%endfor%}
+</tbody>
+</table>
