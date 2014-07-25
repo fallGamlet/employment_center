@@ -14,6 +14,7 @@ var orm = require("orm");
 util = require("util");
 
 appSettings = require('./settings');
+offsetDate = new Date().getTimezoneOffset();
 
 var app = express();
 
@@ -33,9 +34,7 @@ app.use(orm.express(appSettings.getConnectionStr(), {
         models.Group = db.models["auth_group"];
         models.ContentTable = db.models["content_table"];
         models.Permissions = db.models["auth_permission"];
-        
 //        db.sync();
-        
         next();
     }
 }));
@@ -57,17 +56,6 @@ if ('development' === app.get('env')) {
 
 app.get('/', routes.index);
 
-app.get('/user', user.index);
-app.get('/user/login', user.login);
-app.post('/user/login', user.login);
-app.get('/user/db/update', user.dbupdate);
-app.get('/user/db/update/person-cards', user.dbPersonCardUpdate);
-
-app.get('/user/auth', user.auth_index);
-app.get('/user/auth/user/view_list', user.auth_user_list);
-app.get('/user/auth/group/view_list', user.auth_group_list);
-app.get('/user/auth/permission/view_list', user.auth_permission_list);
-
 app.get('/vakansii', vakans_view.index);
 app.get('/vakansii/view', vakans_view.view);
 app.get('/vakansii/search', vakans_view.search);
@@ -77,6 +65,14 @@ app.get('/search-peaple/preview', people_view.search);
 app.get('/people/view/:pk/:fio', people_view.viewone);
 
 app.get('/order/view/:card_n/:ind_card', order_view.view);
+
+app.get('/login', user.login);
+app.post('/login', user.login);
+app.get(/[/]admin([/].*)*$/, user.middleware);
+app.get('/admin', user.index);
+app.get('/admin/db/update', user.dbupdate);
+app.get('/admin/db/update/person-cards', user.dbPersonCardUpdate);
+app.get('/admin/auth/:model?/:action?/:id?', user.auth_index);
 
 
 http.createServer(app).listen(app.get('port'), function(){

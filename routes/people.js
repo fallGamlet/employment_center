@@ -1,16 +1,16 @@
 var mysql     = require('mysql')
 	,async = require("async")
-	,mySettings = require('../settings');
+//	,appSettings = require('../settings');
 	//~ ,dbfkit = require("dbfkit")
 	//~ ,DBFQuery = dbfkit.DBFQuery
 	//~ ,DBFParser = dbfkit.DBFParser;
 
 exports.index = function(req, res) {
 	return res.render('people/people_index.html', { title: 'Поиск людей'});
-}
+};
 
 exports.search = function(req, res) {
-	var pathName = mySettings.dbfBasePath,
+	var pathName = appSettings.dbfBasePath,
 		form = req.query,
 		responsed = false,
 		records = null,
@@ -21,7 +21,7 @@ exports.search = function(req, res) {
 	}
 	correctingForm(form);
 	
-	var dbConOptions = mySettings.dbConnOptions;
+	var dbConOptions = appSettings.dbConnOptions;
 	var connection = mysql.createConnection(dbConOptions);
 	connection.connect();
 	
@@ -96,7 +96,7 @@ exports.viewone = function(req, res) {
 		responsed = false,
 		qstr,
 		pk = req.params['pk'],
-		connection = mysql.createConnection(mySettings.dbConnOptions);
+		connection = mysql.createConnection(appSettings.dbConnOptions);
 	
 	connection.connect();
 	

@@ -7,9 +7,34 @@
     /*margin:5px;*/
     vertical-align:top;
 }
-.side_panel .go_to_main, .side_panel .button_link {
+.side_panel>.menu_item {
     display: block;
     position: relative;
+    background: #3165e2;
+    margin: 5px;
+}
+.button_link {
+    display:block;
+    position: relative;
+    margin: 0;
+    padding: 5px;
+    /*margin-right:50px;*/
+}
+.button_add {
+    display: inline-block;
+    opacity: 0;
+    position: absolute;
+    top:0;
+    right:0;
+    z-index: 50;
+    margin:0;
+    padding: 5px;
+    background: #189448;
+    color:#FFF;
+    text-decoration: none;
+}
+.menu_item:hover > .button_add {
+    opacity: 1;
 }
 .content {
     background: #EFEFEF;
@@ -20,3 +45,36 @@
     position:relative;
     vertical-align:top;
 }
+
+.list_item_row {
+    border-collapse: collapse;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+.list_item_row>thead {
+    background: #333;
+    color: #FFF;
+}
+.list_item_row>tbody {
+    background: #FFF;
+    color: #000;
+}
+.list_item_row th, .list_item_row td {
+    padding: 5px;
+    margin:0;
+    text-align: left;
+}
+
+td.col_button_edit, td.col_button_delete {
+    width: 10px;
+    /*padding: 0;*/
+}
+/*.button_edit {
+    background: #e6e626;
+    padding: 5px;
+}
+.button_delete {
+    background: #ff6969;
+    padding: 5px;
+}*/

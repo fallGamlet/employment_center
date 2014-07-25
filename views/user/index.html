@@ -1,50 +1,44 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8"/>
-	<link rel="stylesheet" href="/stylesheets/style.css">
-	<script src="/javascripts/jquery-2.1.0.js"></script>
-	<title>{{ title|title }}</title>
-	<script>
-		$(document).ready(function(){
-			
-		});
-	</script>
-</head>
-<body>
-	<div class="title_page">
-		{{ title|title }}
-	</div>
-	<menu class="menu">
-		<a class="go_to_main" href="/">На главную</a>
-	</menu>
-	<div class="main_container">
-		<div class="menu">
-			<a class="button_link" href="/user/db/update/all">
-				Обновить всю базу данных
-			</a>
-			<a class="button_link" href="/user/db/update/person-cards">
-				Обновить карточки на людей
-			</a>
-			<a class="button_link" href="/user/auth/">
-				Пользователи и группы
-			</a>
-		</div>
-		{% if err %}
-		<div style="background:#FFF3A5; padding:2em; width:300px;">{{err}}</div>
-		{% endif %}
-		{% if result %}
-		<div  style="background:#CFFFAA; padding:2em; width:300px;">
-			Времени прошло: {{timeleft}} <br /><br />
-			Результат:
-			<ul>
-			{% for item in result %}
-			<li>{{ item }}</li>
-			{% endfor %}
-			</ul>
-		</div>
-		{% endif %}
-		
-	</div>
-</body>
-</html>
+{% extends '../base.html' %}
+{%block head_style%}
+{%parent%}
+<link rel="stylesheet" href="/stylesheets/admin.css">
+{%endblock%}
+{%block body_middle%}
+    <menu class="menu">
+        <a class="go_to_main" href="/">На главную</a>
+    </menu>
+    <div class="main_container">
+        <div class="side_panel">
+            <div class="menu_item">
+                <a class="button_link" href="/admin/db/update/all">
+                    Обновить всю базу данных
+                </a>
+            </div>
+            <div class="menu_item">
+                <a class="button_link" href="/admin/db/update/person-cards">
+                    Обновить карточки на людей
+                </a>
+            </div>
+            <div class="menu_item">
+                <a class="button_link" href="/admin/auth/">
+                    Пользователи и группы
+                </a>
+            </div>
+        </div>
+        {% if err %}
+        <div style="background:#FFF3A5; padding:2em; width:300px;">{{err}}</div>
+        {% endif %}
+        {% if result %}
+        <div  style="background:#CFFFAA; padding:2em; width:300px;">
+            Времени прошло: {{timeleft}} <br /><br />
+            Результат:
+            <ul>
+            {% for item in result %}
+            <li>{{ item }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+    </div>
+{%endblock%}

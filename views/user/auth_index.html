@@ -6,11 +6,21 @@
 {%block body_middle%}
 <div class="side_panel">
     <a class="go_to_main" href="/">На главную</a>
-    <a class="button_link" href="/user/auth/user/view_list/">Пользователи</a>
-    <a class="button_link" href="/user/auth/group/view_list/">Группы</a>
-    <a class="button_link" href="/user/auth/permissions/view_list/">Привилегии</a>
+    {% for linkItem in menu_links %}
+    <div class="menu_item">
+        <a class="button_link" href="{{linkItem.url}}">
+            {{linkItem.title}}
+        </a>
+        {% if linkItem.can_add %}
+        <a class="button_add" href="{{linkItem.url}}/add/">Add</a>
+        {% endif %}
+    </div>
+    {% endfor %}
 </div>
 <div class="content">
-    Добро пожаловать в панель администратора!
+    {% if users %}
+    {% include 'user_view_inner.html' %}
+    {%endif%}
+    
 </div>
 {%endblock%}
