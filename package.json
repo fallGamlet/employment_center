@@ -1,5 +1,5 @@
 {
-  "name": "employment center",
+  "name": "employment_center",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -9,7 +9,7 @@
     "express": "3.4.8",
     "jade": "jade",
     "async": "0.9.0",
-    "swig": "html",
+    "swig": "1.4.1",
     "mysql": "2.3.2",
     "orm": "2.1.15",
     "dbfkit": "1.0.8"
