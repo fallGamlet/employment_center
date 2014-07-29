@@ -75,7 +75,6 @@ thead td {
 }
 
 
-
 input {
 	width:130px;
 	border-radius:0px;
@@ -83,7 +82,6 @@ input {
 	padding: 1px 1px;
 	margin: 1px;
 }
-
 input[type='text'] {
 	width:100%;
 }
@@ -103,7 +101,6 @@ input[type='radio'] {
 	margin:0;
 	padding:0;
 }
-
 .form_buttons {
 	text-align:right;
 }
@@ -111,14 +108,14 @@ input[type='radio'] {
 .text_long_field {
 	min-width:15em;
 }
-
-.date_field {
-}
-.text_field {
-}
-.phone_field {
+.text_field, .phone_field {
+    width:200px;
 }
 .date_field {
+    width:100px;
+}
+.datetime_field {
+    width: 150px;
 }
 
 @media print {
