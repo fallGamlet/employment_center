@@ -73,6 +73,7 @@ app.get('/admin', user.index);
 app.get('/admin/db/update', user.dbupdate);
 app.get('/admin/db/update/person-cards', user.dbPersonCardUpdate);
 app.get('/admin/auth/:model?/:action?/:id?', user.auth_index);
+app.post('/admin/auth/:model?/:action?/:id?', user.auth_index);
 
 
 http.createServer(app).listen(app.get('port'), function(){
