@@ -7,14 +7,12 @@ exports.index = function(req, res) {
 };
 
 exports.middleware = function(req, res, next) {
-    console.log("User middleware");
     if (req.session.authorized && req.session.username ==='admin') {
-		console.log('This is admin!');
 		next();
 	} else {
 		res.redirect("/login/");
 	}
-}
+};
 
 exports.login = function(req, res) {
 	if ((req.body.login===adminUserName)&&(req.body.password==='admin')) {
@@ -65,18 +63,52 @@ exports.auth_index = function(req, res) {
     };
     var modelType = req.params["model"];
     var actionType = req.params["action"];
-    console.log(req.params);
-    if(modelType === "auth_user" && actionType === undefined) {
-        console.log("USER VIEW");
-        getUsers(req, {}, function(err, users){
-            varDict["error"] = err;
-            varDict["users"] = users;
+    var curID = Number(req.params["id"]);
+    console.log(modelType+" -> "+actionType+" -> "+curID);
+    console.log(req.method);
+    if(modelType === "auth_user") {
+        if(actionType === undefined) {
+            getUsers(req, {}, function(err, users){
+                varDict["error"] = err;
+                varDict["users"] = users;
+                res.render('user/auth_index.html', varDict);
+            });
+        } else if(actionType === "add") {
+            varDict["user"] = {
+                username: "",
+                password: "",
+                f_name : "",
+                m_name : "",
+                l_name : "",
+                email : "",
+                phone : "",
+                created: new Date(),
+                last_login: null,
+                is_active: false,
+                is_superuser: false
+            };
             res.render('user/auth_index.html', varDict);
-        });
+        } else if(actionType === "edit") {
+//            if(req.method.toLowerCase() == "post")
+            if(curID.toString() === "NaN") {
+                res.render('user/auth_index.html', varDict);
+            } else {
+                getUsers(req, {id:curID}, function(err, users){
+                    varDict["error"] = err;
+                    if(users.length > 0) {
+                        varDict["user"] = users[0];
+                    } else {
+                        varDict["error"] = "Указаный пользователь не найден";
+                    }
+                    res.render('user/auth_index.html', varDict);
+                });
+            }
+        }
     } else {
         res.render('user/auth_index.html', varDict);
     }
 };
+
 
 var getModelsLinks = function() {
     var baseUrl = "/admin/auth";
@@ -91,4 +123,18 @@ var getModelsLinks = function() {
 var getUsers = function(req, queryObj, callback) {
     var User = req.models.User;
     User.find(queryObj, callback);
+};
+
+var getGroups = function(req, queryObj, callback) {
+    var Group = req.models.Group;
+    Group.find(queryObj, callback);
+};
+
+var getPermissions = function(req, queryObj, callback) {
+    var Permission = req.models.Permission;
+    Group.find(queryObj, callback);
+};
+
+var editUser = function(req, callback) {
+    
 };
