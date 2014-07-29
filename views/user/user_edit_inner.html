@@ -1,40 +1,74 @@
-<table class="list_item_row">
-<thead>
-    <tr>
-        <th>Логин</th>
-        <th>Пароль</th>
-        <th>Почта</th>
-        <th>Телефон</th>
-        <th>Создан</th>
-        <th>Последний вход</th>
-        <th>Активен</th>
-        <th>Is Root</th>
-        <th></th>
-        <th></th>
-    </tr>
-</thead>
-<tbody>
-{% for userItem in users %}
-    <tr>
-        <td>{{userItem.username}}</td>
-        <td>{{userItem.password}}</td>
-        <td>{{userItem.email}}</td>
-        <td>{{userItem.phone}}</td>
-        <td>{{userItem.created|date('d.m.Y', offsetDate)}}</td>
-        <td>
-            {%if userItem.last_ligin and userItem.last_ligin != null%}
-            {{userItem.last_ligin|date('d.m.Y', offsetDate)}}
-            {%endif%}
-        </td>
-        <td>{% if userItem.is_active %}да{%else%}нет{%endif%}</td>
-        <td>{% if userItem.is_superuser %}да{%else%}нет{%endif%}</td>
-        <td class="col_button_edit">
-            <a class="button_edit" href="/user/auth/user/edit/{{userItem.id}}">Edit</a>
-        </td>
-        <td class="col_button_delete">
-            <a class="button_delete" href="/user/auth/user/delete/{{userItem.id}}">Delete</a>
-        </td>
-    </tr>
-{%endfor%}
-</tbody>
-</table>
+﻿<div class="user_edit_wrapper">
+<form method="post">
+    <div>
+        <span class="label">Логин</span>
+        <input class="text_field" type="text" name="username" value="{{user.username}}" autofocus/>
+    </div>
+    <div>
+        <span class="label">Пароль</span>
+        <input class="text_field" type="password" name="password"/>
+    </div>
+    <div>
+        <span class="label">Повторите пароль</span>
+        <input class="text_field" type="password" name="password"/>
+    </div>
+    <div>
+        <span class="label">Фамилия</span>
+        <input class="text_field" type="text" name="l_name" value="{{user.l_name}}"/>
+    </div>
+    <div>
+        <span class="label">Имя</span>
+        <input class="text_field" type="text" name="f_name" value="{{user.f_name}}"/>
+    </div>
+    <div>
+        <span class="label">Отчество</span>
+        <input class="text_field" type="text" name="m_name" value="{{user.m_name}}"/>
+    </div>
+    <div>
+        <span class="label">Почта</span>
+        <input class="text_field" type="text" name="email" value="{{user.email}}"/>
+    </div>
+    <div>
+        <span class="label">Телефон</span>
+        <input class="text_field" type="text" name="phone" value="{{user.phone}}"/>
+    </div>
+    <div>
+        <span class="label">Зарегистрирован</span>
+        <div id="datetimepicker_created" class="input-append date">
+            <input class="datetime_field" name="created" data-format="dd.MM.yyyy hh:mm:ss" type="text" readonly value="{%if user.created%}{{user.created|date('d.m.Y H:i:s', offsetDate)}}{%endif%}"/>
+            <span class="add-on">
+              <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+            </span>
+        </div>
+    </div>
+    <div>
+        <span class="label">Последний вход</span>
+        <div id="datetimepicker_lastlogin" class="input-append date">
+            <input class="datetime_field" name="last_login" data-format="dd.MM.yyyy hh:mm:ss" type="text" readonly value="{%if user.last_login%}{{user.last_login|date('d.m.Y H:i:s', offsetDate)}}{%endif%}"/>
+            <span class="add-on">
+              <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+            </span>
+        </div>
+    </div>
+    <div>
+        <span class="label">Активен</span>
+        <input type="checkbox" name="is_active" {%if user.is_active%}checked{%endif%}/>
+    </div>
+    <div>
+        <span class="label">Суперпользователь</span>
+        <input type="checkbox" name="is_superuser" {%if user.is_superuser%}checked{%endif%}/>
+    </div>
+    <div class="buttons_place">    
+        <input class="button_save" type="submit" value="Сохранить"/>
+        <a class="button_cancel" href="../">Отменить</a>
+    </div>
+</form>
+<script type="text/javascript">
+    $('#datetimepicker_created').datetimepicker({
+      language: 'ru'
+    });
+    $('#datetimepicker_lastlogin').datetimepicker({
+      language: 'ru'
+    });
+</script>
+</div>
