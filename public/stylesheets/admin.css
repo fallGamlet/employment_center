@@ -1,3 +1,17 @@
+.content {
+    background: #EFEFEF;
+    margin-top: 10px;
+    margin-left: 310px;
+    padding: 5px;
+    /*display: inline-block;*/
+    position:relative;
+    vertical-align:top;
+}
+.error {
+    background: #fffdd0;
+    color: #6c0404;
+}
+
 .side_panel {
     float:left;
     display: block;
@@ -20,9 +34,14 @@
     padding: 5px;
     /*margin-right:50px;*/
 }
+.button_save {
+    padding: 5 10px;
+    margin: 5px;
+    background: #397aaf;
+    color: #F0F0F0;
+}
 .button_add {
-    display: inline-block;
-    opacity: 0;
+    display: none;
     position: absolute;
     top:0;
     right:0;
@@ -34,16 +53,7 @@
     text-decoration: none;
 }
 .menu_item:hover > .button_add {
-    opacity: 1;
-}
-.content {
-    background: #EFEFEF;
-    margin-top: 10px;
-    margin-left: 310px;
-    padding: 5px;
-    /*display: inline-block;*/
-    position:relative;
-    vertical-align:top;
+    display: block;
 }
 
 .list_item_row {
@@ -70,11 +80,32 @@ td.col_button_edit, td.col_button_delete {
     width: 10px;
     /*padding: 0;*/
 }
-/*.button_edit {
-    background: #e6e626;
-    padding: 5px;
+
+.label {
+    display: inline-block;
+    width: 150px;
 }
-.button_delete {
-    background: #ff6969;
-    padding: 5px;
-}*/
+input {
+    padding: 5px 10px;
+}
+input:focus {
+    border-color: #00B7FF;
+    box-shadow:0 0 1px 0px #00B7FF;
+}
+input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 5px;
+}
+input.text_long_field {
+	min-width:15em;
+}
+input.text_field, input.phone_field {
+    width:200px;
+}
+input.date_field {
+    width:100px;
+}
+input.datetime_field {
+    width: 150px;
+}
