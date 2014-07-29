@@ -3,10 +3,12 @@
 <head>
 {% block head %}
     {%block head_meta%}
-	<meta charset="utf-8"/>
+    <meta charset="utf-8" lang="ru"/>
     {%endblock%}
     {%block head_style%}
 	<link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.css">
+    <link rel="stylesheet" href="/stylesheets/bootstrap-datetimepicker.min.css">
     {%endblock%}
 	<title>
         {%block head_title%}
@@ -19,6 +21,8 @@
     </title>
     {%block head_script%}
     <script src="/javascripts/jquery.js"></script>
+    <script src="/javascripts/bootstrap-datetimepicker.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
     {%endblock%}
 {% endblock %}
 </head>
