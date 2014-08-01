@@ -1,7 +1,7 @@
 /**
  * Auth models
  * @param {Object} db - объект подключения к базе данных библиотеки ORM
- * @param {Function} calback - функция обратного ввызова
+ * @param {Function} callback - функция обратного ввызова
  */
 module.exports = function (db, callback) {
     /**
@@ -75,7 +75,6 @@ module.exports = function (db, callback) {
                   key: true
                 });
     
-    
-    if(callback === "function")
+    if(typeof(callback) === "function")
     	return callback();
 };
