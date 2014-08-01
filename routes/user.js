@@ -136,5 +136,36 @@ var getPermissions = function(req, queryObj, callback) {
 };
 
 var editUser = function(req, callback) {
-    
+    var User = req.models.User;
+    var curID = req.params["id"];
+    var formUser = getUserFromFrom(req);
+    if(curID) {
+        User.get(curID, function(err, userItem){
+           if(err) {
+               callback(err, null);
+               return false;
+           }
+           
+        });
+    }
+    User.find(queryObj, callback);
+};
+
+var getUserFromFrom = function(req) {
+    if(req.method.toLowerCase() !== "post")
+        return null;
+    var formUser = {
+        username: req.body["username"],
+        password: req.body["password"],
+        f_name: req.body["f_name"],
+        m_name: req.body["m_name"],
+        l_name: req.body["l_name"],
+        email: req.body["email"],
+        phone: req.body["phone"],
+        created: req.body["created"],
+        last_login: req.body["last_login"],
+        is_active: req.body["is_active"],
+        is_superuser: req.body["is_superuser"]
+    };
+    return formUser;
 };
