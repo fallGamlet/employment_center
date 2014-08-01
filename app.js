@@ -75,6 +75,11 @@ app.get('/admin/db/update/person-cards', user.dbPersonCardUpdate);
 app.get('/admin/auth/:model?/:action?/:id?', user.auth_index);
 app.post('/admin/auth/:model?/:action?/:id?', user.auth_index);
 
+app.get('/javascripts/forms/:file_js', function(req, res){
+    var filename = "./forms/lib/"+req.params['file_js'];
+    res.sendfile(filename);
+});
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
