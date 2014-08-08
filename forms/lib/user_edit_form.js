@@ -1,4 +1,6 @@
-var UserEditFrom = function(request){
+var crypto = require('crypto');
+
+var UserEditForm = function(request){
     if(request) {
         this.username = request.body["username"];
         this.password = request.body["password"];
@@ -28,7 +30,7 @@ var UserEditFrom = function(request){
     }
 };
 
-UserEditFrom.prototype.is_valid = function() {
+UserEditForm.prototype.is_valid = function() {
     var err = {length:0};
     if(!this.username || this.username.trim().length === 0) {
         err.username = "логин пользователя не заполнен";
@@ -68,8 +70,25 @@ UserEditFrom.prototype.is_valid = function() {
         return err;
 };
 
+UserEditForm.prototype.insertTo = function(user) {
+    var shasum = crypto.createHash('sha1');
+    shasum.update(this.password);
 
+    user.password = shasum.digest('hex');
+    user.username = this.username;
+    user.f_name = this.f_name;
+    user.m_name = this.m_name;
+    user.l_name = this.l_name;
+    user.email = this.email;
+    user.phone = this.phone;
+    this.created = new Date(this.created);
+    user.created = this.created.toJSON();
+    this.last_login = new Date(this.last_login);
+    user.last_login = this.last_login.toJSON();
+    user.is_active = this.is_active;
+    user.is_superuser = this.is_superuser;  
+};
 
 if(typeof(module) !== 'undefined' && module !== null) {
-    module.exports = UserEditFrom;
+    module.exports = UserEditForm;
 }
