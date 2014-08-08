@@ -70,6 +70,7 @@
 .bootstrap-datetimepicker-widget{
 	top:0;
 	left:0;
+    display: none;
 	width:250px;
 	padding:4px;
 	margin-top:1px;

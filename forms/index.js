@@ -4,5 +4,4 @@
  * and open the template in the editor.
  */
 
-
-exports.doSomething = doSomething;
+module.exports.UserEditForm = require('./lib/user_edit_form');
