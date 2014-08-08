@@ -44,17 +44,17 @@ module.exports = function (db, callback) {
      * Model User - содержит информацию о пользователях
      */
     var User = db.define('auth_user', {
-    	username: String,
-    	password: String,
-    	f_name : String,
-    	m_name : String,
-    	l_name : String,
-    	email : String,
-        phone : String,
-        created: Date,
-        last_login: Date,
-        is_active: Boolean,
-        is_superuser: Boolean
+    	username:    {type:"text", size:50, unique: true},
+    	password:    {type:"text", size:64},
+    	f_name :     {type:"text", size:50},
+    	m_name :     {type:"text", size:50},
+    	l_name :     {type:"text", size:50},
+    	email :      {type:"text", size:50},
+        phone :      {type:"text", size:128},
+        created:     {type:"date", time:true},
+        last_login:  {type:"date", time:true},
+        is_active:   {type:"boolean", defaultValue:false},
+        is_superuser:{type:"boolean", defaultValue:false}
     });
     // отношения пользователя к различным группам
     User.hasMany('groups', 
