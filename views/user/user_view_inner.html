@@ -22,8 +22,8 @@
         <td>{{userItem.phone}}</td>
         <td>{{userItem.created|date('d.m.Y H:i:s', offsetDate)}}</td>
         <td>
-            {%if userItem.last_ligin and userItem.last_login != null%}
-            {{userItem.last_ligin|date('d.m.Y H:i:s', offsetDate)}}
+            {%if userItem.last_login and userItem.last_login != null%}
+            {{userItem.last_login|date('d.m.Y H:i:s', offsetDate)}}
             {%endif%}
         </td>
         <td>{% if userItem.is_active %}да{%else%}нет{%endif%}</td>
