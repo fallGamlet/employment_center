@@ -12,6 +12,7 @@ var path = require('path');
 var swig = require('swig');
 var orm = require("orm");
 util = require("util");
+forms = require("./forms");
 
 appSettings = require('./settings');
 offsetDate = new Date().getTimezoneOffset();
@@ -23,7 +24,6 @@ app.engine('html', swig.renderFile);
 
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
 
 app.use(orm.express(appSettings.getConnectionStr(), {
     define: function (db, models, next) {
@@ -69,6 +69,7 @@ app.get('/order/view/:card_n/:ind_card', order_view.view);
 app.get('/login', user.login);
 app.post('/login', user.login);
 app.get(/[/]admin([/].*)*$/, user.middleware);
+app.post(/[/]admin([/].*)*$/, user.middleware);
 app.get('/admin', user.index);
 app.get('/admin/db/update', user.dbupdate);
 app.get('/admin/db/update/person-cards', user.dbPersonCardUpdate);
