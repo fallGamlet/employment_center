@@ -1,27 +1,47 @@
-var mySettings = require('../settings');
+var mySettings = require('../settings'),
 	dbftomysql = require('../my_libs/dbf_to_mysql'),
-	adminUserName = "admin";
+    crypto = require('crypto');
 
 exports.index = function(req, res) {
     res.render('user/index.html');
 };
 
 exports.middleware = function(req, res, next) {
-    if (req.session.authorized && req.session.username ==='admin') {
-		next();
+//    console.log(req.session);
+    if (req.session.authorized) {
+        if(req.session.user.is_superuser) {
+            next();
+        } else {
+            var varDict = {errors:"Пользователь не обладает правами Администратора"};
+            res.render('user/auth_index.html', varDict);
+        }
 	} else {
 		res.redirect("/login/");
 	}
 };
 
 exports.login = function(req, res) {
-	if ((req.body.login===adminUserName)&&(req.body.password==='admin')) {
-		req.session.authorized = true;
-		req.session.username = req.body.login;
-        res.redirect("/");
-	} else {
-		res.render('user/login.html', {login:req.body.login});
-	}
+    var shasum, username,passwd;
+    if(req.body.login && req.body.password) {
+        shasum = crypto.createHash('sha1');
+        shasum.update(req.body.password);
+        username = req.body.login;
+        passwd = shasum.digest('hex');
+        
+        getUsers(req, {username:username, password:passwd}, function(err, users) {
+            if(users[0] && users[0].is_active) {
+                req.session.authorized = true;
+                //req.session.username = req.body.login;
+                users[0].password = undefined;
+                req.session.user = users[0];
+                res.redirect("/");
+            } else {
+                res.render('user/login.html', {login:req.body.login});
+            }
+        });
+    } else {
+        res.render('user/login.html', {login:req.body.login});
+    }
 };
 
 exports.dbupdate = function(req, res) {
@@ -65,44 +85,56 @@ exports.auth_index = function(req, res) {
     var actionType = req.params["action"];
     var curID = Number(req.params["id"]);
     console.log(modelType+" -> "+actionType+" -> "+curID);
-    console.log(req.method);
+    console.log("Method: "+req.method);
     if(modelType === "auth_user") {
         if(actionType === undefined) {
             getUsers(req, {}, function(err, users){
-                varDict["error"] = err;
-                varDict["users"] = users;
+                varDict.errors = err;
+                varDict.users = users;
                 res.render('user/auth_index.html', varDict);
             });
         } else if(actionType === "add") {
-            varDict["user"] = {
-                username: "",
-                password: "",
-                f_name : "",
-                m_name : "",
-                l_name : "",
-                email : "",
-                phone : "",
-                created: new Date(),
-                last_login: null,
-                is_active: false,
-                is_superuser: false
-            };
-            res.render('user/auth_index.html', varDict);
-        } else if(actionType === "edit") {
-//            if(req.method.toLowerCase() == "post")
-            if(curID.toString() === "NaN") {
-                res.render('user/auth_index.html', varDict);
+            if(req.method.toLowerCase() === "post") {
+                addUser(req, function(err, results){
+                    varDict.errors = err;
+                    varDict.ok_message = results;
+                    res.render('user/auth_index.html', varDict);
+                });
             } else {
-                getUsers(req, {id:curID}, function(err, users){
-                    varDict["error"] = err;
-                    if(users.length > 0) {
-                        varDict["user"] = users[0];
+                varDict.user = new forms.UserEditForm();
+                res.render('user/auth_index.html', varDict);
+            }
+        } else if(actionType === "edit") {
+            if(req.method.toLowerCase() === "post") {
+                editUser(req, function(err, result){
+                    if(err) {
+                        varDict.errors = err;
                     } else {
-                        varDict["error"] = "Указаный пользователь не найден";
+                        varDict.ok_message = result;
                     }
                     res.render('user/auth_index.html', varDict);
                 });
+            } else {
+                if(curID.toString() === "NaN") {
+                    res.render('user/auth_index.html', varDict);
+                } else {
+                    getUsers(req, {id:curID}, function(err, users){
+                        varDict.errors = err;
+                        if(users.length > 0) {
+                            varDict.user = users[0];
+                        } else {
+                            varDict.errors = {title:"Указаный пользователь не найден"};
+                        }
+                        res.render('user/auth_index.html', varDict);
+                    });
+                }
             }
+        } else if(actionType === "delete") {
+            deleteUser(req, function(err, results){
+                varDict.errors = err;
+                varDict.ok_message = results;
+                res.render('user/auth_index.html', varDict);
+            });
         }
     } else {
         res.render('user/auth_index.html', varDict);
@@ -138,34 +170,64 @@ var getPermissions = function(req, queryObj, callback) {
 var editUser = function(req, callback) {
     var User = req.models.User;
     var curID = req.params["id"];
-    var formUser = getUserFromFrom(req);
+    var formUser = new forms.UserEditForm(req);
+    var err = formUser.is_valid();
+    if(err) {
+        callback(err, null);
+        return;
+    }
     if(curID) {
-        User.get(curID, function(err, userItem){
+        User.get(curID, function(err, user) {
            if(err) {
                callback(err, null);
                return false;
            }
-           
+           formUser.insertTo(user);
+           user.save(function(err){
+               if(err) {
+                   callback(err, null);
+               } else {
+                   callback(null, "Пользователь успешно сохранен");
+               }
+           });
         });
+    } else {
+        callback({title:"Не указан идентификатор редактируемого пользователя."}, null);
     }
-    User.find(queryObj, callback);
 };
 
-var getUserFromFrom = function(req) {
-    if(req.method.toLowerCase() !== "post")
-        return null;
-    var formUser = {
-        username: req.body["username"],
-        password: req.body["password"],
-        f_name: req.body["f_name"],
-        m_name: req.body["m_name"],
-        l_name: req.body["l_name"],
-        email: req.body["email"],
-        phone: req.body["phone"],
-        created: req.body["created"],
-        last_login: req.body["last_login"],
-        is_active: req.body["is_active"],
-        is_superuser: req.body["is_superuser"]
-    };
-    return formUser;
+var addUser = function(req, callback) {
+    var User = req.models.User;
+    var formUser = new forms.UserEditForm(req);
+    console.log(formUser);
+    var err = formUser.is_valid();
+    if(err) {
+        callback(err, null);
+        return;
+    }
+    var user = {};
+    formUser.insertTo(user);
+    User.create(user, callback);
+};
+
+var deleteUser = function(req, callback) {
+    var User = req.models.User;
+    var curID = req.params["id"];
+    if(curID) {
+        User.get(curID, function(err, user) {
+           if(err) {
+               callback(err, null);
+               return false;
+           }
+           user.remove(function(err){
+               if(err) {
+                   callback(err, null);
+               } else {
+                   callback(null, "Пользователь успешно удален.");
+               }
+           });
+        });
+    } else {
+        callback({title:"Не указан идентификатор редактируемого пользователя."}, null);
+    }
 };
