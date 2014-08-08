@@ -20,14 +20,22 @@
 <div class="content">
     {% if errors %}
     <div class="error">
-        {{errors}}
+        {{errors|json(4)}}
     </div>
     {%endif%}
-    {% if users %}
-    {% include 'user_view_inner.html'%}
+    
+    {%if ok_message %}
+    <div class="ok_message">
+        {{ok_message|json(4)}}
+    </div>
     {%endif%}
+    
+    {% if users %}
+        {% include 'user_view_inner.html'%}
+    {%endif%}
+    
     {% if user %}
-    {% include 'user_edit_inner.html'%}
+        {% include 'user_edit_inner.html'%}
     {%endif%}
 </div>
 {%endblock%}
