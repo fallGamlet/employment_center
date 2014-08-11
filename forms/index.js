@@ -5,3 +5,4 @@
  */
 
 module.exports.UserEditForm = require('./lib/user_edit_form');
+module.exports.GroupEditForm = require('./lib/group_edit_form');
