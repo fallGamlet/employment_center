@@ -87,55 +87,9 @@ exports.auth_index = function(req, res) {
     console.log(modelType+" -> "+actionType+" -> "+curID);
     console.log("Method: "+req.method);
     if(modelType === "auth_user") {
-        if(actionType === undefined) {
-            getUsers(req, {}, function(err, users){
-                varDict.errors = err;
-                varDict.users = users;
-                res.render('user/auth_index.html', varDict);
-            });
-        } else if(actionType === "add") {
-            if(req.method.toLowerCase() === "post") {
-                addUser(req, function(err, results){
-                    varDict.errors = err;
-                    varDict.ok_message = results;
-                    res.render('user/auth_index.html', varDict);
-                });
-            } else {
-                varDict.user = new forms.UserEditForm();
-                res.render('user/auth_index.html', varDict);
-            }
-        } else if(actionType === "edit") {
-            if(req.method.toLowerCase() === "post") {
-                editUser(req, function(err, result){
-                    if(err) {
-                        varDict.errors = err;
-                    } else {
-                        varDict.ok_message = result;
-                    }
-                    res.render('user/auth_index.html', varDict);
-                });
-            } else {
-                if(curID.toString() === "NaN") {
-                    res.render('user/auth_index.html', varDict);
-                } else {
-                    getUsers(req, {id:curID}, function(err, users){
-                        varDict.errors = err;
-                        if(users.length > 0) {
-                            varDict.user = users[0];
-                        } else {
-                            varDict.errors = {title:"Указаный пользователь не найден"};
-                        }
-                        res.render('user/auth_index.html', varDict);
-                    });
-                }
-            }
-        } else if(actionType === "delete") {
-            deleteUser(req, function(err, results){
-                varDict.errors = err;
-                varDict.ok_message = results;
-                res.render('user/auth_index.html', varDict);
-            });
-        }
+        userAction(req, res, varDict);
+    } else if(modelType === "auth_group") {
+        groupAction(req, res, varDict);
     } else {
         res.render('user/auth_index.html', varDict);
     }
@@ -166,6 +120,7 @@ var getPermissions = function(req, queryObj, callback) {
     var Permission = req.models.Permission;
     Group.find(queryObj, callback);
 };
+
 
 var editUser = function(req, callback) {
     var User = req.models.User;
@@ -231,3 +186,198 @@ var deleteUser = function(req, callback) {
         callback({title:"Не указан идентификатор редактируемого пользователя."}, null);
     }
 };
+
+var userAction = function(req, res, varDict) {
+    var varDict = varDict;
+    if(!varDict) varDict = {};
+    var actionType = req.params["action"];
+    var curID = Number(req.params["id"]);
+    
+    if(actionType === undefined) {
+        getUsers(req, {}, function(err, users){
+            varDict.errors = err;
+            varDict.users = users;
+            res.render('user/auth_index.html', varDict);
+        });
+    } else if(actionType === "add") {
+        if(req.method.toLowerCase() === "post") {
+            addUser(req, function(err, results){
+                varDict.errors = err;
+                varDict.ok_message = results;
+                res.render('user/auth_index.html', varDict);
+            });
+        } else {
+            varDict.user = new forms.UserEditForm();
+            res.render('user/auth_index.html', varDict);
+        }
+    } else if(actionType === "edit") {
+        if(req.method.toLowerCase() === "post") {
+            editUser(req, function(err, result){
+                if(err) {
+                    varDict.errors = err;
+                } else {
+                    varDict.ok_message = result;
+                }
+                res.render('user/auth_index.html', varDict);
+            });
+        } else {
+            if(curID.toString() === "NaN") {
+                res.render('user/auth_index.html', varDict);
+            } else {
+                getUsers(req, {id:curID}, function(err, users){
+                    varDict.errors = err;
+                    if(users.length > 0) {
+                        varDict.user = users[0];
+                    } else {
+                        varDict.errors = {title:"Указаный пользователь не найден"};
+                    }
+                    res.render('user/auth_index.html', varDict);
+                });
+            }
+        }
+    } else if(actionType === "delete") {
+        deleteUser(req, function(err, results){
+            varDict.errors = err;
+            varDict.ok_message = results;
+            res.render('user/auth_index.html', varDict);
+        });
+    } else {
+        varDict.errors = {title:"Не указано действие, или действие указано некорректно."};
+        res.render('user/auth_index.html', varDict);
+    }
+};
+
+
+var addGroup = function(req, callback) {
+    var Group = req.models.Group;
+    var formGroup = new forms.GroupEditForm(req);
+    //console.log(formGroup);
+    var err = formGroup.is_valid();
+    if(err) {
+        callback(err, null);
+        return;
+    }
+    var group = {};
+    formGroup.insertTo(group);
+    Group.create(group, callback);
+};
+
+var editGroup = function(req, callback) {
+    var Group = req.models.Group;
+    var curID = req.params["id"];
+    var formGroup = new forms.GroupEditForm(req);
+    var err = formGroup.is_valid();
+    if(err) {
+        callback(err, null);
+        return;
+    }
+    if(curID) {
+        Group.get(curID, function(err, group) {
+           if(err) {
+               callback(err, null);
+               return false;
+           }
+           formGroup.insertTo(group);
+           group.save(function(err){
+               if(err) {
+                   callback(err, null);
+               } else {
+                   callback(null, "Группа успешно сохранен");
+               }
+           });
+        });
+    } else {
+        callback({title:"Не указан идентификатор редактируемой группы."}, null);
+    }
+};
+
+var deleteGroup = function(req, callback) {
+    var Group = req.models.Group;
+    var curID = req.params["id"];
+    if(curID) {
+        Group.get(curID, function(err, group) {
+           if(err) {
+               callback(err, null);
+               return false;
+           }
+           group.remove(function(err){
+               if(err) {
+                   callback(err, null);
+               } else {
+                   callback(null, "Группа успешно удалена.");
+               }
+           });
+        });
+    } else {
+        callback({title:"Не указан идентификатор редактируемой группы."}, null);
+    }
+};
+
+var groupAction = function(req, res, varDict) {
+    var varDict = varDict;
+    if(!varDict) varDict = {};
+    var actionType = req.params["action"];
+    var curID = Number(req.params["id"]);
+    
+    if(actionType === undefined) {
+        getGroups(req, {}, function(err, groups){
+            varDict.errors = err;
+            varDict.groups = groups;
+            res.render('user/auth_index.html', varDict);
+        });
+    } else if(actionType === "add") {
+        if(req.method.toLowerCase() === "post") {
+            addGroup(req, function(err, results){
+                varDict.errors = err;
+                varDict.ok_message = results;
+                res.render('user/auth_index.html', varDict);
+            });
+        } else {
+            varDict.group = new forms.GroupEditForm();
+            res.render('user/auth_index.html', varDict);
+        }
+    } else if(actionType === "edit") {
+        if(req.method.toLowerCase() === "post") {
+            editGroup(req, function(err, result){
+                if(err) {
+                    varDict.errors = err;
+                } else {
+                    varDict.ok_message = result;
+                }
+                res.render('user/auth_index.html', varDict);
+            });
+        } else {
+            if(curID.toString() === "NaN") {
+                res.render('user/auth_index.html', varDict);
+            } else {
+                getGroups(req, {id:curID}, function(err, users){
+                    varDict.errors = err;
+                    if(users.length > 0) {
+                        varDict.user = users[0];
+                    } else {
+                        varDict.errors = {title:"Указаный пользователь не найден"};
+                    }
+                    res.render('user/auth_index.html', varDict);
+                });
+            }
+        }
+    } else if(actionType === "delete") {
+        deleteGroup(req, function(err, results){
+            varDict.errors = err;
+            varDict.ok_message = results;
+            res.render('user/auth_index.html', varDict);
+        });
+    } else {
+        varDict.errors = {title:"Не указано действие, или действие указано некорректно."};
+        res.render('user/auth_index.html', varDict);
+    }
+};
+
+
+
+
+
+
+
+
+
