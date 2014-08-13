@@ -37,5 +37,12 @@
     {% if user %}
         {% include 'user_edit_inner.html'%}
     {%endif%}
+    
+    {% if groups %}
+        {% include 'group_view_inner.html'%}
+    {%endif%}
+    {% if group %}
+        {% include 'group_edit_inner.html'%}
+    {%endif%}
 </div>
 {%endblock%}
