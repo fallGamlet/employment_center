@@ -1,0 +1,23 @@
+<table class="list_item_row">
+<thead>
+    <tr>
+        <th>Название</th>
+        <th></th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+{% for groupItem in groups %}
+    <tr>
+        <td>{{groupItem.name}}</td>
+        <td class="col_button_edit">
+            <a class="button_edit" href="/admin/auth/auth_group/edit/{{groupItem.id}}">Edit</a>
+        </td>
+        <td class="col_button_delete">
+            <a class="button_delete" href="/admin/auth/auth_group/delete/{{groupItem.id}}">Delete</a>
+        </td>
+    </tr>
+{%endfor%}
+</tbody>
+</table>
+
