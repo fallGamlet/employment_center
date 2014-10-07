@@ -7,7 +7,6 @@
   },
   "dependencies": {
     "express": "3.4.8",
-    "jade": "jade",
     "async": "0.9.0",
     "swig": "1.4.1",
     "mysql": "2.3.2",
