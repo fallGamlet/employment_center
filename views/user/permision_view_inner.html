@@ -1,0 +1,23 @@
+<table class="list_item_row">
+<thead>
+    <tr>
+        <th>Название</th>
+        <th></th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+{% for permItem in groups %}
+    <tr>
+        <td>{{permItem.name}}</td>
+        <td class="col_button_edit">
+            <a class="button_edit" href="/admin/auth/permission/edit/{{permItem.id}}">Edit</a>
+        </td>
+        <td class="col_button_delete">
+            <a class="button_delete" href="/admin/auth/permission/delete/{{permItem.id}}">Delete</a>
+        </td>
+    </tr>
+{%endfor%}
+</tbody>
+</table>
+
