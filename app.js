@@ -1,6 +1,11 @@
 /**
  * Module dependencies.
  */
+appSettings = require('./settings');
+offsetDate = new Date().getTimezoneOffset();
+util = require("util");
+forms = require("./forms");
+
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
@@ -11,11 +16,6 @@ var http = require('http');
 var path = require('path');
 var swig = require('swig');
 var orm = require("orm");
-util = require("util");
-forms = require("./forms");
-
-appSettings = require('./settings');
-offsetDate = new Date().getTimezoneOffset();
 
 var app = express();
 
