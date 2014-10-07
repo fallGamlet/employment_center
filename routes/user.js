@@ -1,5 +1,5 @@
-var mySettings = require('../settings'),
-	dbftomysql = require('../my_libs/dbf_to_mysql'),
+var mySettings = appSettings, //require('../settings'),
+    dbftomysql = require('../my_libs/dbf_to_mysql'),
     crypto = require('crypto');
 
 exports.index = function(req, res) {
@@ -45,19 +45,19 @@ exports.login = function(req, res) {
 };
 
 exports.dbupdate = function(req, res) {
-	var responsed = false;
+    var responsed = false;
     dbftomysql.updateAll({
-            dbfpath: mySettings.dbfBasePath,
-            dbconoptions: mySettings.dbConnOptions,
-            callback: function(err, result, timeleft) {
-                responsed = true;
-                res.render('user/index.html', {'err':err, 'result':result, 'timeleft':timeleft });
-            }
-        });
+        dbfpath: mySettings.dbfBasePath,
+        dbconoptions: mySettings.dbConnOptions,
+        callback: function(err, result, timeleft) {
+            responsed = true;
+            res.render('user/index.html', {'err':err, 'result':result, 'timeleft':timeleft });
+        }
+    });
     setTimeout(function() {
-            if(!responsed)
-                res.render('user/index.html', {'err':"time out"});
-        }, 50000);
+        if(!responsed)
+            res.render('user/index.html', {'err':"time out"});
+    }, 50000);
 };
 
 exports.dbPersonCardUpdate = function(req, res) {
@@ -228,6 +228,10 @@ var userAction = function(req, res, varDict) {
                     varDict.errors = err;
                     if(users.length > 0) {
                         varDict.user = users[0];
+//                        varDict.user.getGroups(function(err, data){
+//                            console.log("Err: "+err);
+//                            console.log("Data: "+data);
+//                        });
                     } else {
                         varDict.errors = {title:"Указаный пользователь не найден"};
                     }
@@ -313,8 +317,8 @@ var deleteGroup = function(req, callback) {
     }
 };
 
-var groupAction = function(req, res, varDict) {
-    var varDict = varDict;
+var groupAction = function(req, res, vardict) {
+    var varDict = vardict;
     if(!varDict) varDict = {};
     var actionType = req.params["action"];
     var curID = Number(req.params["id"]);
@@ -322,7 +326,7 @@ var groupAction = function(req, res, varDict) {
     if(actionType === undefined) {
         getGroups(req, {}, function(err, groups){
             varDict.errors = err;
-            varDict.groups = groups;
+            varDict["groups"] = groups;
             res.render('user/auth_index.html', varDict);
         });
     } else if(actionType === "add") {
@@ -333,7 +337,7 @@ var groupAction = function(req, res, varDict) {
                 res.render('user/auth_index.html', varDict);
             });
         } else {
-            varDict.group = new forms.GroupEditForm();
+            varDict["group"] = new forms.GroupEditForm();
             res.render('user/auth_index.html', varDict);
         }
     } else if(actionType === "edit") {
@@ -350,10 +354,10 @@ var groupAction = function(req, res, varDict) {
             if(curID.toString() === "NaN") {
                 res.render('user/auth_index.html', varDict);
             } else {
-                getGroups(req, {id:curID}, function(err, users){
+                getGroups(req, {id:curID}, function(err, groups){
                     varDict.errors = err;
-                    if(users.length > 0) {
-                        varDict.user = users[0];
+                    if(groups.length > 0) {
+                        varDict["group"] = groups[0];
                     } else {
                         varDict.errors = {title:"Указаный пользователь не найден"};
                     }
