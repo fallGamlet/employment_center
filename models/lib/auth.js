@@ -8,8 +8,8 @@ module.exports = function (db, callback) {
      * Model ContentTable - содержит наименования таблиц в БД
      */
     var ContentTable = db.define("content_table", {
-		name: String
-	});
+        name: String
+    });
     /**
      * 
      * Model Access - указывает возможные уровни доступа к контенту
@@ -29,17 +29,17 @@ module.exports = function (db, callback) {
      * Model Group - содержит наименования групп пользователей
      */
     var Group = db.define("auth_group", {
-		name: String
-	});
+        name: String
+    });
     // привилегии, дающиеся группе
     Group.hasMany('permissions', 
-                    Permission, {}, 
-                    { mergeTable:"auth_group_permission",
-                      mergeId:"group_id", 
-                      mergeAssocId:"permission_id", 
-                      reverse: 'groups', 
-                      key: true
-                    });
+        Permission, {}, 
+        { mergeTable:"auth_group_permission",
+          mergeId:"group_id", 
+          mergeAssocId:"permission_id", 
+          reverse: 'groups', 
+          key: true
+    });
     /*
      * Model User - содержит информацию о пользователях
      */
@@ -58,22 +58,22 @@ module.exports = function (db, callback) {
     });
     // отношения пользователя к различным группам
     User.hasMany('groups', 
-                Group, {}, 
-                { mergeTable:"auth_user_group",
-                  mergeId:"user_id",
-                  mergeAssocId:"group_id",
-                  reverse: 'users', 
-                  key: true
-                });
+        Group, {}, 
+        { mergeTable:"auth_user_group",
+          mergeId:"user_id",
+          mergeAssocId:"group_id",
+          reverse: 'users', 
+          key: true
+    });
     // привилегии, дающиеся пользователю
     User.hasMany('permissions', 
-                Permission, {}, 
-                { mergeTable:"auth_user_permission",
-                  mergeId:"user_id",
-                  mergeAssocId:"permission_id",
-                  reverse: 'users', 
-                  key: true
-                });
+        Permission, {}, 
+        { mergeTable:"auth_user_permission",
+          mergeId:"user_id",
+          mergeAssocId:"permission_id",
+          reverse: 'users', 
+          key: true
+    });
     
     if(typeof(callback) === "function")
     	return callback();
